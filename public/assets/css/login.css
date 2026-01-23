@@ -1,0 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #185adb, #1d4ed8);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.login-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.logo-icon {
+    font-size: 50px;
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-bottom: 4px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #555;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+form {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 6px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 8px;
+}
+
+input:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.info {
+    font-size: 12px;
+    color: #555;
+    margin-top: 10px;
+}
+
+hr {
+    margin: 18px 0;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+.section-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #444;
+}
+
+.roles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.role {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.admin {
+    background: #cbdcf8;
+}
+
+.responsable {
+    background: #d5f6d4;
+}
+
+.operateur {
+    background: #f9d8b2;
+}
+
+.consultation {
+    background: #e3e3e3;
+}
+
+#info {
+    display: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+.flash-error {
+    background-color: #f8d7da;
+    color: #842029;
+    border-color: #f5c2c7;
+}
+
+.flash-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-color: #badbcc;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.error {
+    display: block;
+    color: #d9534f;
+    font-size: 13px;
+    margin-top: 4px;
+    height: 16px; /* évite que le form saute quand le texte apparaît */
+}
