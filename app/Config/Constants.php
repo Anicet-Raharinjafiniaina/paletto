@@ -53,6 +53,11 @@ defined('TBL_PROFIL') || define('TBL_PROFIL', 'profil');
 defined('TBL_ACCES') || define('TBL_ACCES', 'acces');
 defined('TBL_HISTORIQUE') || define('TBL_HISTORIQUE', 'historique');
 defined('TBL_PAGE') || define('TBL_PAGE', 'page');
+defined('TBL_ENTREPOT') || define('TBL_ENTREPOT', 'entrepot');
+defined('TBL_ALLEE') || define('TBL_ALLEE', 'allee');
+defined('TBL_RANGEE') || define('TBL_RANGEE', 'rangee');
+defined('TBL_NIVEAU') || define('TBL_NIVEAU', 'niveau');
+defined('TBL_CAGE') || define('TBL_CAGE', 'cage');
 /** Tables */
 
 /*

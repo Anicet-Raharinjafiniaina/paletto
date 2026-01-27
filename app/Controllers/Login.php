@@ -58,6 +58,7 @@ class Login extends BaseController
             'poste'        => $infoLower['title'][0] ?? '',
             'direction'    => $infoLower['department'][0] ?? '',
             'bureau'       => $infoLower['physicaldeliveryofficename'][0] ?? '',
+            'thumbnailphoto'    => $infoLower['thumbnailphoto'][0] ?? '',
             'user_id'      => $arrUser['id'],
             'profil_id'    => $arrUser['profil_id'],
             'mdp'    => $password
@@ -73,21 +74,14 @@ class Login extends BaseController
         return json_encode(2); //succès
     }
 
-    // public function logout
-    // {
-    //     $utilisateur = $this->session->get('utilisateur');
-    //     $historiqueModel = new HistoriqueConnexionsModel();
-
-    //     if ($utilisateur) {
-    //         $historiqueModel->save([
-    //             'nom_utilisateur' => trim(($utilisateur['prenom'] ?? '') . ' ' . ($utilisateur['nom'] ?? '')),
-    //             'matricule'       => $utilisateur['login'] ?? '',
-    //             'date_heure_action' => date('Y-m-d H:i:s'),
-    //             'type_action'     => 'deconnexion'
-    //         ]);
-    //     }
-
-    //     $this->session->destroy();
-    //     return redirect()->to('/');
-    // }
+    public function logout()
+    {
+        $utilisateur = $this->session->get('utilisateur');
+        if ($utilisateur) {
+            $crudModelHisto = new CrudModel(TBL_HISTORIQUE);
+            $crudModelHisto->logInOut(2, "Se déconnecter"); // 2 = action déconnexion
+        }
+        $this->session->destroy();
+        return redirect()->to('/');
+    }
 }

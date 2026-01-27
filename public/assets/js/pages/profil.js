@@ -98,6 +98,18 @@ function view(id, action) {
             stopLoaderContent('main')
             $("#content-profil").html(res);
             $("#modal_view_profil").modal("show");
+            initializeDuallistBox("page_id_upd")
+            /** pour dualListBox */
+            $('.icon-last').removeClass('icon-last').addClass('fas fa-angle-double-right');
+            $('.icon-first').removeClass('icon-first').addClass('fas fa-angle-double-left');
+            /** /pour dualListBox */
+            $('input[name="actif"]').click(function () {
+                if ($(this).is(":checked")) {
+                    $(this).val(1);
+                } else if ($(this).is(":not(:checked)")) {
+                    $(this).val(0);
+                }
+            });
             if (action == "voir") {
                 $("#div-upd-footer").css("display", "none");
                 $("#title").html("Détail du profil <b>" + t + "</b>");

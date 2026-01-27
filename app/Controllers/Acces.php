@@ -9,7 +9,8 @@ class Acces extends BaseController
     public function is_ok($id_page)
     {
         $session = session();
-        $valide_session = $session->has('login') && $session->has('profil_id');
+        $utilisateur = $session->get('utilisateur');
+        $valide_session = $utilisateur && isset($utilisateur['login']) && isset($utilisateur['profil_id']);
         $access_page = $this->acces_page($id_page);
         if (!$valide_session) { // Session invalide
             echo 'Session invalide';
@@ -24,7 +25,10 @@ class Acces extends BaseController
     public function acces_page($id_page)
     {
         $crud  = new CrudModel(TBL_ACCES);
-        $arr = $crud->getDataById(array("profil_id" => session()->get('profil_id')));
+        if (!session()->has('utilisateur')) {
+            return false;
+        }
+        $arr = $crud->getDataById(array("profil_id" => session()->get('utilisateur')['profil_id']));
         if (!empty($arr)) {
             $arr_page = array_map('intval', explode(',', trim($arr->page_id, '{}')));
             if (in_array(intval($id_page), $arr_page)) {

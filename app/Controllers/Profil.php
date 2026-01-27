@@ -18,14 +18,13 @@ class Profil extends BaseController
         $this->db = db_connect();
     }
 
-
     public function index()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(2);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(2);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $this->load();
     }
 
@@ -92,11 +91,11 @@ class Profil extends BaseController
 
     public function insertProfil()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(2);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(2);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $arr_page_id = $this->request->getVar('arr_page_id');
         sort($arr_page_id);
         $profil = $this->request->getVar('profil');
@@ -125,11 +124,11 @@ class Profil extends BaseController
      */
     public function getDetail()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(2);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(2);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $crud_profil = new CrudModel(TBL_PROFIL);
         $crud_acces = new CrudModel(TBL_ACCES);
         $id = trim($this->request->getVar('id'));
@@ -149,11 +148,11 @@ class Profil extends BaseController
 
     public function majProfil()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(2);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(2);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $arr_page_id = $this->request->getVar('arr_page_id');
         sort($arr_page_id);
         $profil = $this->request->getVar('profil');
@@ -190,11 +189,11 @@ class Profil extends BaseController
      */
     public function deleteProfil()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(2);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(2);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_PROFIL);

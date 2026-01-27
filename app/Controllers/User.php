@@ -20,11 +20,11 @@ class User extends BaseController
 
     public function index()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(1);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $this->load();
     }
 
@@ -60,9 +60,11 @@ class User extends BaseController
     /** Auto complète */
     public function getInfosUser()
     {
-        // if (!$this->access->is_ok(24)) {
-        //     return $this->access->get_redirect();
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
 
         $name = trim($this->request->getVar('c'));
         $filtre = '(|(cn=*' . $name . ')(cn=' . $name . '*)(cn=*' . $name . '*))';
@@ -85,9 +87,11 @@ class User extends BaseController
 
     public function getMail()
     {
-        // if (!$this->access->is_ok(24)) {
-        //     return $this->access->get_redirect();
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $name = trim($this->request->getVar('n'));
         $filtre = '(cn=' . $name . ')';
         $login = isset($this->session->get('utilisateur')['login']) ? $this->session->get('utilisateur')['login'] : '';
@@ -105,9 +109,11 @@ class User extends BaseController
 
     public function getLogin()
     {
-        // if (!$this->access->is_ok(24)) {
-        //     return $this->access->get_redirect();
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $name = trim($this->request->getVar('n'));
         $filtre = '(cn=' . $name . ')';
         $login = isset($this->session->get('utilisateur')['login']) ? $this->session->get('utilisateur')['login'] : '';
@@ -125,9 +131,11 @@ class User extends BaseController
 
     public function getFonction()
     {
-        // if (!$this->access->is_ok(24)) {
-        //     return $this->access->get_redirect();
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $name = trim($this->request->getVar('n'));
         $filtre = '(cn=' . $name . ')';
         $login = isset($this->session->get('utilisateur')['login']) ? $this->session->get('utilisateur')['login'] : '';
@@ -145,11 +153,11 @@ class User extends BaseController
 
     public function insertUser()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(1);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $arr_user = $this->request->getVar('data');
         if (!empty($arr_user)) {
             $arr_user['profil_id'] =  $arr_user['profil'];
@@ -171,11 +179,11 @@ class User extends BaseController
      */
     public function getUser()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(1);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $crud = new CrudModel(TBL_UTILISATEUR);
 
         $id = trim($this->request->getVar('id'));
@@ -193,11 +201,11 @@ class User extends BaseController
 
     public function majUser()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(1);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_UTILISATEUR);
         if (!empty($arr_data)) {
@@ -221,11 +229,11 @@ class User extends BaseController
      */
     public function deleteUser()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(1);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(1);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_UTILISATEUR);

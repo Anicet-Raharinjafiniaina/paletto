@@ -90,6 +90,14 @@ function view(id, action) {
             stopLoaderContent('main')
             $("#content-user").html(res);
             $("#modal_view_user").modal("show");
+            initialiseSelect2Modal("profil_id_upd", "modal_view_user")
+            $('input[name="actif"]').click(function () {
+                if ($(this).is(":checked")) {
+                    $(this).val(1);
+                } else if ($(this).is(":not(:checked)")) {
+                    $(this).val(0);
+                }
+            });
             loadName("_upd");
             if (action == "voir") {
                 $("#div-upd-footer").css("display", "none");

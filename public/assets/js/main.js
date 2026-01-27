@@ -1,6 +1,17 @@
 $(function () {
     initAutoCloseSidebar(); // pour fermer le menu en le cliquant sur lui même autre part (mobile)
     $(".datatable").DataTable()
+
+    // On prépare le menu : visible mais transparent
+    $('.vertical-menu').css({
+        'background': '#242a30',
+        'opacity': 0
+    });
+
+    // Après 300ms, on fait un fade-in
+    setTimeout(function () {
+        $('.vertical-menu').animate({ opacity: 1 }, 300);
+    }, 300);
 });
 
 /** Gérer le menu pour la version mobile */

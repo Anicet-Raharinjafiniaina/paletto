@@ -55,25 +55,9 @@
 
     <?php if ($disabled == ""): ?>
         <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
-            <button type="button" class="btn btn-success btn-sm  float-right" style="background-color:#21a89f;" id="save_upd" onclick="maj()"
+            <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="maj()"
                 data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer" <?= $disabled; ?>>
                 Enregistrer</button>
         </div>
     <?php endif; ?>
 </form>
-
-<script type="text/javascript">
-    $(function() {
-        initialiseSelect2Modal("profil_id_upd", "modal_view_user")
-        $('input[name="actif"]').click(function() {
-            if ($(this).is(":checked")) {
-                $(this).val(1);
-            } else if ($(this).is(":not(:checked)")) {
-                $(this).val(0);
-            }
-        });
-
-
-
-    });
-</script>

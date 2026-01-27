@@ -97,7 +97,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success btn-xs" style="background-color:#21a89f;" id="save" onclick="insert()"
+                        <button type="button" class="btn btn-primary btn-xs" id="save" onclick="insert()"
                             data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer"> Enregistrer</button>
                     </div>
                 </form>
