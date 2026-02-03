@@ -4,7 +4,7 @@ $(function () {
 
     // On prépare le menu : visible mais transparent
     $('.vertical-menu').css({
-        'background': '#242a30',
+        'background': '#8a120f',
         'opacity': 0
     });
 
@@ -139,4 +139,84 @@ function getFormDataFromParentClass(parentClass) {
         }
     });
     return data;
+}
+
+function setDataSelect(selector, result) {
+    $('#' + selector).html('')
+    let option = '<option value=""></option>'
+    for (let item of result) {
+        option += '<option value="' + item.id + '">' + item.text + '</option>'
+    }
+    $('#' + selector).html(option).trigger('change')
+}
+
+function setDataSelected(selector, result, id_to_select) {
+    $('#' + selector).html('')
+    let m = $('#' + id_to_select).val()
+    let selected = ''
+    let option = '<option value=""></option>'
+    for (let item of result) {
+        if (m == item.id) {
+            selected = 'selected = "selected"'
+        } else {
+            selected = ''
+        }
+        option += '<option value="' + item.id + '" ' + selected + '>' + item.text + '</option>'
+    }
+    $('#' + selector).html(option).trigger('change')
+}
+
+/**
+ * 
+ * @param {select on click} select_id 
+ * @param {select à charger de données venant le controlleur} select_to_charge 
+ * @param {lien du controlleur} controller_url 
+ * @param {pour le loader durant le chargement du select} content_to_loader 
+ * @param {les données à envoyer via AJAX} dataToSend 
+ *Appel de la fonction : chargeSelectFromController('entrepot_id', 'allee_id', 'Rangee/getAllAlleeByEntrepot', 'modal_ajout_rangee', { entrepot_id: () => $('#entrepot_id').val() });
+ */
+function chargeSelectFromController(select_id, select_to_charge, controller_url, content_to_loader, dataToSend) {
+    $('#' + select_id).on('change', function () {
+        if ($('#' + select_id).val() != '') {
+            loaderContent(content_to_loader)
+        }
+        $.ajax({
+            url: urlProject + controller_url,
+            type: 'POST',
+            dataType: 'json',
+            data: dataToSend,
+            success: function (data) {
+                stopLoaderContent(content_to_loader)
+                setDataSelect(select_to_charge, data)
+            }
+        })
+    })
+}
+
+/**
+ * 
+ * @param {select on click} select_id 
+ * @param {select à charger de données venant le controlleur} select_to_charge 
+ * @param {lien du controlleur} controller_url 
+ * @param {pour le loader durant le chargement du select} content_to_loader 
+ * @param {les données à envoyer via AJAX} dataToSend 
+ * @param {id séléctionné} id_to_compare
+ *Appel de la fonction : chargeSelectFromController('entrepot_id', 'allee_id', 'Rangee/getAllAlleeByEntrepot', 'modal_ajout_rangee', { entrepot_id: () => $('#entrepot_id').val() }, 'allee_id_base');
+ */
+function chargeSelectedFromController(select_id, select_to_charge, controller_url, content_to_loader, dataToSend, id_to_compare) {
+    $('#' + select_id).on('change', function () {
+        if ($('#' + select_id).val() != '') {
+            loaderContent(content_to_loader)
+        }
+        $.ajax({
+            url: urlProject + controller_url,
+            type: 'POST',
+            dataType: 'json',
+            data: dataToSend,
+            success: function (data) {
+                stopLoaderContent(content_to_loader)
+                setDataSelected(select_to_charge, data, id_to_compare)
+            }
+        })
+    })
 }

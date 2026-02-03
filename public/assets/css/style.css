@@ -1,0 +1,10 @@
+/* Icône blanche par défaut */
+.menu-hover svg {
+    stroke: #ffffff;
+    transition: stroke 0.25s ease;
+}
+
+/* Icône bleue au survol */
+.menu-hover:hover svg {
+    stroke: #0d6efd;
+}

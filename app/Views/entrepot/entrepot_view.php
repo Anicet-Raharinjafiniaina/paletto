@@ -8,11 +8,15 @@
 <?php
 $acces_btn = "";
 $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "display:none;"'; ?>
+<?= $this->include('emplacement/menu'); ?>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <div class="row">
+                    <div class="col-md-6 d-flex justify-content-start">
+                        <h5>Liste des entrepôts</h5>
+                    </div>
                     <div class="col-md-12 d-flex justify-content-end">
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add-entrepot" <?= $style_btn; ?>>
                             <i class="fas fa-plus position-left"></i> Ajouter

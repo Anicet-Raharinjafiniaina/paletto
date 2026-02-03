@@ -57,6 +57,39 @@ class CrudModel extends Model
         return 0;
     }
 
+    public function createReturnId($arr, $actionId)
+    {
+        if (!empty($arr)) {
+            $session = \Config\Services::session();
+            $this->db_app->transBegin();
+            $arr['date_creation'] = date('Y-m-d H:i:s');
+            $arr['cree_par'] = session()->get('utilisateur')['user_id'];
+            $this->db_app->table($this->table)->insert($arr);
+            $id = $this->db_app->insertID();
+
+            if ($actionId != 0) {
+                $arrHisto = [
+                    'data_json' => json_encode($arr),
+                    'utilisateur_id' =>  session()->get('utilisateur')['user_id'],
+                    'action_id' => $actionId,
+                ];
+                $db = \Config\Database::connect();
+                $builder = $db->table('historique');
+                $builder->insert($arrHisto);
+            }
+
+            if ($this->db_app->transStatus() === false) {
+                $this->db_app->transRollback();
+                return NULL;
+            } else {
+                $this->db_app->transCommit();
+                return $id;
+            }
+        }
+        return NULL;
+    }
+
+
     /**
      * Insertion de plusieurs lignes de données dans la table
      * @param Array $arr
@@ -363,27 +396,6 @@ class CrudModel extends Model
             ->where('column_name', $columnName)
             ->select('column_name')
             ->countAllResults();
-    }
-
-    public function createReturnId($arr)
-    {
-        if (!empty($arr)) {
-            $session = \Config\Services::session();
-            $this->db_app->transBegin();
-            $this->db_app->table($this->table)->insert($arr);
-            echo $this->db_app->getLastQuery();
-            $id = $this->db_app->insertID();
-            echo "<br>$id";
-
-            if ($this->db_app->transStatus() === false) {
-                $this->db_app->transRollback();
-                return NULL;
-            } else {
-                $this->db_app->transCommit();
-                return $id;
-            }
-        }
-        return NULL;
     }
 
     public function logInOut($actionId, $message)

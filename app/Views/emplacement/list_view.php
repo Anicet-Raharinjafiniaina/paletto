@@ -15,6 +15,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
         <div class="card">
             <div class="card-header">
                 <div class="row">
+                    <div class="col-md-6 d-flex justify-content-start">
+                        <h5>Liste des emplacements</h5>
+                    </div>
                     <div class="col-md-12 d-flex justify-content-end">
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add-entrepot" <?= $style_btn; ?>>
                             <i class="fas fa-plus position-left"></i> Ajouter
@@ -27,28 +30,37 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                 <table id="table_entrepot" class="datatable table table-bordered dt-responsive nowrap w-100">
                     <thead class="text-center">
                         <tr>
-                            <th>ACTION</th>
-                            <th>CODE</th>
-                            <th>NOM</th>
-                            <th>LOCALISATION</th>
-                            <th>EMPLACEMENT</th>
+                            <th>QR CODE</th>
+                            <th>ENTREPÔT</th>
+                            <th>ALLÉE</th>
+                            <th>RANGÉE</th>
+                            <th>NIVEAU</th>
+                            <th>CAGE</th>
+                            <th>ETAT</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <?php
-                        if (!empty($arr_data_entrepot)):
-                            foreach ($arr_data_entrepot as $key => $value) : ?>
-                                <tr id="<?= $value->id ?>" class="text-center">
-                                    <td class="text-center cursor-pointer td_no_border">
-                                        <!-- <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_entrepot" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-eye"></i></a></button> -->
-                                        <button href="#" type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_entrepot" data-popup="tooltip" title=" Mettre à jour" data-placement="bottom" onclick="view(<?= $value->id ?>,'upd')" <?= $style_btn; ?>><img src="<?= base_url('assets/images/modifier.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
-                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_entrepot" data-popup="tooltip" title="Supprimer" data-placement="bottom" onclick="deleteItem(<?= $value->id ?>)" <?= $style_btn; ?>><img src="<?= base_url('assets/images/supprimer.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
+                        if (!empty($arr_data_emplacement)):
+                            foreach ($arr_data_emplacement as $key => $value) : ?>
+                                <tr id="<?= $value->emplacement_id ?>" class="text-center">
+                                    <td><?= $value->qr_code_texte ?></td>
+                                    <td><?= $value->entrepot_code ?></td>
+                                    <td><?= $value->allee_code ?></td>
+                                    <td><?= $value->rangee_code ?></td>
+                                    <td><?= $value->niveau_code ?></td>
+                                    <td><?= $value->cage_code ?></td>
+                                    <?php $statutClasses = [
+                                        1 => 'bg-success',
+                                        2 => 'bg-warning text-dark',
+                                        3 => 'bg-danger',
+                                    ];
+                                    ?> <td>
+                                        <span class="badge rounded-pill <?= $statutClasses[$value->statut_id] ?? 'bg-secondary' ?>">
+                                            <?= $value->statut ?>
+                                        </span>
                                     </td>
-                                    <td><?= $value->code ?></td>
-                                    <td><?= $value->nom ?></td>
-                                    <td><?= $value->localisation ?></td>
-                                    <td><?= $value->emplacement ?></td>
                                 </tr>
                         <?php endforeach;
                         endif;   ?>

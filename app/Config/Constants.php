@@ -58,7 +58,13 @@ defined('TBL_ALLEE') || define('TBL_ALLEE', 'allee');
 defined('TBL_RANGEE') || define('TBL_RANGEE', 'rangee');
 defined('TBL_NIVEAU') || define('TBL_NIVEAU', 'niveau');
 defined('TBL_CAGE') || define('TBL_CAGE', 'cage');
+defined('TBL_EMPLACEMENT') || define('TBL_EMPLACEMENT', 'emplacement');
+defined('TBL_EMPLACEMENT_STATUT') || define('TBL_EMPLACEMENT_STATUT', 'emplacement_statut');
 /** Tables */
+
+/* View */
+defined('VIEW_EMPLACEMENT') || define('VIEW_EMPLACEMENT', 'emplacement_view');
+/** /View */
 
 /*
  | --------------------------------------------------------------------------

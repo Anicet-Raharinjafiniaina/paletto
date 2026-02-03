@@ -20,18 +20,17 @@ class Emplacement extends BaseController
 
     public function index()
     {
-        // $acces  = new Acces();
-        // $is_ok = $acces->is_ok(3);
-        // if (!$is_ok) {
-        //     return redirect()->to('/');
-        // }
+        $acces  = new Acces();
+        $is_ok = $acces->is_ok(4);
+        if (!$is_ok) {
+            return redirect()->to('/');
+        }
         $this->load();
     }
 
     public function load()
     {
-        $crud = new CrudModel(TBL_ENTREPOT);
-        $arr['arr_data_entrepot'] = $crud->getAllData(array('flag_suppression' => 0), [], "*");
+        $arr['arr_data_emplacement'] = $this->getAllEmplacement();
         $arr['titre'] = "Gestion des emplacements";
         $arr['menu_emplacement'] = 'liste emplacement';
         $arr['request_ajax'] = 0;
@@ -43,26 +42,54 @@ class Emplacement extends BaseController
         echo view('emplacement/list_view', $arr);
     }
 
+    public function getEmplacementById($cage_id = null)
+    {
+        $crud = new CrudModel(VIEW_EMPLACEMENT);
+        $arr = [];
+        if ($cage_id != null) {
+            $arr = $crud->getDataById(array('cage_id' => $cage_id));
+        }
+        return  $arr;
+    }
 
-    public function insertEntrepot()
+    public function getAllEmplacement()
+    {
+        $crud = new CrudModel(VIEW_EMPLACEMENT);
+        return  $crud->getAllData();
+    }
+
+    public function checkEmplacementByCageId($cage_id = null)
+    {
+        $crud = new CrudModel(TBL_EMPLACEMENT);
+        $nb = 0;
+        if ($cage_id != null) {
+            $nb = $crud->getNb(array('cage_id' => $cage_id, "flag_suppression" => 0));
+        }
+        return  $nb;
+    }
+
+    public function updatetEmplacement($id = null, $action = null)
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(3);
+        $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
             return redirect()->to('/');
         }
-        $arr = $this->request->getVar('data');
-        if (!empty($arr)) {
-            $crud = new CrudModel(TBL_ENTREPOT);
-            $is_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr['code'])), "flag_suppression" => 0));
-            if ($is_exist > 0) {
-                return json_encode(2); // code doublon
+        if ($id == null || $id == "") {
+            return;
+        }
+        $arrEmplacement = $this->getEmplacementById($id);
+        $isEmplacementExist = $this->checkEmplacementByCageId($id);
+        if (!empty($arrEmplacement)) {
+            $qrCodeController = new QrCodeController();
+            $qr_code_image = $qrCodeController->generateBase64($arrEmplacement->qr_code_texte);
+            $crudEmplacement = new CrudModel(TBL_EMPLACEMENT);
+            if ($isEmplacementExist == 0) {
+                return $crudEmplacement->create(array("cage_id" => $id, "qr_code_texte" => $arrEmplacement->qr_code_texte, "qr_code_image" => $qr_code_image), $action);
             } else {
-                $result = $crud->create($arr, 9);
-                return json_encode(intVal($result));
+                return $crudEmplacement->maj(array("cage_id" => $id), array("qr_code_texte" => $arrEmplacement->qr_code_texte, "qr_code_image" => $qr_code_image, "emplacement_statut_id" => 1), $action);
             }
         }
-        return json_encode(0);
     }
 
     /**

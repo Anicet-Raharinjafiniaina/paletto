@@ -21,7 +21,7 @@ class Entrepot extends BaseController
     public function index()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(3);
+        $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -33,6 +33,7 @@ class Entrepot extends BaseController
         $crud = new CrudModel(TBL_ENTREPOT);
         $arr['arr_data_entrepot'] = $crud->getAllData(array('flag_suppression' => 0), [], "*");
         $arr['titre'] = "Gestion des entrepôts";
+        $arr['menu_emplacement'] = 'entrepot';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
@@ -46,7 +47,7 @@ class Entrepot extends BaseController
     public function insertEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(3);
+        $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -70,7 +71,7 @@ class Entrepot extends BaseController
     public function getEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(3);
+        $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -91,7 +92,7 @@ class Entrepot extends BaseController
     public function majEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(3);
+        $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -103,7 +104,7 @@ class Entrepot extends BaseController
             if ($is_code_exist > 0) {
                 return json_encode(2); // code doublon
             } else if ($is_data_exist > 0) {
-                return json_encode(3); // aucune modification
+                return json_encode(4); // aucune modification
             } else {
                 $id = $arr_data['id'];
                 unset($arr_data['id']);
@@ -119,7 +120,7 @@ class Entrepot extends BaseController
     public function deleteEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(3);
+        $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
             return redirect()->to('/');
         }

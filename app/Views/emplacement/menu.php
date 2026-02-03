@@ -54,6 +54,7 @@
 /** menus dans emplacement */
 $controllers = [
     'liste emplacement'   => 'Emplacement',
+    'entrepot'       => 'Entrepot',
     'allee'       => 'Allee',
     'rangee'      => 'Rangee',
     'niveau'      => 'Niveau',
