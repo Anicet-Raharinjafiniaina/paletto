@@ -8,3 +8,8 @@
 .menu-hover:hover svg {
     stroke: #0d6efd;
 }
+
+/** pour rendre automatique la hauteur du contenu*/
+body[data-sidebar-size="sm"] {
+    min-height: auto !important;
+}

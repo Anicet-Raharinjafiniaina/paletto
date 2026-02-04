@@ -23,11 +23,17 @@ $(document).ready(function () {
                         setTimeout(function () {
                             activateMenuByUrl();// activer le menu après un court délai pour s'assurer que le DOM est prêt (c'est pour marquer le menu actif correctement)
                             document.body.click(); // fermer le menu sidebar sur mobile après le chargement de la page
-
+                            /* réinitialiser les datatables */
+                            let table = $('.datatable').DataTable();
+                            table.destroy();
+                            $('.datatable').DataTable({
+                                responsive: true,
+                                autoWidth: false
+                            });
+                            /* /réinitialiser les datatables */
                         }, 50);
                     });
 
-                    $(".datatable").DataTable(); // réinitialiser les datatables
 
                     // Mettre à jour le titre si présent
                     var newTitle = $('#ajax-title').data('title');

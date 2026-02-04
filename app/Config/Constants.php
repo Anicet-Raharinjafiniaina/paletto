@@ -60,6 +60,8 @@ defined('TBL_NIVEAU') || define('TBL_NIVEAU', 'niveau');
 defined('TBL_CAGE') || define('TBL_CAGE', 'cage');
 defined('TBL_EMPLACEMENT') || define('TBL_EMPLACEMENT', 'emplacement');
 defined('TBL_EMPLACEMENT_STATUT') || define('TBL_EMPLACEMENT_STATUT', 'emplacement_statut');
+defined('TBL_PALETTE') || define('TBL_PALETTE', 'palette');
+defined('TBL_PALETTE_STATUT') || define('TBL_PALETTE_STATUT', 'palette_statut');
 /** Tables */
 
 /* View */

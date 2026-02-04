@@ -18,16 +18,11 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     <div class="col-md-6 d-flex justify-content-start">
                         <h5>Liste des emplacements</h5>
                     </div>
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add-entrepot" <?= $style_btn; ?>>
-                            <i class="fas fa-plus position-left"></i> Ajouter
-                        </button>
-                    </div>
                 </div>
 
             </div>
             <div class="card-body">
-                <table id="table_entrepot" class="datatable table table-bordered dt-responsive nowrap w-100">
+                <table id="table_emplacement" class="datatable table table-bordered dt-responsive nowrap w-100">
                     <thead class="text-center">
                         <tr>
                             <th>QR CODE</th>
@@ -53,8 +48,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                     <td><?= $value->cage_code ?></td>
                                     <?php $statutClasses = [
                                         1 => 'bg-success',
-                                        2 => 'bg-warning text-dark',
-                                        3 => 'bg-danger',
+                                        2 => 'bg-danger'
                                     ];
                                     ?> <td>
                                         <span class="badge rounded-pill <?= $statutClasses[$value->statut_id] ?? 'bg-secondary' ?>">
@@ -76,7 +70,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
     <?= $this->endSection() ?>
     <?= $this->section('script') ?>
 <?php endif; ?>
-<script type="text/javascript" src="<?= base_url('assets/js/pages/entrepot.js'); ?>"></script>
 <?php if ($request_ajax == 0) : ?>
     <?= $this->endSection() ?>
 <?php endif; ?>

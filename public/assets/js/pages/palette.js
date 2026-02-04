@@ -1,36 +1,81 @@
-$("#btn-add-entrepot").click(function () {
+$(function () {
+    initialiseSelect2Modal("palette_statut_id", "modal_ajout_palette")
+    initialiseSelect2Modal("client", "modal_ajout_palette")
+});
+
+function toggleClientFieldCreate() {
+    let statut = $('#palette_statut_id').val();
+
+    if (statut == 1 || statut === "" || statut === null) {
+        $('#client')
+            .removeClass('obligatoire')
+            .prop('disabled', true)
+            .val(null)
+            .trigger('change');
+        $('#client-required').hide();
+    } else {
+        $('#client')
+            .addClass('obligatoire')
+            .prop('disabled', false);
+        $('#client-required').show();
+    }
+}
+
+function toggleClientFieldUpdate() {
+    let statut = $('#palette_statut_id_upd').val();
+    if (statut == 1 || statut === "" || statut === null) {
+        $('#client_upd')
+            .removeClass('obligatoire')
+            .prop('disabled', true)
+            .val(null)
+            .trigger('change');
+        $('#client_upd-required').hide();
+    } else {
+        $('#client_upd')
+            .addClass('obligatoire')
+            .prop('disabled', false);
+        $('#client_upd-required').show();
+    }
+}
+
+$(document).on('change', '#palette_statut_id', toggleClientFieldCreate);
+$(document).on('change', '#palette_statut_id_upd', toggleClientFieldUpdate);
+
+$("#btn-add-palette").click(function () {
     loaderContent('main')
-    $("#modal_ajout_entrepot").modal("show");
+    $("#modal_ajout_palette").modal("show");
     $("#code").val("");
-    $("#nom").val("");
-    $("#localisation").val("");
+    $("#palette_statut_id").val("");
+    $("#palette_statut_id").trigger("change");
+    $("#client").val("");
+    $("#client").trigger("change");
     $(".validation-error-label").html("");
     stopLoaderContent('main')
 });
 
 function insert() {
     $(".validation-error-label").html("");
-    isValid = checkObligatoire(".add-entrepot-content", ".obligatoire")
+    isValid = checkObligatoire(".add-palette-content", ".obligatoire")
     if (isValid == true) {
         $("#save").prop("disabled", true);
-        let arr_data = getFormDataFromParentClass(".add-entrepot-content")
-        loaderContent('modal_ajout_entrepot')
+        let arr_data = getFormDataFromParentClass(".add-palette-content")
+        loaderContent('modal_ajout_palette')
         $.ajax({
-            url: urlProject + "Entrepot/insertEntrepot",
+            url: urlProject + "Palette/insertPalette",
             type: "POST",
             data: { data: arr_data },
             success: function (res) {
-                stopLoaderContent('modal_ajout_entrepot')
+                stopLoaderContent('modal_ajout_palette')
                 if (res == 1) {
                     Swal.fire({
                         title: "Création",
-                        html: "L'entrepôt a été créé avec succès",
+                        html: "La palette a été créé avec succès",
                         icon: "success",
                         showConfirmButton: true
                     }).then(function (result) {
                         if (result.isConfirmed) {
-                            $('#modal_ajout_entrepot').modal('hide');
-                            loadPage(urlProject + "Entrepot", true)
+                            $('#modal_ajout_palette').modal('hide');
+                            loadPage(urlProject + "Palette", true)
                         }
                     });
                 } else if (res == 2) {
@@ -61,7 +106,7 @@ function insert() {
                     timer: 2000,
                     showConfirmButton: false,
                 });
-                stopLoaderContent('modal_ajout_entrepot')
+                stopLoaderContent('modal_ajout_palette')
                 $("#save").prop("disabled", false);
             }
         });
@@ -70,10 +115,10 @@ function insert() {
 
 function view(id, action) {
     var t = $("#l" + id).text();
-    $("#content-entrepot").html("");
+    $("#content-palette").html("");
     loaderContent('main')
     $.ajax({
-        url: urlProject + "Entrepot/getEntrepot",
+        url: urlProject + "Palette/getPalette",
         type: "POST",
         data: {
             id: id,
@@ -81,15 +126,17 @@ function view(id, action) {
         },
         success: function (res) {
             stopLoaderContent('main')
-            $("#content-entrepot").html(res);
-            $("#modal_view_entrepot").modal("show");
-            loadName("_upd");
+            $("#content-palette").html(res);
+            $("#modal_view_palette").modal("show");
+            initialiseSelect2Modal("palette_statut_id_upd", "modal_view_palette")
+            initialiseSelect2Modal("client_upd", "modal_view_palette")
+            toggleClientFieldUpdate()
             if (action == "voir") {
                 $("#div-upd-footer").css("display", "none");
-                $("#title").html("Détail du l'utilisateur <b>" + t + "</b>");
+                $("#title").html("Détail de la palette <b>" + t + "</b>");
             } else if (action == "upd") {
                 $("#div-upd-footer").css("display", "block");
-                $("#title").text("Modification d'un utilisateur");
+                $("#title").text("Modification d'une palette");
             }
         }
     });
@@ -112,9 +159,9 @@ function deleteItem(id) {
             loaderContent('main')
             return $.ajax({
                 type: "POST",
-                url: urlProject + "Entrepot/deleteEntrepot",
+                url: urlProject + "Palette/deletePalette",
                 data: { id: id },
-                dataType: "json" // attend une réponse JSON (1 ou 0)
+                dataType: "json"
             }).then(response => {
                 stopLoaderContent('main')
                 if (response == 1) {
@@ -122,7 +169,7 @@ function deleteItem(id) {
                 } else if (response == 2) {
                     Swal.fire({
                         title: "Information",
-                        html: "Impossible de supprimer cet entrepôt car il est lié à des emplacements.",
+                        html: "Impossible de supprimer cette palette car son statut est <b>occupé<b>.",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -138,12 +185,12 @@ function deleteItem(id) {
         if (result.isConfirmed && result.value === true) {
             Swal.fire({
                 title: "Supprimé !",
-                text: "L'entrepôt a été supprimé.",
+                text: "La palette a été supprimé.",
                 icon: "success",
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
-                loadPage(urlProject + "Entrepot", true)
+                loadPage(urlProject + "Palette", true)
             });
         }
     });
@@ -151,9 +198,9 @@ function deleteItem(id) {
 }
 
 function maj() {
-    isValid = checkObligatoire(".modifier-entrepot-content", ".obligatoire")
+    isValid = checkObligatoire(".modifier-palette-content", ".obligatoire")
     if (isValid == true) {
-        let arr_data = getFormDataFromParentClass(".modifier-entrepot-content")
+        let arr_data = getFormDataFromParentClass(".modifier-palette-content")
         Swal.fire({
             title: "Modification",
             html: "Voulez-vous vraiment procéder à la modification?",
@@ -164,13 +211,13 @@ function maj() {
         }).then(function (result) {
             if (result.isConfirmed) {
                 $("#save_upd").prop("disabled", true);
-                loaderContent('modal_view_entrepot')
+                loaderContent('modal_view_palette')
                 $.ajax({
-                    url: urlProject + "Entrepot/majEntrepot",
+                    url: urlProject + "Palette/majPalette",
                     type: "POST",
                     data: { data: arr_data },
                     success: function (res) {
-                        stopLoaderContent('modal_view_entrepot')
+                        stopLoaderContent('modal_view_palette')
                         if (res == 1) {
                             Swal.fire({
                                 title: "Modification",
@@ -179,8 +226,8 @@ function maj() {
                                 showConfirmButton: true,
                             }).then(function (result) {
                                 if (result.isConfirmed) {
-                                    $('#modal_view_entrepot').modal('hide');
-                                    loadPage(urlProject + "Entrepot", true)
+                                    $('#modal_view_palette').modal('hide');
+                                    loadPage(urlProject + "Palette", true)
                                 }
                             });
                         } else if (res == 2) {
@@ -220,7 +267,7 @@ function maj() {
                             timer: 2000,
                             showConfirmButton: false,
                         });
-                        stopLoaderContent('modal_view_entrepot')
+                        stopLoaderContent('modal_view_palette')
                         $("#save_upd").prop("disabled", false);
                     }
                 });

@@ -22,7 +22,7 @@ class Cage extends BaseController
     public function index()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -85,7 +85,7 @@ class Cage extends BaseController
     public function insertCage()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -111,7 +111,7 @@ class Cage extends BaseController
     public function getCage()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -131,7 +131,7 @@ class Cage extends BaseController
     public function majCage()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -167,7 +167,7 @@ class Cage extends BaseController
     public function deleteCage()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }

@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Models\CrudModel;
 use App\Controllers\Acces;
-use App\Libraries\LibLdap;
-
 
 class Entrepot extends BaseController
 {
@@ -21,7 +19,7 @@ class Entrepot extends BaseController
     public function index()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -47,7 +45,7 @@ class Entrepot extends BaseController
     public function insertEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -71,7 +69,7 @@ class Entrepot extends BaseController
     public function getEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -92,7 +90,7 @@ class Entrepot extends BaseController
     public function majEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -120,7 +118,7 @@ class Entrepot extends BaseController
     public function deleteEntrepot()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }

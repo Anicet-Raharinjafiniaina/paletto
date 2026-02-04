@@ -21,7 +21,7 @@ class Niveau extends BaseController
     public function index()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -87,7 +87,7 @@ class Niveau extends BaseController
     public function insertNiveau()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -111,7 +111,7 @@ class Niveau extends BaseController
     public function getNiveau()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -133,7 +133,7 @@ class Niveau extends BaseController
     public function majNiveau()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -163,7 +163,7 @@ class Niveau extends BaseController
     public function deleteNiveau()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }

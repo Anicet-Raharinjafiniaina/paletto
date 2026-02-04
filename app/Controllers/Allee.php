@@ -21,7 +21,7 @@ class Allee extends BaseController
     public function index()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -63,7 +63,7 @@ class Allee extends BaseController
     public function insertAllee()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -87,7 +87,7 @@ class Allee extends BaseController
     public function getAllee()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -108,7 +108,7 @@ class Allee extends BaseController
     public function majAllee()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
@@ -136,7 +136,7 @@ class Allee extends BaseController
     public function deleteAllee()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
+        $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }

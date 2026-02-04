@@ -16,8 +16,6 @@ class QrCodeController extends BaseController
         } else {
             $text = $text;
         }
-        // $text = "A001-B002-C003";
-
         $builder = new Builder(
             writer: new PngWriter(),
             data: $text,
@@ -32,10 +30,6 @@ class QrCodeController extends BaseController
         // 🔑 Conversion en base64
         $base64 = base64_encode($result->getString());
         return $base64;
-        // return $this->response->setJSON([
-        //     'success' => true,
-        //     'qr_base64' => 'data:' . $result->getMimeType() . ';base64,' . $base64
-        // ]);
     }
 
     public function scan()
