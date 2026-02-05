@@ -54,7 +54,7 @@
 /** menus dans palettes */
 $controllers = [
     'liste palette'   => 'Palette',
-    'attribution palette'       => 'AttributionPalette',
+    'article'       => 'Article',
 ];; ?>
 <nav class="glass-menu">
     <?php foreach ($controllers as $key => $label): ?>

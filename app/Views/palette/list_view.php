@@ -40,12 +40,13 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     <tbody>
                         <?php
                         if (!empty($arr_data_palette)):
-                            foreach ($arr_data_palette as $key => $value) : ?>
+                            foreach ($arr_data_palette as $key => $value) :
+                                $disable_btn = ($value->palette_statut_id == 3   ? "disabled" : "") ?>
                                 <tr id="<?= $value->id ?>" class="text-center">
                                     <td class="text-center cursor-pointer td_no_border">
                                         <!-- <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-eye"></i></a></button> -->
-                                        <button href="#" type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-popup="tooltip" title=" Mettre à jour" data-placement="bottom" onclick="view(<?= $value->id ?>,'upd')" <?= $style_btn; ?>><img src="<?= base_url('assets/images/modifier.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
-                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_niveau" data-popup="tooltip" title="Supprimer" data-placement="bottom" onclick="deleteItem(<?= $value->id ?>)" <?= $style_btn; ?>><img src="<?= base_url('assets/images/supprimer.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
+                                        <button href="#" type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-popup="tooltip" title=" Mettre à jour" data-placement="bottom" onclick="view(<?= $value->id ?>,'upd')" <?= $disable_btn; ?>><img src="<?= base_url('assets/images/modifier.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
+                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_niveau" data-popup="tooltip" title="Supprimer" data-placement="bottom" onclick="deleteItem(<?= $value->id ?>)" <?= $disable_btn; ?>><img src="<?= base_url('assets/images/supprimer.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
                                     </td>
                                     <td><?= $value->code ?></td>
                                     <?php $statutClasses = [
@@ -58,7 +59,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                             <?= $value->statut ?>
                                         </span>
                                     </td>
-                                    <td><?= $value->client ?></td>
+                                    <td><?= $value->client_code . " - " . $value->client_nom ?></td>
                                 </tr>
                         <?php endforeach;
                         endif;   ?>
@@ -107,8 +108,8 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                             <option value=""></option>
                             <?php if (!empty($arr_client)): ?>
                                 <?php foreach ($arr_client as $row): ?>
-                                    <option value="<?= $row['id'] ?>">
-                                        <?= $row['nom'] ?>
+                                    <option value="<?= $row->code . " - " . $row->nom ?>">
+                                        <?= $row->code . " - " . $row->nom ?>
                                     </option>
                                 <?php endforeach; ?>
                             <?php endif; ?>

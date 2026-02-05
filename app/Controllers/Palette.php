@@ -41,7 +41,7 @@ class Palette extends BaseController
             'type'  => 'LEFT',
             'on'    => TBL_PALETTE_STATUT . '.id = ' . TBL_PALETTE . '.palette_statut_id'
         ]];
-        $select = TBL_PALETTE . '.id,' . TBL_PALETTE . '.code,' . TBL_PALETTE . '.palette_statut_id,' . TBL_PALETTE_STATUT . '.statut,' . TBL_PALETTE . '.client';
+        $select = TBL_PALETTE . '.id,' . TBL_PALETTE . '.code,' . TBL_PALETTE . '.palette_statut_id,' . TBL_PALETTE_STATUT . '.statut,' . TBL_PALETTE . '.client_code,' . TBL_PALETTE . '.client_nom';
         return  $crud->getAllData(['flag_suppression' => 0], $arrJoin, $select);
     }
 
@@ -53,20 +53,9 @@ class Palette extends BaseController
 
     public function getAllClient() // venant de X3
     {
-        return [
-            ['id' => 1,  'nom' => 'Entreprise Alpha'],
-            ['id' => 2,  'nom' => 'Société Beta'],
-            ['id' => 3,  'nom' => 'Groupe Gamma'],
-            ['id' => 4,  'nom' => 'Client Delta'],
-            ['id' => 5,  'nom' => 'Compagnie Epsilon'],
-            ['id' => 6,  'nom' => 'Holding Zeta'],
-            ['id' => 7,  'nom' => 'Entreprise Eta'],
-            ['id' => 8,  'nom' => 'Société Theta'],
-            ['id' => 9,  'nom' => 'Groupe Iota'],
-            ['id' => 10, 'nom' => 'Client Kappa'],
-        ];
+        $crud = new CrudModel('BASANEXP.BPCUSTOMER', 'x3');
+        return $crud->getAllData([], [], "BPCNUM_0 as code,BPCNAM_0 as nom");
     }
-
 
     public function insertPalette()
     {
@@ -82,12 +71,30 @@ class Palette extends BaseController
             if ($is_exist > 0) {
                 return json_encode(2); // code doublon
             } else {
+                $arr = $this->splitClient($arr);
                 $result = $crud->create($arr, 27);
                 return json_encode(intVal($result));
             }
         }
         return json_encode(0);
     }
+
+    /** séparer le code et le nom du client */
+    function splitClient($arrClient)
+    {
+        if (!empty($arrClient['client']) && strpos($arrClient['client'], '-') !== false) {
+            [$clientCode, $clientName] = explode('-', $arrClient['client'], 2);
+            $arrClient['client_code'] = trim($clientCode);
+            $arrClient['client_nom'] = trim($clientName);
+            unset($arrClient['client']);
+        } else {
+            $arrClient['client_code'] = null;
+            $arrClient['client_nom'] = null;
+            unset($arrClient['client']);
+        }
+        return $arrClient;
+    }
+
 
     /**
      * Visualisation d'un détail
@@ -122,6 +129,7 @@ class Palette extends BaseController
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_PALETTE);
         if (!empty($arr_data)) {
+            $arr_data = $this->splitClient($arr_data);
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
             if ($is_code_exist > 0) {

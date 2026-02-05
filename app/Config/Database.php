@@ -52,6 +52,17 @@ class Database extends Config
         ],
     ];
 
+    //base X3
+    public $connex_v12 = [
+        'DSN'      => '',
+        'hostname' => '',
+        'username' => '',
+        'password' => '',
+        'database' => '',
+        'DBDriver' => 'SQLSRV',
+        'DBDebug'  => true,
+    ];
+
     //    /**
     //     * Sample database connection for SQLite3.
     //     *

@@ -33,9 +33,9 @@
             <?php
             if (!empty($arr_client)):
                 foreach ($arr_client as $row) :
-                    $selected = (($row->code == $data->client_code) ? 'selected' : ''); ?>
-                    <option value="<?= $row->code . " - " . $row->nom ?>" <?= $selected ?>>
-                        <?= $row->code . " - " . $row->nom ?>
+                    $selected = (($row['id'] == $data->client) ? 'selected' : ''); ?>
+                    <option value="<?= $row['id'] ?>" <?= $selected ?>>
+                        <?= $row['nom'] ?>
                     </option>
             <?php endforeach;
             endif; ?>

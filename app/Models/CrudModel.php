@@ -14,13 +14,22 @@ class CrudModel extends Model
     protected $fnTable;
     protected $typeBd;
     protected $ip;
+    protected $db;
 
-    public function __construct($tbl = null)
+    public function __construct($tbl = null, $db = null)
     {
         parent::__construct();
         $session = \Config\Services::session();
         $this->db_app = db_connect();
-        $this->table = $tbl;
+        if ($db == null) {
+            $this->db_app = db_connect();
+            $this->table = $tbl;
+        }
+
+        if ($db != null) {
+            $this->db_app = db_connect("connex_v12", true);
+            $this->table = $tbl;
+        }
     }
 
     /**
