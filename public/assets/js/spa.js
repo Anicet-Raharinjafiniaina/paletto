@@ -42,8 +42,8 @@ $(document).ready(function () {
                     }
                 });
 
-                // 1️⃣ Supprimer les anciens calendriers Flatpickr
-                // document.querySelectorAll('.flatpickr-calendar').forEach(cal => cal.remove());
+                //1️⃣ Supprimer les anciens calendriers Flatpickr
+                document.querySelectorAll('.flatpickr-calendar').forEach(cal => cal.remove());
                 if (addToHistory) {
                     history.pushState({
                         url: url

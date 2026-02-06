@@ -1,6 +1,6 @@
 $(function () {
     initialiseSelect2Modal("palette_statut_id", "modal_ajout_palette")
-    initialiseSelect2Modal("client", "modal_ajout_palette")
+    // initialiseSelect2Modal("client", "modal_ajout_palette")
 });
 
 function toggleClientFieldCreate() {
@@ -48,8 +48,8 @@ $("#btn-add-palette").click(function () {
     $("#palette_statut_id").val("");
     $("#palette_statut_id").trigger("change");
     $("#client").val("");
-    $("#client").trigger("change");
     $(".validation-error-label").html("");
+    loadClient("client")
     stopLoaderContent('main')
 });
 
@@ -129,7 +129,8 @@ function view(id, action) {
             $("#content-palette").html(res);
             $("#modal_view_palette").modal("show");
             initialiseSelect2Modal("palette_statut_id_upd", "modal_view_palette")
-            initialiseSelect2Modal("client_upd", "modal_view_palette")
+            // initialiseSelect2Modal("client_upd", "modal_view_palette")
+            loadClient("client_upd")
             toggleClientFieldUpdate()
             if (action == "voir") {
                 $("#div-upd-footer").css("display", "none");

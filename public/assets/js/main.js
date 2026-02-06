@@ -220,3 +220,110 @@ function chargeSelectedFromController(select_id, select_to_charge, controller_ur
         })
     })
 }
+
+function inputDateForm(id) {
+    const input = document.getElementById(id);
+    const currentValue = input.value.trim();
+    let defaultDate;
+
+    if (currentValue === "") {
+        // Si le champ est vide → date du jour
+        defaultDate = new Date();
+    } else {
+        // Si la valeur est au format dd/mm/yyyy → la convertir en Date
+        const parts = currentValue.split("/");
+        if (parts.length === 3) {
+            const jour = parseInt(parts[0], 10);
+            const mois = parseInt(parts[1], 10) - 1; // mois commence à 0
+            const annee = parseInt(parts[2], 10);
+            defaultDate = new Date(annee, mois, jour);
+        } else {
+            // fallback si format incorrect
+            defaultDate = new Date();
+        }
+    }
+
+    flatpickr("#" + id, {
+        dateFormat: "d/m/Y",  // affichage format français
+        defaultDate: defaultDate,
+    });
+}
+
+function loadClient(id) {
+    $("#" + id).typeahead({
+        minLength: 2,
+        items: 20,
+        source: function (query, process) {
+            return $.post(
+                "Palette/getAllClientTypeahead",
+                {
+                    client: query,
+                },
+                function (data) {
+                    data = $.parseJSON(data);
+                    return process(data);
+                }
+            );
+        },
+    });
+}
+
+function numberOnly(e) {
+    var v = $("#" + e.id).val()
+    var cleaned = v.replace(/[^0-9]/g, '');
+    $("#" + e.id).val(cleaned);
+}
+
+function numberDecimal(el) {
+    try {
+        // position du caret avant modification
+        const selStart = el.selectionStart;
+        const selEnd = el.selectionEnd;
+
+        const raw = el.value;
+        const hadTrailingSeparator = /[.,]$/.test(raw);
+
+        // remplace toutes les virgules par des points (immédiatement)
+        let v = raw.replace(/,/g, '.');
+
+        // supprime tout sauf chiffres et points
+        v = v.replace(/[^0-9.]/g, '');
+
+        // ne garder qu'un seul point : la première occurrence
+        const parts = v.split('.');
+        if (parts.length > 1) {
+            const intPart = parts.shift();
+            // concatène le reste (pour supprimer les autres points)
+            let decPart = parts.join('');
+            // limite à 2 chiffres après la virgule
+            decPart = decPart.substring(0, 2);
+            // si l'utilisateur vient de taper '.' en fin et n'a pas encore saisi de décimales,
+            // on autorise temporairement le '.' final (pour ne pas gêner la saisie)
+            if (decPart.length === 0 && hadTrailingSeparator) {
+                v = intPart + '.';
+            } else if (decPart.length > 0) {
+                v = intPart + '.' + decPart;
+            } else {
+                v = intPart; // pas de décimales
+            }
+        } else {
+            // pas de point
+            v = parts[0];
+        }
+
+        // calcule nouvelle position du caret pour la repositionner correctement
+        // On prend la différence de longueur entre nouvelle valeur et ancienne (après normalisation des virgules)
+        const normalizedRaw = raw.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+        const delta = v.length - normalizedRaw.length;
+
+        el.value = v;
+
+        // repositionne le caret (limité aux bornes valides)
+        const newPos = Math.max(0, Math.min(v.length, (selEnd != null ? selEnd : selStart) + delta));
+        el.setSelectionRange(newPos, newPos);
+    } catch (err) {
+        // si l'input n'autorise pas selectionStart (ex: certains éléments), on se contente de réaffecter la valeur
+        el.value = el.value.replace(/,/g, '.').replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^(\d+)(\.(\d{0,2}))?.*$/, (m, a, b) => a + (b ? b.substring(0, 3) : ''));
+    }
+}
+

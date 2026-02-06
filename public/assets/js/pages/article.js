@@ -1,24 +1,26 @@
 $(function () {
     initialiseSelect2Modal("palette_id", "modal_ajout_article")
-    initialiseSelect2Modal("client", "modal_ajout_article")
 });
-
 
 $("#btn-add-article").click(function () {
     loaderContent('main')
     $("#modal_ajout_article").modal("show");
-    $("#code").val("");
-    $("#article_statut_id").val("");
-    $("#article_statut_id").trigger("change");
-    $("#client").val("");
-    $("#client").trigger("change");
+    $('.add-article-content')
+        .find('input[type="text"], input[type="hidden"], textarea, select')
+        .val('')
+        .trigger('change');
+    $('#quantite').val(0);
     $(".validation-error-label").html("");
     loadCodeArticle()
+    loadClient("client")
+    inputDateForm('dluo')
     stopLoaderContent('main')
 });
 
 function loadCodeArticle() {
     $("#code").typeahead({
+        minLength: 2,
+        items: 20,
         source: function (query, process) {
             return $.post(
                 "Article/getArticleTypeahead",
@@ -34,35 +36,80 @@ function loadCodeArticle() {
     });
 }
 
+function getClientForPalette(idPalette, idClient, idmodal = null) {
+    let palette_id = $("#" + idPalette).val();
+    if (palette_id != null && palette_id != "") {
+        loaderContent(idmodal)
+        $.ajax({
+            url: urlProject + "Article/getClientForPalette",
+            type: "POST",
+            data: {
+                palette_id: palette_id
+            },
+            success: function (res) {
+                stopLoaderContent(idmodal)
+                res = $.parseJSON(res);
+                if (res != null && res != "" && res.client_code != null && res.client_nom != null) {
+                    $("#" + idClient).val(res.client_code + " - " + res.client_nom);
+                    $('#' + idClient).prop('disabled', true);
+                } else {
+                    $("#" + idClient).val("");
+                    $('#' + idClient).prop('disabled', false);
+                }
+            }
+        });
+    }
+}
+
+function getDetailArticle(idmodal = null) {
+    //loaderContent(idmodal)
+    $.ajax({
+        url: urlProject + "Article/getDetailArticleByCode",
+        type: "POST",
+        data: {
+            code: $('#code').val()
+        },
+        success: function (res) {
+            // stopLoaderContent(idmodal)
+            res = $.parseJSON(res);
+            if (res != null) {
+                $("#nom").val(res.libelle);
+                $("#unite_pcb").val(res.pcb);
+                $("#palettisation").val(res.palettisation);
+            }
+        }
+    });
+}
+
 function insert() {
     $(".validation-error-label").html("");
-    isValid = checkObligatoire(".add-palette-content", ".obligatoire")
+    isValid = checkObligatoire(".add-article-content", ".obligatoire")
     if (isValid == true) {
         $("#save").prop("disabled", true);
-        let arr_data = getFormDataFromParentClass(".add-palette-content")
-        loaderContent('modal_ajout_palette')
+        let arr_data = getFormDataFromParentClass(".add-article-content")
+        loaderContent('modal_ajout_article')
         $.ajax({
-            url: urlProject + "Palette/insertPalette",
+            url: urlProject + "Article/insertArticle",
             type: "POST",
             data: { data: arr_data },
             success: function (res) {
-                stopLoaderContent('modal_ajout_palette')
+                stopLoaderContent('modal_ajout_article')
                 if (res == 1) {
                     Swal.fire({
                         title: "Création",
-                        html: "La palette a été créé avec succès",
+                        html: "L'article a été créé avec succès",
                         icon: "success",
                         showConfirmButton: true
                     }).then(function (result) {
                         if (result.isConfirmed) {
-                            $('#modal_ajout_palette').modal('hide');
-                            loadPage(urlProject + "Palette", true)
+                            $('#modal_ajout_article').modal('hide');
+                            loadPage(urlProject + "Article", true)
                         }
                     });
                 } else if (res == 2) {
                     Swal.fire({
                         title: "Doublon",
-                        html: "Le code <b>" + $("#code").val() + " </b>existe déjà dans la base.",
+                        html: "La palette " + $('#palette_id option:selected').text() + "est <b>occupée</b>.",
                         icon: "warning",
                         timer: 3000,
                         showConfirmButton: false,
@@ -87,7 +134,7 @@ function insert() {
                     timer: 2000,
                     showConfirmButton: false,
                 });
-                stopLoaderContent('modal_ajout_palette')
+                stopLoaderContent('modal_ajout_article')
                 $("#save").prop("disabled", false);
             }
         });
@@ -96,10 +143,10 @@ function insert() {
 
 function view(id, action) {
     var t = $("#l" + id).text();
-    $("#content-palette").html("");
+    $("#content-article").html("");
     loaderContent('main')
     $.ajax({
-        url: urlProject + "Palette/getPalette",
+        url: urlProject + "Article/getArticle",
         type: "POST",
         data: {
             id: id,
@@ -107,17 +154,18 @@ function view(id, action) {
         },
         success: function (res) {
             stopLoaderContent('main')
-            $("#content-palette").html(res);
-            $("#modal_view_palette").modal("show");
-            initialiseSelect2Modal("palette_statut_id_upd", "modal_view_palette")
-            initialiseSelect2Modal("client_upd", "modal_view_palette")
+            $("#content-article").html(res);
+            $("#modal_view_article").modal("show");
+            initialiseSelect2Modal("article_statut_id_upd", "modal_view_article")
+            // initialiseSelect2Modal("client_upd", "modal_view_article")
+            loadClient("client_upd")
             toggleClientFieldUpdate()
             if (action == "voir") {
                 $("#div-upd-footer").css("display", "none");
-                $("#title").html("Détail de la palette <b>" + t + "</b>");
+                $("#title").html("Détail de l'article <b>" + t + "</b>");
             } else if (action == "upd") {
                 $("#div-upd-footer").css("display", "block");
-                $("#title").text("Modification d'une palette");
+                $("#title").text("Modification d'un article");
             }
         }
     });
@@ -140,7 +188,7 @@ function deleteItem(id) {
             loaderContent('main')
             return $.ajax({
                 type: "POST",
-                url: urlProject + "Palette/deletePalette",
+                url: urlProject + "Article/deleteArticle",
                 data: { id: id },
                 dataType: "json"
             }).then(response => {
@@ -150,7 +198,7 @@ function deleteItem(id) {
                 } else if (response == 2) {
                     Swal.fire({
                         title: "Information",
-                        html: "Impossible de supprimer cette palette car son statut est <b>occupé<b>.",
+                        html: "Impossible de supprimer cet article car son statut est <b>occupé<b>.",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -166,12 +214,12 @@ function deleteItem(id) {
         if (result.isConfirmed && result.value === true) {
             Swal.fire({
                 title: "Supprimé !",
-                text: "La palette a été supprimé.",
+                text: "L'article a été supprimé.",
                 icon: "success",
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
-                loadPage(urlProject + "Palette", true)
+                loadPage(urlProject + "Article", true)
             });
         }
     });
@@ -179,9 +227,9 @@ function deleteItem(id) {
 }
 
 function maj() {
-    isValid = checkObligatoire(".modifier-palette-content", ".obligatoire")
+    isValid = checkObligatoire(".modifier-article-content", ".obligatoire")
     if (isValid == true) {
-        let arr_data = getFormDataFromParentClass(".modifier-palette-content")
+        let arr_data = getFormDataFromParentClass(".modifier-article-content")
         Swal.fire({
             title: "Modification",
             html: "Voulez-vous vraiment procéder à la modification?",
@@ -192,13 +240,13 @@ function maj() {
         }).then(function (result) {
             if (result.isConfirmed) {
                 $("#save_upd").prop("disabled", true);
-                loaderContent('modal_view_palette')
+                loaderContent('modal_view_article')
                 $.ajax({
-                    url: urlProject + "Palette/majPalette",
+                    url: urlProject + "Article/majArticle",
                     type: "POST",
                     data: { data: arr_data },
                     success: function (res) {
-                        stopLoaderContent('modal_view_palette')
+                        stopLoaderContent('modal_view_article')
                         if (res == 1) {
                             Swal.fire({
                                 title: "Modification",
@@ -207,8 +255,8 @@ function maj() {
                                 showConfirmButton: true,
                             }).then(function (result) {
                                 if (result.isConfirmed) {
-                                    $('#modal_view_palette').modal('hide');
-                                    loadPage(urlProject + "Palette", true)
+                                    $('#modal_view_article').modal('hide');
+                                    loadPage(urlProject + "Article", true)
                                 }
                             });
                         } else if (res == 2) {
@@ -248,7 +296,7 @@ function maj() {
                             timer: 2000,
                             showConfirmButton: false,
                         });
-                        stopLoaderContent('modal_view_palette')
+                        stopLoaderContent('modal_view_article')
                         $("#save_upd").prop("disabled", false);
                     }
                 });

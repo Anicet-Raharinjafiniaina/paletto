@@ -53,14 +53,14 @@
 <?php
 /** menus dans palettes */
 $controllers = [
-    'liste palette'   => 'Palette',
-    'article'       => 'Article',
+    'Palette'   => 'Palette',
+    'Attribution palette' => 'Article',
 ];; ?>
 <nav class="glass-menu">
-    <?php foreach ($controllers as $key => $label): ?>
+    <?php foreach ($controllers as $key => $v): ?>
         <a onclick="loadPage(urlProject + '<?= $controllers[$key] ?>', true)"
             class="glass-item <?= ($key === $menu_palette) ? 'active' : '' ?>">
-            <?= $label ?>
+            <?= $key ?>
         </a>
     <?php endforeach; ?>
 </nav>

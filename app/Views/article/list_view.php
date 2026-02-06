@@ -32,33 +32,26 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     <thead class="text-center">
                         <tr>
                             <th>ACTION</th>
-                            <th>CODE</th>
-                            <th>ETAT</th>
+                            <th>QR CODE</th>
+                            <th>CODE PALETTE</th>
+                            <th>CODE ARTICLE</th>
                             <th>CLIENT</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <?php
-                        if (!empty($arr_data_palette)):
-                            foreach ($arr_data_palette as $key => $value) : ?>
+                        if (!empty($arr_article)):
+                            foreach ($arr_article as $key => $value) : ?>
                                 <tr id="<?= $value->id ?>" class="text-center">
                                     <td class="text-center cursor-pointer td_no_border">
                                         <!-- <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-eye"></i></a></button> -->
                                         <button href="#" type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-popup="tooltip" title=" Mettre à jour" data-placement="bottom" onclick="view(<?= $value->id ?>,'upd')" <?= $style_btn; ?>><img src="<?= base_url('assets/images/modifier.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
                                         <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_niveau" data-popup="tooltip" title="Supprimer" data-placement="bottom" onclick="deleteItem(<?= $value->id ?>)" <?= $style_btn; ?>><img src="<?= base_url('assets/images/supprimer.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
                                     </td>
+                                    <td><?= $value->qr_code_text ?></td>
                                     <td><?= $value->code ?></td>
-                                    <?php $statutClasses = [
-                                        1 => 'bg-success',
-                                        2 => 'bg-secondary',
-                                        3 => 'bg-danger',
-                                    ];
-                                    ?> <td>
-                                        <span class="badge rounded-pill <?= $statutClasses[$value->palette_statut_id] ?? 'bg-secondary' ?>">
-                                            <?= $value->statut ?>
-                                        </span>
-                                    </td>
+                                    <td><?= $value->nom ?></td>
                                     <td><?= $value->client_nom ?></td>
                                 </tr>
                         <?php endforeach;
@@ -73,13 +66,12 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 
 <!-- Ajout article -->
 <div id="modal_ajout_article" class="modal fade">
-    <div class="modal-dialog modal-xl modal-article-centered modal-article-scrollable ">
+    <div class="modal-dialog modal-xl modal-article-centered modal-article-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="myModalLabel">Attribuer une palette à un article</h5>
                 <button type="button" class="btn-close float-right" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
                 <form class="form-validate-jquery add-article-content">
                     <div class="row g-3">
@@ -87,7 +79,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>PALETTE <span class="text-bold text-danger-600">*</span></label>
-                                <select class="select select-search obligatoire" data-placeholder="Choisir une palette..." name="palette_id" id="palette_id" style="width: 100%;">
+                                <select class="select select-search obligatoire" data-placeholder="Choisir une palette..." name="palette_id" id="palette_id" onchange="getClientForPalette('palette_id','client','modal_ajout_article')" style="width: 100%;">
                                     <option value=""></option>
                                     <?php if (!empty($arr_palette)): ?>
                                         <?php foreach ($arr_palette as $row): ?>
@@ -103,23 +95,24 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>CLIENT <span class="text-bold text-danger-600">*</span></label>
-                                <select class="select select-search obligatoire" data-placeholder="Choisir un client..." name="client" id="client" style="width: 100%;">
+                                <!-- <select class="select select-search obligatoire" data-placeholder="Choisir un client..." name="client" id="client" style="width: 100%;">
                                     <option value=""></option>
-                                    <?php if (!empty($arr_client)): ?>
+                                    <?php /*if (!empty($arr_client)): ?>
                                         <?php foreach ($arr_client as $row): ?>
                                             <option value="<?= $row->code . " - " . $row->nom ?>">
                                                 <?= $row->code . " - " . $row->nom ?>
                                             </option>
                                         <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
+                                    <?php endif; */ ?>
+                                </select> -->
+                                <input type="text" class="form-control input-xs obligatoire" placeholder="Code ou/et Nom du client" name="client" id="client" required="required">
                                 <label id="client-error" class="validation-error-label" for="client"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>CODE ARTICLE <span class="text-bold text-danger-600">*</span></label>
-                                <input type="text" class="form-control input-xs obligatoire" placeholder="Code" name="code" id="code" required="required">
+                                <input type="text" class="form-control input-xs obligatoire" placeholder="Code" name="code" id="code" required="required" onblur="getDetailArticle()">
                                 <label id="code-error" class="validation-error-label" for="code"></label>
                             </div>
                         </div>
@@ -128,21 +121,21 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>NOM ARTICLE <span class="text-bold text-danger-600">*</span></label>
-                                <input type="text" class="form-control input-xs obligatoire" placeholder="Nom article" name="nom_article" id="nom_article" required="required">
-                                <label id="nom_article-error" class="validation-error-label" for="nom_article"></label>
+                                <input type="text" class="form-control input-xs obligatoire" placeholder="Nom article" name="nom" id="nom" required="required" disabled>
+                                <label id="nom-error" class="validation-error-label" for="nom"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>DLUO <span class="text-bold text-danger-600">*</span></label>
-                                <input type="text" id="dluo" name="dluo" class="form-control input-xs text-end obligatoire" value="" onblur="isFormatDateValideFr(this)">
+                                <input type="text" id="dluo" name="dluo" class="form-control input-xs text-end obligatoire" value="" placeholder="DD/MM/YYYY" required="required">
                                 <label id="dluo-error" class="validation-error-label" for="dluo"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>UNITÉ PCB <span class="text-bold text-danger-600">*</span></label>
-                                <input type="text" class="form-control input-xs obligatoire" placeholder="Unité PCB" name="unite_pcb" id="unite_pcb" required="required">
+                                <input type="text" class="form-control input-xs obligatoire" placeholder="Unité PCB" name="unite_pcb" id="unite_pcb" required="required" disabled>
                                 <label id="unite_pcb-error" class="validation-error-label" for="unite_pcb"></label>
                             </div>
                         </div>
@@ -151,7 +144,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>QUANTITTÉ <span class="text-bold text-danger-600">*</span></label>
-                                <input type="text" class="form-control input-xs obligatoire" placeholder="Quantité" name="quantite" id="quantite" required="required">
+                                <input type="text" class="form-control input-xs obligatoire" placeholder="Quantité" name="quantite" id="quantite" required="required" value="0" onkeyup="numberDecimal(this)">
                                 <label id="quantite-error" class="validation-error-label" for="quantite"></label>
                             </div>
                         </div>
@@ -165,7 +158,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>PALETTISATION <span class="text-bold text-danger-600">*</span></label>
-                                <input type="text" class="form-control input-xs obligatoire" placeholder="Palettisation" name="palettisation" id="palettisation" required="required">
+                                <input type="text" class="form-control input-xs obligatoire" placeholder="Palettisation" name="palettisation" id="palettisation" required="required" disabled>
                                 <label id="palettisation-error" class="validation-error-label" for="palettisation"></label>
                             </div>
                         </div>

@@ -28,9 +28,9 @@
 
     <div class="form-group">
         <label>CLIENT <span id="client_upd-required" class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
-        <select class="select select-search obligatoire" data-placeholder="Choisir un client..." name="client_upd" id="client_upd" required="required" style="width: 100%;" <?= $disabled; ?>>
+        <!-- <select class="select select-search obligatoire" data-placeholder="Choisir un client..." name="client_upd" id="client_upd" required="required" style="width: 100%;" <?= $disabled; ?>>
             <option value=""></option>
-            <?php
+            <?php /*
             if (!empty($arr_client)):
                 foreach ($arr_client as $row) :
                     $selected = (($row->code == $data->client_code) ? 'selected' : ''); ?>
@@ -38,8 +38,9 @@
                         <?= $row->code . " - " . $row->nom ?>
                     </option>
             <?php endforeach;
-            endif; ?>
-        </select>
+            endif; */ ?>
+        </select> -->
+        <input type="text" class="form-control input-xs obligatoire" placeholder="Code ou/et Nom du client" name="client_upd" id="client_upd" required="required" value="<?= $data->client_code . " - " . $data->client_nom ?>" <?= $disabled; ?>>
         <label id="client_upd-error" class="validation-error-label" for="client_upd"></label>
     </div>
 

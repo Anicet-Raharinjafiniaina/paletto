@@ -104,16 +104,17 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     </div>
                     <div class="form-group">
                         <label>CLIENT <span id="client-required" class="text-bold text-danger-600">*</span></label>
-                        <select class="select select-search obligatoire" data-placeholder="Choisir un clinet..." name="client" id="client" style="width: 100%;">
+                        <!-- <select class="select select-search obligatoire" data-placeholder="Choisir un clinet..." name="client" id="client" style="width: 100%;">
                             <option value=""></option>
-                            <?php if (!empty($arr_client)): ?>
+                            <?php /*if (!empty($arr_client)): ?>
                                 <?php foreach ($arr_client as $row): ?>
                                     <option value="<?= $row->code . " - " . $row->nom ?>">
                                         <?= $row->code . " - " . $row->nom ?>
                                     </option>
                                 <?php endforeach; ?>
-                            <?php endif; ?>
-                        </select>
+                            <?php endif;*/ ?>
+                        </select> -->
+                        <input type="text" class="form-control input-xs obligatoire" placeholder="Code ou/et Nom du client" name="client" id="client" required="required">
                         <label id="client-error" class="validation-error-label" for="client"></label>
                     </div>
                     <div class="modal-footer">
@@ -145,6 +146,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
     <?= $this->endSection() ?>
     <?= $this->section('script') ?>
 <?php endif; ?>
+<script src="assets/libs/typeahead/typeahead.min.js"></script>
 <script type="text/javascript" src="<?= base_url('assets/js/pages/palette.js'); ?>"></script>
 <?php if ($request_ajax == 0) : ?>
     <?= $this->endSection() ?>

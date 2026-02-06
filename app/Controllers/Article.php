@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\CrudModel;
 use App\Controllers\Acces;
 use App\Controllers\Palette;
+use App\Controllers\QrCodeController;
 
 class Article extends BaseController
 {
@@ -27,11 +28,12 @@ class Article extends BaseController
 
     public function load()
     {
+        $arr['arr_article'] = $this->getAllArticle();
         $arr['arr_palette'] = $this->getAllPaletteNoTOccuped();
         $palette = new Palette();
         $arr['arr_client'] = $palette->getAllClient();
         $arr['titre'] = "Gestion des palettes";
-        $arr['menu_palette'] = "article";
+        $arr['menu_palette'] = "Attribution palette";
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
@@ -41,30 +43,50 @@ class Article extends BaseController
         echo view('article/list_view', $arr);
     }
 
+    public function getAllArticle()
+    {
+        $crud = new CrudModel(TBL_ARTICLE);
+        $arrJoin = [[
+            'table' => TBL_PALETTE,
+            'type'  => 'LEFT',
+            'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
+        ]];
+        $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.qr_code_text';
+        return  $crud->getAllData([TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0], $arrJoin, $select);
+    }
+
     public function getAllPaletteNoTOccuped()
     {
         $crud = new CrudModel(TBL_PALETTE);
         return  $crud->getAllData(['palette_statut_id != 3' => null, 'flag_suppression' => 0], [], "id, code");
     }
 
-    public function getAllArticle() // venant de X3
+    // public function getAllArticle() // venant de X3
+    // {
+    //     $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
+    //     $a =  $crud->getAllData([], [], "*", "", "", "", "", 1);
+    //     echo '<pre>';
+    //     print_r($a);
+    //     echo '</pre>';
+    // }
+
+    public function getClientForPalette()
     {
-        $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
-        return   $crud->getAllData([], [], "ITMREF_0");
+        $palette_id = trim($this->request->getPost('palette_id') ?? '');
+        $crud = new CrudModel(TBL_PALETTE);
+        $data = $crud->getDataById(['id' => intval($palette_id)], [], "client_code, client_nom");
+        return json_encode($data);
     }
 
     public function getArticleTypeahead()
     {
         $search = trim($this->request->getPost('code') ?? '');
 
-        $sql = "
-        SELECT TOP 10
-            ITMREF_0 AS id,
-            ITMDES1_0 AS libelle
-        FROM BASANEXP.ITMMASTER
-        WHERE ITMREF_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
-        ORDER BY ITMREF_0
-    ";
+        $sql = "SELECT TOP 10
+                    ITMREF_0 AS id
+                FROM BASANEXP.ITMMASTER
+                WHERE ITMREF_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
+                ORDER BY ITMREF_0";
 
         $res = $this->dbX3->query($sql, [$search . '%'])->getResult();
         $arr = [];
@@ -75,9 +97,22 @@ class Article extends BaseController
     }
 
 
+    public function getDetailArticleByCode()
+    {
+        $code = trim($this->request->getPost('code') ?? '');
+        $sql = "SELECT TOP 1
+                    ITMREF_0 AS code,
+                    ITMDES1_0 AS libelle,
+                    ZPCB_0 AS pcb,
+                    ACCCOD_0 AS palettisation
+                FROM BASANEXP.ITMMASTER
+                WHERE ITMREF_0 = ? COLLATE SQL_Latin1_General_CP1_CI_AS";
 
+        $res = $this->dbX3->query($sql, [$code])->getRow();
+        return json_encode($res);
+    }
 
-    public function insertPalette()
+    public function insertArticle()
     {
         $acces  = new Acces();
         $is_ok = $acces->is_ok(4);
@@ -86,84 +121,72 @@ class Article extends BaseController
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
-            $crud = new CrudModel(TBL_PALETTE);
-            $is_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr['code'])), "flag_suppression" => 0));
-            if ($is_exist > 0) {
+            $palette = new Palette();
+            $arr = $palette->splitClient($arr);
+            $arr['dluo'] = $this->normalizeDate($arr['dluo']);
+            $crud = new CrudModel(TBL_ARTICLE);
+            $isStatutOccupe = $this->isStatutOccupe($arr['palette_id']);
+            if ($isStatutOccupe == true) {
                 return json_encode(2); // code doublon
             } else {
-                $result = $crud->create($arr, 27);
+                $arr = $this->generateQrCode($arr); // génération du QR code et ajout de l'image en base64 et du texte dans le tableau $arr
+                $result = $crud->create($arr, 30);
+                if ($result == 1) {
+                    $this->majInfosPalette($arr['palette_id'], $arr['client_code'], $arr['client_nom']); // maj du statut de la palette à "occupé" si la maj est réussie et aussi maj du client_code et client_nom de la palette
+                }
                 return json_encode(intVal($result));
             }
         }
         return json_encode(0);
     }
 
-    /**
-     * Visualisation d'un détail
-     */
-    // public function getPalette()
-    // {
-    //     $acces  = new Acces();
-    //     $is_ok = $acces->is_ok(4);
-    //     if (!$is_ok) {
-    //         return redirect()->to('/');
-    //     }
-    //     $crud = new CrudModel(TBL_PALETTE);
-    //     $id = trim($this->request->getVar('id'));
-    //     $action = trim($this->request->getVar('action'));
-    //     $arrData = $crud->getDataById(array('id' => intval($id)));
-    //     $arr['arr_palette_statut'] = $this->getAllStatut();
-    //     $arr['arr_client'] = $this->getAllClient();
-    //     $arr["action"] = $action;
-    //     $arr["data"] = $arrData;
-    //     $arr["disabled"] = ($action == "voir") ? "disabled=disabled" : "";
-    //     $arr["display"] = ($action == "voir") ? 'style="display:none;"' : "";
-    //     echo view('palette/maj_view', $arr);
-    // }
-
-    public function majPalette()
+    public function generateQrCode($arr)
     {
-        $acces  = new Acces();
-        $is_ok = $acces->is_ok(4);
-        if (!$is_ok) {
-            return redirect()->to('/');
-        }
-        $arr_data = $this->request->getVar('data');
+        $qr = new QrCodeController();
+        $texte = $this->getCodePaletteById($arr['palette_id']) . '-' . $arr['code'] . '-' . $arr['client_code'];
+        $image = $qr->generateBase64($texte);
+        $arr['qr_code_image'] = $image;
+        $arr['qr_code_text']   = $texte;
+        return $arr;
+    }
+
+    public function getCodePaletteById($id)
+    {
         $crud = new CrudModel(TBL_PALETTE);
-        if (!empty($arr_data)) {
-            $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
-            $is_data_exist = $crud->getNb($arr_data);
-            if ($is_code_exist > 0) {
-                return json_encode(2); // code doublon
-            } else if ($is_data_exist > 0) {
-                return json_encode(3); // aucune modification
-            } else {
-                $id = $arr_data['id'];
-                unset($arr_data['id']);
-                $result = $crud->maj(["id" => $id], $arr_data, 28);
-                return json_encode($result);
-            }
+        $data = $crud->getDataById(['id' => intval($id)], [], "code");
+        return $data->code;
+    }
+
+    /**
+     * Pour avoir DD-MM-YYYY à partir de YYYY-MM-DD et aussi pour retourner la date telle quelle si elle n'est pas au format attendu
+     */
+    function normalizeDate($date)
+    {
+        $date = trim($date);
+        // Vérifie si la date est au format dd/mm/yyyy
+        if (preg_match('#^(\d{2})/(\d{2})/(\d{4})$#', $date, $matches)) {
+            // Transforme en yyyy-mm-dd
+            return "{$matches[3]}-{$matches[2]}-{$matches[1]}";
+        }
+        // Sinon on retourne la date telle quelle
+        return $date;
+    }
+
+    public function majInfosPalette($id, $client_code = null, $client_nom = null)
+    {
+        if ($id != null && $id != "") {
+            $crud = new CrudModel(TBL_PALETTE);
+            $crud->maj(["id" => $id], ['palette_statut_id' => 3, 'client_code' => $client_code, 'client_nom' => $client_nom], 0);
         }
     }
 
-    // public function deletePalette()
-    // {
-    //     $acces  = new Acces();
-    //     $is_ok = $acces->is_ok(4);
-    //     if (!$is_ok) {
-    //         return redirect()->to('/');
-    //     }
-    //     $id = $this->request->getVar('id');
-    //     if ($id != "" && $id != null) {
-    //         $crud = new CrudModel(TBL_PALETTE);
-    //         $canDelete = $this->checkPalette($id);
-    //         if ($canDelete == true) {
-    //             $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 29);
-    //             return json_encode($result);
-    //         } else {
-    //             return json_encode(2); // non supprimable car le statut est occupé
-    //         }
-    //     }
-    //     return json_encode(0);
-    // }
+    public function isStatutOccupe($id)
+    {
+        $crud = new CrudModel(TBL_PALETTE);
+        $data = $crud->getDataById(['id' => $id], [], "palette_statut_id");
+        if ($data != null && $data->palette_statut_id == 3) {
+            return true;
+        }
+        return false;
+    }
 }

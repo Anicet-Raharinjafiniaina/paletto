@@ -7,6 +7,13 @@ use App\Controllers\Acces;
 
 class Palette extends BaseController
 {
+    protected $dbX3;
+
+    public function __construct()
+    {
+        $this->dbX3 = db_connect('connex_v12');
+    }
+
     public function index()
     {
         $acces  = new Acces();
@@ -23,7 +30,7 @@ class Palette extends BaseController
         $arr['arr_palette_statut'] = $this->getAllStatut();
         $arr['arr_client'] = $this->getAllClient();
         $arr['titre'] = "Gestion des palettes";
-        $arr['menu_palette'] = "liste palette";
+        $arr['menu_palette'] = "Palette";
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
@@ -56,6 +63,30 @@ class Palette extends BaseController
         $crud = new CrudModel('BASANEXP.BPCUSTOMER', 'x3');
         return $crud->getAllData([], [], "BPCNUM_0 as code,BPCNAM_0 as nom");
     }
+
+    public function getAllClientTypeahead()
+    {
+        $search = trim($this->request->getPost('client') ?? '');
+        $sql = "SELECT TOP 10
+                    BPCNUM_0 + ' - ' + BPCNAM_0 AS client
+                FROM BASANEXP.BPCUSTOMER
+                WHERE BPCNUM_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
+                OR BPCNAM_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
+                ORDER BY BPCNUM_0";
+
+        $params = [
+            $search . '%',
+            '%' . $search . '%'
+        ];
+
+        $res =  $this->dbX3->query($sql, $params)->getResult();
+        $arr = [];
+        foreach ($res as $k => $v) :
+            array_push($arr, $v->client);
+        endforeach;
+        return json_encode($arr);
+    }
+
 
     public function insertPalette()
     {
