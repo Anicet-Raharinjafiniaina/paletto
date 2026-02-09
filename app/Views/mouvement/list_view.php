@@ -10,57 +10,8 @@
 $acces_btn = "";
 $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "display:none;"'; ?>
 
-<?= $this->include('palette/menu'); ?>
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-md-6 d-flex justify-content-start">
-                        <h5>Liste des palettes attribuées</h5>
-                    </div>
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add-article" <?= $style_btn; ?>>
-                            <i class="fas fa-plus position-left"></i> Ajouter
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            <div class="card-body">
-                <table id="table_article" class="datatable table table-bordered dt-responsive nowrap w-100">
-                    <thead class="text-center">
-                        <tr>
-                            <th>ACTION</th>
-                            <th>QR CODE</th>
-                            <th>CODE PALETTE</th>
-                            <th>CODE ARTICLE</th>
-                            <th>CLIENT</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php
-                        if (!empty($arr_article)):
-                            foreach ($arr_article as $key => $value) : ?>
-                                <tr id="<?= $value->id ?>" class="text-center">
-                                    <td class="text-center cursor-pointer td_no_border">
-                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-qrcode"></i></a></button>
-                                    </td>
-                                    <td><?= $value->qr_code_text ?></td>
-                                    <td><?= $value->code ?></td>
-                                    <td><?= $value->nom ?></td>
-                                    <td><?= $value->client_nom ?></td>
-                                </tr>
-                        <?php endforeach;
-                        endif;   ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- end cardaa -->
-    </div> <!-- end col -->
-</div>
+<?= $this->include('mouvement/menu'); ?>
+<br> <br>
 
 <!-- Ajout article -->
 <div id="modal_ajout_article" class="modal fade">

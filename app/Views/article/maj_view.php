@@ -1,54 +1,62 @@
-<form class="form-validate-upd-jquery modifier-palette-content">
+<form class="form-validate-upd-jquery modifier-article-content text-center">
     <input type="hidden" id="id_upd" name="id_upd" value="<?= $data->id ?>">
 
-    <div class="form-group">
-        <label>CODE <span class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
-        <input type="text" class="form-control input-xs" placeholder="Code" name="code_upd"
-            id="code_upd" required="required" value="<?= $data->code ?>">
-        <label id="code_upd-error" class="validation-error-label" for="code_upd"></label>
-    </div>
+    <!-- QR CODE -->
+    <img src="data:image/png;base64,<?= $data->qr_code_image ?>" alt="QR Code" class="img-fluid mb-2" style="max-width:120px;">
 
-    <div class="form-group">
-        <label>ETAT <span class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
-        <select class="select select-search obligatoire" data-placeholder="Choisir un statut..." name="palette_statut_id_upd" id="palette_statut_id_upd" required="required" style="width: 100%;" <?= $disabled; ?>>
-            <option value=""></option>
-            <?php
-            if (!empty($arr_palette_statut)):
-                foreach ($arr_palette_statut as $row) :
-                    if ($row->id == 3) continue;
-                    $selected = (($row->id == $data->palette_statut_id) ? 'selected' : ''); ?>
-                    <option value="<?= $row->id ?>" <?= $selected ?>>
-                        <?= $row->statut ?>
-                    </option>
-            <?php endforeach;
-            endif; ?>
-        </select>
-        <label id="palette_statut_id_upd-error" class="validation-error-label" for="palette_statut_id_upd"></label>
-    </div>
+    <!-- CODE -->
+    <h6 class="fw-bold mb-3">PAL - <?= $data->palette_code ?> </h6>
 
-    <div class="form-group">
-        <label>CLIENT <span id="client_upd-required" class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
-        <!-- <select class="select select-search obligatoire" data-placeholder="Choisir un client..." name="client_upd" id="client_upd" required="required" style="width: 100%;" <?= $disabled; ?>>
-            <option value=""></option>
-            <?php /*
-            if (!empty($arr_client)):
-                foreach ($arr_client as $row) :
-                    $selected = (($row['id'] == $data->client) ? 'selected' : ''); ?>
-                    <option value="<?= $row['id'] ?>" <?= $selected ?>>
-                        <?= $row['nom'] ?>
-                    </option>
-            <?php endforeach;
-            endif;*/ ?>
-        </select> -->
-        <input type="text" class="form-control input-xs obligatoire" placeholder="Code ou/et Nom du client" name="client_upd" id="client_upd" required="required" value="<?= $data->client_code . " - " . $data->client_nom ?>" <?= $disabled; ?>>
-        <label id="client_upd-error" class="validation-error-label" for="client_upd"></label>
-    </div>
+    <!-- INFOS -->
+    <div class="mx-auto">
 
-    <?php if ($disabled == ""): ?>
-        <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
-            <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="maj()"
-                data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer" <?= $disabled; ?>>
-                Enregistrer</button>
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Client : </div>
+            <div class="col-7 text-start">
+                <?= $data->client_code . " - " . $data->client_nom ?>
+            </div>
         </div>
-    <?php endif; ?>
+
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Article : </div>
+            <div class="col-7 text-start"><?= $data->nom ?></div>
+        </div>
+
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Code : </div>
+            <div class="col-7 text-start"><?= $data->code ?></div>
+        </div>
+
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Quantité :</div>
+            <div class="col-7 text-start"><?= $data->quantite ?></div>
+        </div>
+
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Lot :</div>
+            <div class="col-7 text-start"><?= $data->lot ?></div>
+        </div>
+
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">DLUO : </div>
+            <div class="col-7 text-start"><?= date('d/m/Y', strtotime($data->dluo)) ?></div>
+        </div>
+
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">PCB : </div>
+            <div class="col-7 text-start"><?= $data->unite_pcb ?></div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-5 fw-semibold text-end">Palettisation : </div>
+            <div class="col-7 text-start"><?= $data->palettisation ?></div>
+        </div>
+
+    </div>
+    <br><br>
+    <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
+        <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="imprimer()"
+            data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer">
+            Imprimer</button>
+    </div>
 </form>

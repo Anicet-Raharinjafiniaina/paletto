@@ -7,7 +7,7 @@ use App\Controllers\Acces;
 use App\Controllers\Palette;
 use App\Controllers\QrCodeController;
 
-class Article extends BaseController
+class Mouvement extends BaseController
 {
     protected $dbX3;
 
@@ -32,15 +32,15 @@ class Article extends BaseController
         $arr['arr_palette'] = $this->getAllPaletteNoTOccuped();
         $palette = new Palette();
         $arr['arr_client'] = $palette->getAllClient();
-        $arr['titre'] = "Gestion des palettes";
+        $arr['titre'] = "Gestion des mouvements";
         $arr['menu_palette'] = "Attribution palette";
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
-            echo view('article/list_view', $arr);
+            echo view('mouvement/list_view', $arr);
             return;
         }
-        echo view('article/list_view', $arr);
+        echo view('mouvement/list_view', $arr);
     }
 
     public function getAllArticle()

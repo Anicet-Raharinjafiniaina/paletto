@@ -156,10 +156,6 @@ function view(id, action) {
             stopLoaderContent('main')
             $("#content-article").html(res);
             $("#modal_view_article").modal("show");
-            initialiseSelect2Modal("article_statut_id_upd", "modal_view_article")
-            // initialiseSelect2Modal("client_upd", "modal_view_article")
-            loadClient("client_upd")
-            toggleClientFieldUpdate()
             if (action == "voir") {
                 $("#div-upd-footer").css("display", "none");
                 $("#title").html("Détail de l'article <b>" + t + "</b>");
@@ -171,136 +167,126 @@ function view(id, action) {
     });
 }
 
-function deleteItem(id) {
-    Swal.fire({
-        title: "Voulez-vous vraiment supprimer ?",
-        text: "La suppression de cet entrepôt est irréversible !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#EF5350",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Oui",
-        cancelButtonText: "Non",
-        showLoaderOnConfirm: true,
-        backdrop: true,
-        allowOutsideClick: () => !Swal.isLoading(),
-        preConfirm: () => {
-            loaderContent('main')
-            return $.ajax({
-                type: "POST",
-                url: urlProject + "Article/deleteArticle",
-                data: { id: id },
-                dataType: "json"
-            }).then(response => {
-                stopLoaderContent('main')
-                if (response == 1) {
-                    return true;
-                } else if (response == 2) {
-                    Swal.fire({
-                        title: "Information",
-                        html: "Impossible de supprimer cet article car son statut est <b>occupé<b>.",
-                        icon: "warning",
-                        showConfirmButton: true,
-                    });
-                } else {
-                    throw new Error("Erreur lors de la suppression.");
-                }
-            }).catch(error => {
-                stopLoaderContent('main')
-                Swal.showValidationMessage(error.message);
-            });
-        }
-    }).then((result) => {
-        if (result.isConfirmed && result.value === true) {
-            Swal.fire({
-                title: "Supprimé !",
-                text: "L'article a été supprimé.",
-                icon: "success",
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => {
-                loadPage(urlProject + "Article", true)
-            });
-        }
+// function imprimer() {
+//     // Créer un iframe caché
+//     var $iframe = $('<iframe>', { name: 'print_frame', style: 'position:absolute; top:-10000px;' });
+//     $('body').append($iframe);
+
+//     var doc = $iframe[0].contentWindow.document;
+
+//     // Copier le CSS existant de la page (Bootstrap + styles personnalisés)
+//     var styles = '';
+//     $('link[rel="stylesheet"], style').each(function () {
+//         styles += this.outerHTML;
+//     });
+
+//     // Copier le contenu du formulaire
+//     var content = $('.form-validate-upd-jquery.modifier-article-content').clone();
+//     content.find('#div-upd-footer').remove(); // supprimer le bouton
+
+//     // Écrire le contenu et les styles dans l'iframe
+//     doc.open();
+//     doc.write('<html><head><title>Impression</title>' + styles + '</head><body style="background-color: #fff;">');
+//     doc.write(content.prop('outerHTML'));
+//     doc.write('</body></html>');
+//     doc.close();
+
+//     // Lancer l'impression
+//     $iframe[0].contentWindow.focus();
+//     $iframe[0].contentWindow.print();
+
+//     // Supprimer l'iframe après impression
+//     setTimeout(function () {
+//         $iframe.remove();
+//     }, 1000);
+// }
+
+function imprimer() {
+    var $iframe = $('<iframe>', {
+        style: 'position:absolute; top:-10000px; left:-10000px;'
+    });
+    $('body').append($iframe);
+
+    var doc = $iframe[0].contentWindow.document;
+
+    // Récupération des styles existants
+    var styles = '';
+    $('link[rel="stylesheet"], style').each(function () {
+        styles += this.outerHTML;
     });
 
-}
+    // Cloner le formulaire
+    var content = $('.form-validate-upd-jquery.modifier-article-content').clone();
+    content.find('#div-upd-footer').remove();
 
-function maj() {
-    isValid = checkObligatoire(".modifier-article-content", ".obligatoire")
-    if (isValid == true) {
-        let arr_data = getFormDataFromParentClass(".modifier-article-content")
-        Swal.fire({
-            title: "Modification",
-            html: "Voulez-vous vraiment procéder à la modification?",
-            icon: "warning",
-            showConfirmButton: true,
-            showCancelButton: true, confirmButtonText: 'Oui',
-            cancelButtonText: 'Annuler',
-        }).then(function (result) {
-            if (result.isConfirmed) {
-                $("#save_upd").prop("disabled", true);
-                loaderContent('modal_view_article')
-                $.ajax({
-                    url: urlProject + "Article/majArticle",
-                    type: "POST",
-                    data: { data: arr_data },
-                    success: function (res) {
-                        stopLoaderContent('modal_view_article')
-                        if (res == 1) {
-                            Swal.fire({
-                                title: "Modification",
-                                html: "Modification faite avec succès.",
-                                icon: "success",
-                                showConfirmButton: true,
-                            }).then(function (result) {
-                                if (result.isConfirmed) {
-                                    $('#modal_view_article').modal('hide');
-                                    loadPage(urlProject + "Article", true)
-                                }
-                            });
-                        } else if (res == 2) {
-                            Swal.fire({
-                                title: "Doublon",
-                                html: "Le code  <b>" + $("#code_upd").val() + "</b> existe déjà.",
-                                icon: "warning",
-                                timer: 3000,
-                                showConfirmButton: false,
-                            });
-                            $("#save_upd").prop("disabled", false);
-                        } else if (res == 3) {
-                            Swal.fire({
-                                title: "Modification",
-                                html: "Aucune modification.",
-                                icon: "warning",
-                                timer: 2000,
-                                showConfirmButton: false,
-                            });
-                            $("#save_upd").prop("disabled", false);
-                        } else {
-                            Swal.fire({
-                                title: "Erreur",
-                                html: "Erreur dans la base de données. Merci de réessayer plus tard.",
-                                icon: "error",
-                                timer: 2000,
-                                showConfirmButton: false,
-                            });
-                            $("#save_upd").prop("disabled", false);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        Swal.fire({
-                            title: "Erreur",
-                            html: "Erreur dans la base de données. Merci de réessayer plus tard.",
-                            icon: "error",
-                            timer: 2000,
-                            showConfirmButton: false,
-                        });
-                        stopLoaderContent('modal_view_article')
-                        $("#save_upd").prop("disabled", false);
+    doc.open();
+    doc.write(`
+        <html>
+        <head>
+            <title>Impression</title>
+            ${styles}
+            <style>
+                /* Taille page */
+                @page {
+                    size: A4;
+                    margin: 20mm;
+                }
+
+                body {
+                    background: #fff !important;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                /* Centrage */
+                .print-wrapper {
+                    width: 100%;
+                    min-height: 100vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                /* CONTENU AGRANDI RÉELLEMENT */
+                .print-content {
+                    width: 100%;
+                    max-width: 700px;   /* ⬅️ augmente la largeur */
+                    font-size: 18px;    /* ⬅️ taille réelle du texte */
+                    background: #fff;
+                }
+
+                /* QR plus grand */
+                .print-content img {
+                    max-width: 160px !important;
+                }
+
+                /* Titres plus visibles */
+                .print-content h6 {
+                    font-size: 22px;
+                }
+
+                @media print {
+                    body {
+                        background: #fff !important;
                     }
-                });
-            }
-        });
-    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="print-wrapper">
+                <div class="print-content">
+                    ${content.prop('outerHTML')}
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+    doc.close();
+
+    $iframe[0].contentWindow.focus();
+    $iframe[0].contentWindow.print();
+
+    setTimeout(() => {
+        $iframe.remove();
+    }, 1000);
 }
