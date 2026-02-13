@@ -327,3 +327,60 @@ function numberDecimal(el) {
     }
 }
 
+/**Typeahead */
+function loadDataTypeAhead(inputId, controllerUrl, paramName) {
+    $("#" + inputId).typeahead({
+        minLength: 2,
+        items: 20,
+        source: function (query, process) {
+            return $.post(
+                controllerUrl,
+                {
+                    paramName: query,
+                },
+                function (data) {
+                    data = $.parseJSON(data);
+                    return process(data);
+                }
+            );
+        },
+    });
+}
+
+/*** Scan QR code */
+let html5QrCode;
+let currentInputId = null;
+
+function openScanner(inputId) {
+    currentInputId = inputId;
+    const modal = new bootstrap.Modal(document.getElementById('qrModal'));
+    modal.show();
+
+    html5QrCode = new Html5Qrcode("qr-reader");
+
+    html5QrCode.start({
+        facingMode: "environment"
+    }, // caméra arrière
+        {
+            fps: 10,
+            qrbox: 250
+        },
+        (decodedText) => {
+            document.getElementById(currentInputId).value = decodedText;
+
+            html5QrCode.stop().then(() => {
+                modal.hide();
+            });
+        },
+        (errorMessage) => {
+            // erreurs ignorées (scan continue)
+        }
+    );
+}
+
+// Stop caméra à la fermeture du modal
+document.getElementById('qrModal').addEventListener('hidden.bs.modal', () => {
+    if (html5QrCode) {
+        html5QrCode.stop().catch(() => { });
+    }
+});

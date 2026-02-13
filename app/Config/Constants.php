@@ -63,6 +63,7 @@ defined('TBL_EMPLACEMENT_STATUT') || define('TBL_EMPLACEMENT_STATUT', 'emplaceme
 defined('TBL_PALETTE') || define('TBL_PALETTE', 'palette');
 defined('TBL_PALETTE_STATUT') || define('TBL_PALETTE_STATUT', 'palette_statut');
 defined('TBL_ARTICLE') || define('TBL_ARTICLE', 'article');
+defined('TBL_MOUVEMENT') || define('TBL_MOUVEMENT', 'mouvement');
 /** Tables */
 
 /* View */

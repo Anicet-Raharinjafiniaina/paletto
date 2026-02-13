@@ -45,7 +45,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                             foreach ($arr_article as $key => $value) : ?>
                                 <tr id="<?= $value->id ?>" class="text-center">
                                     <td class="text-center cursor-pointer td_no_border">
-                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-qrcode"></i></a></button>
+                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-qrcode fa-lg"></i></a></button>
                                     </td>
                                     <td><?= $value->qr_code_text ?></td>
                                     <td><?= $value->code ?></td>
