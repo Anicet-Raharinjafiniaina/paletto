@@ -46,6 +46,8 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                 <tr id="<?= $value->id ?>" class="text-center">
                                     <td class="text-center cursor-pointer td_no_border">
                                         <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-qrcode fa-lg"></i></a></button>
+                                        <button href="#" type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-popup="tooltip" title=" Mettre à jour" data-placement="bottom" onclick="view(<?= $value->id ?>,'upd')"><img src="<?= base_url('assets/images/modifier.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
+                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_niveau" data-popup="tooltip" title="Supprimer" data-placement="bottom" onclick="deleteItem(<?= $value->id ?>)"><img src="<?= base_url('assets/images/supprimer.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
                                     </td>
                                     <td><?= $value->qr_code_text ?></td>
                                     <td><?= $value->code ?></td>
@@ -93,16 +95,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>CLIENT <span class="text-bold text-danger-600">*</span></label>
-                                <!-- <select class="select select-search obligatoire" data-placeholder="Choisir un client..." name="client" id="client" style="width: 100%;">
-                                    <option value=""></option>
-                                    <?php /*if (!empty($arr_client)): ?>
-                                        <?php foreach ($arr_client as $row): ?>
-                                            <option value="<?= $row->code . " - " . $row->nom ?>">
-                                                <?= $row->code . " - " . $row->nom ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    <?php endif; */ ?>
-                                </select> -->
                                 <input type="text" class="form-control input-xs obligatoire" placeholder="Code ou/et Nom du client" name="client" id="client" required="required">
                                 <label id="client-error" class="validation-error-label" for="client"></label>
                             </div>

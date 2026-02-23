@@ -4,9 +4,7 @@ namespace App\Controllers;
 
 use App\Models\CrudModel;
 use App\Controllers\Acces;
-use App\Controllers\Niveau;
 use App\Controllers\Rangee;
-use App\Controllers\QrCodeController;
 
 class Cage extends BaseController
 {

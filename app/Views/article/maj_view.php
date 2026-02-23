@@ -1,4 +1,4 @@
-<form class="form-validate-upd-jquery modifier-article-content text-center">
+<form class="form-validate-upd-jquery modifier-article-content printable-article-content text-center">
     <input type="hidden" id="id_upd" name="id_upd" value="<?= $data->id ?>">
 
     <!-- QR CODE -->
@@ -55,7 +55,7 @@
     </div>
     <br><br>
     <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
-        <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="imprimer()"
+        <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="imprimer('printable-article-content')"
             data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer">
             Imprimer</button>
     </div>

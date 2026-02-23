@@ -67,26 +67,29 @@ class Palette extends BaseController
     public function getAllClientTypeahead()
     {
         $search = trim($this->request->getPost('client') ?? '');
-        $sql = "SELECT TOP 10
-                    BPCNUM_0 + ' - ' + BPCNAM_0 AS client
-                FROM BASANEXP.BPCUSTOMER
-                WHERE BPCNUM_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
-                OR BPCNAM_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
-                ORDER BY BPCNUM_0";
+        $sql = "SELECT client
+                FROM (
+                    SELECT TOP 10
+                        CONCAT(BPCNUM_0, ' - ', BPCNAM_0) AS client
+                    FROM BASANEXP.BPCUSTOMER
+                    WHERE CONCAT(BPCNUM_0, ' - ', BPCNAM_0)
+                        COLLATE SQL_Latin1_General_CP1_CI_AS LIKE ?
+                    ORDER BY BPCNUM_0
+                ) t
+            ";
 
         $params = [
-            $search . '%',
             '%' . $search . '%'
         ];
 
-        $res =  $this->dbX3->query($sql, $params)->getResult();
+        $res = $this->dbX3->query($sql, $params)->getResult();
+
         $arr = [];
         foreach ($res as $k => $v) :
             array_push($arr, $v->client);
         endforeach;
         return json_encode($arr);
     }
-
 
     public function insertPalette()
     {

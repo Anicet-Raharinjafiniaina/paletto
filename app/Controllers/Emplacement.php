@@ -80,4 +80,17 @@ class Emplacement extends BaseController
             }
         }
     }
+
+    public function getDetailEmplacement()
+    {
+        $id = $this->request->getPost('id');
+        $crud = new CrudModel(VIEW_EMPLACEMENT);
+        $arrJoin = array(
+            array("table" => TBL_EMPLACEMENT_STATUT, "on" => VIEW_EMPLACEMENT . ".statut_id = " . TBL_EMPLACEMENT_STATUT . ".id", "type" => "left"),
+        );
+        $arr['data'] = $crud->getDataById(['emplacement_id' => $id], $arrJoin, "*");
+        echo view('emplacement/detail', $arr);
+    }
+
+    public function gererEmplacement() {}
 }

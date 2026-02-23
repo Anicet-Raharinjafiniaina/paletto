@@ -97,7 +97,7 @@ function insert() {
                 if (res == 1) {
                     Swal.fire({
                         title: "Création",
-                        html: "L'article a été créé avec succès",
+                        html: "L'article a été atribué à la palette.",
                         icon: "success",
                         showConfirmButton: true
                     }).then(function (result) {
@@ -290,95 +290,3 @@ function view(id, action) {
 //         $iframe.remove();
 //     }, 1000);
 // }
-
-function imprimer() {
-    var $iframe = $('<iframe>', {
-        style: 'position:absolute; top:-10000px; left:-10000px;'
-    });
-    $('body').append($iframe);
-
-    var doc = $iframe[0].contentWindow.document;
-
-    // Récupération des styles existants
-    var styles = '';
-    $('link[rel="stylesheet"], style').each(function () {
-        styles += this.outerHTML;
-    });
-
-    // Cloner le formulaire
-    var content = $('.form-validate-upd-jquery.modifier-article-content').clone();
-    content.find('#div-upd-footer').remove();
-
-    doc.open();
-    doc.write(`
-        <html>
-        <head>
-            <title>Impression</title>
-            ${styles}
-            <style>
-                @page {
-                    size: A4;
-                    margin: 15mm;
-                }
-
-                body {
-                    background: #fff !important;
-                    margin: 0;
-                    padding: 0;
-                }
-
-                /* Wrapper simple (pas de flex en print) */
-                .print-wrapper {
-                    width: 100%;
-                }
-
-                .print-content {
-                    width: 100%;
-                    background: #fff;
-                    padding-top: 35mm;   /* ⬅️ ajuste ici */
-                }
-
-                /* Neutraliser Bootstrap */
-                .print-content .container,
-                .print-content .container-fluid {
-                    max-width: 100% !important;
-                    width: 100% !important;
-                }
-
-                /* QR plus grand */
-                .print-content img {
-                    margin-bottom : 50px;
-                    max-width: 130px !important;
-                }
-
-                .print-content h6 {
-                    font-size: 22px;
-                    margin-bottom : 150px;
-                }
-
-                /* 🔥 AGRANDISSEMENT RÉEL À L'IMPRESSION */
-                @media print {
-                    body {
-                        zoom: 175%;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="print-wrapper">
-                <div class="print-content">
-                    ${content.prop('outerHTML')}
-                </div>
-            </div>
-        </body>
-        </html>
-    `);
-    doc.close();
-
-    $iframe[0].contentWindow.focus();
-    $iframe[0].contentWindow.print();
-
-    setTimeout(() => {
-        $iframe.remove();
-    }, 1000);
-}

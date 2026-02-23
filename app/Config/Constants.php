@@ -64,6 +64,7 @@ defined('TBL_PALETTE') || define('TBL_PALETTE', 'palette');
 defined('TBL_PALETTE_STATUT') || define('TBL_PALETTE_STATUT', 'palette_statut');
 defined('TBL_ARTICLE') || define('TBL_ARTICLE', 'article');
 defined('TBL_MOUVEMENT') || define('TBL_MOUVEMENT', 'mouvement');
+defined('TBL_MOUVEMENT_TYPE') || define('TBL_MOUVEMENT_TYPE', 'mouvement_type');
 /** Tables */
 
 /* View */

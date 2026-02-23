@@ -58,7 +58,8 @@ $controllers = [
     'allee'       => 'Allee',
     'rangee'      => 'Rangee',
     'niveau'      => 'Niveau',
-    'cage'        => 'Cage'
+    'cage'        => 'Cage',
+    'emplacement' => 'Emplacement/gererEmplacement'
 ];; ?>
 <nav class="glass-menu">
     <?php foreach ($controllers as $key => $label): ?>

@@ -52,7 +52,7 @@ class Article extends BaseController
             'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
         ]];
         $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.qr_code_text';
-        return  $crud->getAllData([TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0], $arrJoin, $select);
+        return  $crud->getAllData([TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0, TBL_ARTICLE . '.affectee_emplacement' => 0, TBL_ARTICLE . '.commentaire' => null], $arrJoin, $select);
     }
 
     public function getAllPaletteNoTOccuped()
@@ -61,14 +61,14 @@ class Article extends BaseController
         return  $crud->getAllData(['palette_statut_id != 3' => null, 'flag_suppression' => 0], [], "id, code");
     }
 
-    // public function getAllArticle() // venant de X3
-    // {
-    //     $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
-    //     $a =  $crud->getAllData([], [], "*", "", "", "", "", 1);
-    //     echo '<pre>';
-    //     print_r($a);
-    //     echo '</pre>';
-    // }
+    public function getAllArticle1() // venant de X3
+    {
+        $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
+        $a =  $crud->getAllData(['ITMREF_0' => 200019783], [], "*", "", "", "", "", 1);
+        echo '<pre>';
+        print_r($a);
+        echo '</pre>';
+    }
 
     public function getClientForPalette()
     {
