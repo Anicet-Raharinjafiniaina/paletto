@@ -54,10 +54,10 @@ class Cage extends BaseController
         ];
         $select = TBL_CAGE . ".id, " . TBL_CAGE . ".code, " . TBL_NIVEAU . ".code AS niveau," . TBL_RANGEE . ".code AS rangee," . TBL_ALLEE . ".code AS allee," . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) AS entrepot";
         $arr['arr_data_cage'] = $crud->getAllData(array(TBL_CAGE . '.flag_suppression' => 0), $arrJoin, $select);
-        $arr['titre'] = "Gestion des emplacements";
+        $arr['titre'] = "Gestion des cages";
         $rangee = new Rangee();
         $arr['arr_data_entrepot'] = $rangee->getAllEntrepot();
-        $arr['menu_emplacement'] = 'cage';
+        $arr['menu_emplacement'] = 'Cage';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
@@ -94,9 +94,7 @@ class Cage extends BaseController
             if ($is_exist > 0) {
                 return json_encode(2); // code doublon
             } else {
-                $id = $crud->createReturnId($arr, 21); // insertion cage
-                $emplacement = new Emplacement();
-                $result = $emplacement->updatetEmplacement($id, 24); // maj emplacement
+                $result = $crud->createReturnId($arr, 21); // insertion cage
                 return json_encode(intVal($result));
             }
         }
@@ -149,11 +147,6 @@ class Cage extends BaseController
                 $id = $arr_data['id'];
                 unset($arr_data['id']);
                 $result = $crud->maj(["id" => $id], $arr_data, 22);
-                if ($result != 1) {
-                    return json_encode($result);
-                }
-                $emplacement = new Emplacement();
-                $result =  $emplacement->updatetEmplacement($id, 25); // maj emplacement
                 return json_encode($result);
             }
         }

@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\CrudModel;
 use App\Controllers\Acces;
 
-class Entrepot extends BaseController
+class ArticleHorsX3 extends BaseController
 {
     protected $db;
     protected $session;
@@ -28,21 +28,37 @@ class Entrepot extends BaseController
 
     public function load()
     {
-        $crud = new CrudModel(TBL_ENTREPOT);
-        $arr['arr_data_entrepot'] = $crud->getAllData(array('flag_suppression' => 0), [], "*");
-        $arr['titre'] = "Gestion des entrepôts";
-        $arr['menu_emplacement'] = 'Entrepot';
+        $crud = new CrudModel(TBL_ALLEE);
+        $arrJoin = [
+            [
+                'table' => TBL_ENTREPOT,
+                'type'  => 'LEFT',
+                'on'    => TBL_ENTREPOT . '.id = ' . TBL_ALLEE . '.entrepot_id'
+            ]
+        ];
+        $select = TBL_ALLEE . ".id, " . TBL_ALLEE . ".code, " . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) as entrepot";
+        $arr['arr_data_allee'] = $crud->getAllData(array(TBL_ALLEE . '.flag_suppression' => 0), $arrJoin, $select);
+        $arr['titre'] = "Gestion des allées";
+        $arr['arr_data_entrepot'] = $this->getAllEntrepot();
+        $arr['menu_emplacement'] = 'Allee';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
-            echo view('entrepot/entrepot_view', $arr);
+            echo view('allee/list_view', $arr);
             return;
         }
-        echo view('entrepot/entrepot_view', $arr);
+        echo view('allee/list_view', $arr);
+    }
+
+    public function getAllEntrepot()
+    {
+        $crud = new CrudModel(TBL_ENTREPOT);
+        $arr_data_entrepot = $crud->getAllData(array('flag_suppression' => 0), [], "id,code,nom");
+        return $arr_data_entrepot;
     }
 
 
-    public function insertEntrepot()
+    public function insertAllee()
     {
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
@@ -51,12 +67,12 @@ class Entrepot extends BaseController
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
-            $crud = new CrudModel(TBL_ENTREPOT);
-            $is_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr['code'])), "flag_suppression" => 0));
+            $crud = new CrudModel(TBL_ALLEE);
+            $is_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr['code'])), "entrepot_id" => $arr['entrepot_id'], "flag_suppression" => 0));
             if ($is_exist > 0) {
                 return json_encode(2); // code doublon
             } else {
-                $result = $crud->create($arr, 9);
+                $result = $crud->create($arr, 12);
                 return json_encode(intVal($result));
             }
         }
@@ -66,28 +82,28 @@ class Entrepot extends BaseController
     /**
      * Visualisation d'un détail
      */
-    public function getEntrepot()
+    public function getAllee()
     {
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
             return redirect()->to('/');
         }
-        $crud = new CrudModel(TBL_ENTREPOT);
+        $crud = new CrudModel(TBL_ALLEE);
 
         $id = trim($this->request->getVar('id'));
         $action = trim($this->request->getVar('action'));
         $arrData = $crud->getDataById(array('id' => intval($id)));
+        $arr['arr_data_entrepot'] = $this->getAllEntrepot();
         $arr["errors"] = array();
         $arr["action"] = $action;
         $arr["data"] = $arrData;
         $arr["disabled"] = ($action == "voir") ? "disabled=disabled" : "";
         $arr["display"] = ($action == "voir") ? 'style="display:none;"' : "";
-        echo view('entrepot/maj_entrepot_view', $arr);
+        echo view('allee/maj_view', $arr);
     }
 
-
-    public function majEntrepot()
+    public function majAllee()
     {
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
@@ -95,18 +111,18 @@ class Entrepot extends BaseController
             return redirect()->to('/');
         }
         $arr_data = $this->request->getVar('data');
-        $crud = new CrudModel(TBL_ENTREPOT);
+        $crud = new CrudModel(TBL_ALLEE);
         if (!empty($arr_data)) {
-            $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
+            $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "entrepot_id" => $arr_data['entrepot_id'], "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
             if ($is_code_exist > 0) {
                 return json_encode(2); // code doublon
             } else if ($is_data_exist > 0) {
-                return json_encode(4); // aucune modification
+                return json_encode(3); // aucune modification
             } else {
                 $id = $arr_data['id'];
                 unset($arr_data['id']);
-                $result = $crud->maj(["id" => $id], $arr_data, 10);
+                $result = $crud->maj(["id" => $id], $arr_data, 13);
                 return json_encode($result);
             }
         }
@@ -115,7 +131,7 @@ class Entrepot extends BaseController
     /**
      * Supprimer un utilisateur
      */
-    public function deleteEntrepot()
+    public function deleteAllee()
     {
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
@@ -124,12 +140,8 @@ class Entrepot extends BaseController
         }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
-            $crud = new CrudModel(TBL_ENTREPOT);
-            $arr_base = $crud->getDataById(array("id = " . $id => null));
-            if ($arr_base->emplacement > 0) {
-                return json_encode(2); // l'entrepôt contient encore un ou des emplacements (c'est pas supprimable)
-            }
-            $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 11);
+            $crud = new CrudModel(TBL_ALLEE);
+            $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 14);
             return json_encode($result);
         }
         return json_encode(0);

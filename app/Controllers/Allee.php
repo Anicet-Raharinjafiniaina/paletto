@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Models\CrudModel;
 use App\Controllers\Acces;
-use App\Libraries\LibLdap;
-
 
 class Allee extends BaseController
 {
@@ -40,9 +38,9 @@ class Allee extends BaseController
         ];
         $select = TBL_ALLEE . ".id, " . TBL_ALLEE . ".code, " . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) as entrepot";
         $arr['arr_data_allee'] = $crud->getAllData(array(TBL_ALLEE . '.flag_suppression' => 0), $arrJoin, $select);
-        $arr['titre'] = "Gestion des emplacements";
+        $arr['titre'] = "Gestion des allées";
         $arr['arr_data_entrepot'] = $this->getAllEntrepot();
-        $arr['menu_emplacement'] = 'allee';
+        $arr['menu_emplacement'] = 'Allee';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;

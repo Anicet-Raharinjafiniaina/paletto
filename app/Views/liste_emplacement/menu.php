@@ -53,19 +53,19 @@
 <?php
 /** menus dans emplacement */
 $controllers = [
-    'liste emplacement'   => 'Emplacement',
-    'entrepot'       => 'Entrepot',
-    'allee'       => 'Allee',
-    'rangee'      => 'Rangee',
-    'niveau'      => 'Niveau',
-    'cage'        => 'Cage',
-    'emplacement' => 'Emplacement/gererEmplacement'
+    'Liste emplacement'   => 'ListeEmplacement',
+    'Entrepot'       => 'Entrepot',
+    'Allee'       => 'Allee',
+    'Rangee'      => 'Rangee',
+    'Niveau'      => 'Niveau',
+    'Cage'        => 'Cage',
+    'Emplacement' => 'Emplacement'
 ];; ?>
 <nav class="glass-menu">
     <?php foreach ($controllers as $key => $label): ?>
         <a onclick="loadPage(urlProject + '<?= $controllers[$key] ?>', true)"
             class="glass-item <?= ($key === $menu_emplacement) ? 'active' : '' ?>">
-            <?= $label ?>
+            <?= $key ?>
         </a>
     <?php endforeach; ?>
 </nav>

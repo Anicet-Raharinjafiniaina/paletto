@@ -16,8 +16,11 @@
                 <div class="logo-icon">📦</div>
             </div>
 
-            <h2>WMS Gestion Palette</h2>
-            <p class="subtitle">Système de traçabilité des palettes</p>
+            <div class="text-center mb-2">
+                <img src="<?= base_url('assets/images/logoBoost2.png') ?>" alt="Logo WMS" width="180" class="img-fluid mb-2">
+            </div>
+            <br>
+            <p class="subtitle"><i>Système de traçabilité des palettes</i></p>
 
             <form>
                 <label for="login">Login (LDAP)</label>
@@ -31,19 +34,6 @@
                 <button type="button" id="btn_connecter" class="btn-primary">Se connecter</button>
             </form>
             <span id="info"></span>
-            <p class="info">Authentification via LDAP - 3 tentatives maximum</p>
-
-            <hr>
-
-            <p class="section-title">Accès rapide (Démo):</p>
-
-            <div class="roles">
-                <button class="role admin">Administrateur</button>
-                <button class="role responsable">Responsable</button>
-                <button class="role operateur">Opérateur</button>
-                <button class="role consultation">Consultation</button>
-            </div>
-
         </div>
     </div>
     <script>

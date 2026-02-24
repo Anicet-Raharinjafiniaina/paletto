@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Models\CrudModel;
 use App\Controllers\Acces;
-use App\Libraries\LibLdap;
-
 
 class Rangee extends BaseController
 {
@@ -45,10 +43,10 @@ class Rangee extends BaseController
         ];
         $select = TBL_RANGEE . ".id, " . TBL_RANGEE . ".code, "  . TBL_ALLEE . ".code AS allee," . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) AS entrepot";
         $arr['arr_data_rangee'] = $crud->getAllData(array(TBL_RANGEE . '.flag_suppression' => 0), $arrJoin, $select);
-        $arr['titre'] = "Gestion des emplacements";
+        $arr['titre'] = "Gestion des rangées";
         $arr['arr_data_entrepot'] = $this->getAllEntrepot();
         // $arr['arr_data_allee'] = $this->getAllAllee();
-        $arr['menu_emplacement'] = 'rangee';
+        $arr['menu_emplacement'] = 'Rangee';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;

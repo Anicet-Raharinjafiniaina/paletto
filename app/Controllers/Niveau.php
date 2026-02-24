@@ -51,11 +51,11 @@ class Niveau extends BaseController
         ];
         $select = TBL_NIVEAU . ".id, " . TBL_NIVEAU . ".code, "  . TBL_RANGEE . ".code AS rangee," . TBL_ALLEE . ".code AS allee," . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) AS entrepot";
         $arr['arr_data_niveau'] = $crud->getAllData(array(TBL_NIVEAU . '.flag_suppression' => 0), $arrJoin, $select);
-        $arr['titre'] = "Gestion des emplacements";
+        $arr['titre'] = "Gestion des niveaux";
         $rangee = new Rangee();
         $arr['arr_data_entrepot'] = $rangee->getAllEntrepot();
         // $arr['arr_data_allee'] = $rangee->getAllAllee();
-        $arr['menu_emplacement'] = 'niveau';
+        $arr['menu_emplacement'] = 'Niveau';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
