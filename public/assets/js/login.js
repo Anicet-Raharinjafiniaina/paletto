@@ -9,6 +9,7 @@ $(document).ready(function () {
         if (checkInput() == false) { // validation des champs
             return;
         }
+        $("#btn_connecter").prop("disabled", true);
         $.ajax({
             url: urlProject + "Login/loginAuth",
             type: "POST",
@@ -17,6 +18,7 @@ $(document).ready(function () {
                 mdp: $("#password").val()
             },
             success: function (response) {
+                $("#btn_connecter").prop("disabled", false);
                 if (response == 0) {
                     flashMessage("error", "Vous n'êtes pas autorisé à accéder à cette application.");
                 } else if (response == 1) {
@@ -24,9 +26,7 @@ $(document).ready(function () {
                     $('#password').val('');
                 } else if (response == 2) {
                     flashMessage("success", "Connexion réussie !");
-                    setTimeout(function () {
-                        window.location.href = urlProject + "Profil";
-                    }, 800);
+                    window.location.href = urlProject + "Profil";
                 } else {
                     flashMessage("error", "Erreur lors de la connexion !");
                 }
@@ -53,7 +53,7 @@ function flashMessage(type, message) {
     el.stop(true, true)
         .text(message)
         .fadeIn(200)
-        .delay(4000)
+        .delay(5000)
         .fadeOut(400);
 }
 
@@ -75,6 +75,20 @@ function checkInput() {
     } else {
         $("#password-error").text("");
     }
-
     if (!valid) return false; // on bloque le submit
+}
+
+function togglePassword() {
+    let password = document.getElementById("password");
+    let icon = document.getElementById("eyeIcon");
+
+    if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        password.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
 }

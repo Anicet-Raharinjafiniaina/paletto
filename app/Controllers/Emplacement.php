@@ -133,7 +133,6 @@ class Emplacement extends BaseController
         }
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_EMPLACEMENT);
-        $crudDetailEmplacement = new CrudModel(TBL_LISTE_EMPLACEMENT);
         if (!empty($arr_data)) {
             unset($arr_data['allee_id_base']);
             unset($arr_data['rangee_id_base']);
@@ -142,8 +141,8 @@ class Emplacement extends BaseController
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "entrepot_id" => $arr_data['entrepot_id'], "allee_id" => $arr_data['allee_id'], "rangee_id" => $arr_data['rangee_id'], "niveau_id" => $arr_data['niveau_id'], "cage_id" => $arr_data['cage_id'], "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
 
-            $arrFilter = ['emplacement_id' => $arr_data['id'], 'emplacement_statut_id' => 2, 'flag_suppression' => 0];
-            $nb = $crudDetailEmplacement->getNb($arrFilter);
+            $arrFilter = ['emplacement_id' => $arr_data['id'], 'statut_id' => 2];
+            $nb = $this->compterListeEmplacement($arrFilter);
 
             if ($is_code_exist > 0) {
                 return json_encode(2); // données doublon
@@ -180,8 +179,8 @@ class Emplacement extends BaseController
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_EMPLACEMENT);
             $crudDetailEmplacement = new CrudModel(TBL_LISTE_EMPLACEMENT);
-            $arrFilter = ['emplacement_id' => $id, 'emplacement_statut_id' => 1, 'flag_suppression' => 0];
-            $nb = $crudDetailEmplacement->getNb($arrFilter);
+            $arrFilter = ['emplacement_id' => $id, 'statut_id' => 1];
+            $nb = $this->compterListeEmplacement($arrFilter);
             if ($nb > 0) { // emplacement libre
                 $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 26);
                 $crudDetailEmplacement->del(["emplacement_id" => $id, "flag_suppression" => 0], ["flag_suppression" => 1], 0);
@@ -191,5 +190,12 @@ class Emplacement extends BaseController
             return json_encode($result);
         }
         return json_encode($result);
+    }
+
+
+    function compterListeEmplacement($arrFilter)
+    {
+        $crud = new CrudModel(VIEW_LISTE_EMPLACEMENT);
+        return $crud->getNb($arrFilter);
     }
 }

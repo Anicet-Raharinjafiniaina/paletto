@@ -55,7 +55,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                         2 => 'bg-danger'
                                     ];
                                     ?> <td>
-                                        <span class="badge rounded-pill <?= $statutClasses[$value->statut_id] ?? 'bg-secondary' ?>">
+                                        <span class="badge rounded-pill p-2 <?= $statutClasses[$value->statut_id] ?? 'bg-secondary' ?>">
                                             <?= $value->statut ?>
                                         </span>
                                     </td>

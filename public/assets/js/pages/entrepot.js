@@ -121,8 +121,8 @@ function deleteItem(id) {
                     return true;
                 } else if (response == 2) {
                     Swal.fire({
-                        title: "Information",
-                        html: "Impossible de supprimer cet entrepôt car il est lié à des emplacements.",
+                        title: "Suppression impossible",
+                        html: "Impossible de faire la suppression car l'emplacement associé à cet entrepôt est <b>occupé</b>.",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -186,13 +186,21 @@ function maj() {
                         } else if (res == 2) {
                             Swal.fire({
                                 title: "Doublon",
-                                html: "Le code  <b>" + $("#code_upd").val() + "</b> existe déjà.",
+                                html: "Le code <b>" + $("#code_upd").val() + "</b> existe déjà.",
                                 icon: "warning",
                                 timer: 3000,
                                 showConfirmButton: false,
                             });
                             $("#save_upd").prop("disabled", false);
                         } else if (res == 3) {
+                            Swal.fire({
+                                title: "Modification impossible",
+                                html: "Impossible de faire la modification car l'emplacement associé à cet entrepôt est <b>occupé</b>.",
+                                icon: "warning",
+                                showConfirmButton: true,
+                            });
+                            $("#save_upd").prop("disabled", false);
+                        } else if (res == 4) {
                             Swal.fire({
                                 title: "Modification",
                                 html: "Aucune modification.",

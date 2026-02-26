@@ -33,7 +33,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                             <th>CODE</th>
                             <th>NOM</th>
                             <th>LOCALISATION</th>
-                            <th>EMPLACEMENT</th>
                         </tr>
                     </thead>
 
@@ -50,7 +49,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                     <td><?= $value->code ?></td>
                                     <td><?= $value->nom ?></td>
                                     <td><?= $value->localisation ?></td>
-                                    <td><?= $value->emplacement ?></td>
                                 </tr>
                         <?php endforeach;
                         endif;   ?>
@@ -66,9 +64,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 <div id="modal_ajout_entrepot" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header justify-content-center position-relative">
                 <h5 class="modal-title" id="myModalLabel">Ajouter un entrepôt</h5>
-                <button type="button" class="btn-close float-right" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
@@ -92,7 +90,8 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-xs btn-sm" id="save" onclick="insert()">Enregistrer</button>
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="save" onclick="insert()">Enregistrer</button>
                     </div>
                 </form>
             </div>
@@ -106,9 +105,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 <div id="modal_view_entrepot" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center" id="title">Modification d'un entrepôt</h5>
-                <button type="button" class="btn-close float-right" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header justify-content-center position-relative">
+                <h5 class="modal-title" id="myModalLabel">Modification d'un entrepôt</h5>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="content-entrepot"></div>
         </div>

@@ -34,15 +34,18 @@
 
         <?php $checked = ($profil->actif == 1) ? 'checked="checked"' : ""; ?>
         <div class="form-group">
-            <div class="form-check form-switch switch-label">
-                <input type="checkbox" class="form-check-input" name="actif" id="actif" value="<?= $profil->actif; ?>"
-                    <?= $checked; ?> <?= $disabled; ?>>
+            <div class="d-flex align-items-center gap-2">
+                <span class="mb-n2"><label for="actif">Actif</label></span>
+                <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input" name="actif" id="actif" value="<?= $profil->actif; ?>" <?= $checked; ?><?= $disabled; ?>>
+                </div>
             </div>
         </div>
 
         <?php if ($disabled == ""): ?>
             <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
-                <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="maj()"
+                <button type="button" class="btn btn-danger btn-xs btn-sm" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary btn-sm float-right" id="save_upd" onclick="maj()"
                     data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer" <?= $disabled; ?>>
                     Enregistrer</button>
             </div>

@@ -2,20 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Models\CrudModel;
 use App\Controllers\Acces;
+use App\Controllers\Emplacement;
+use App\Models\CrudModel;
 
 class Entrepot extends BaseController
 {
-    protected $db;
-    protected $session;
-
-    public function __construct()
-    {
-        $this->db = db_connect();
-        $this->session = \Config\Services::session();
-    }
-
     public function index()
     {
         $acces  = new Acces();
@@ -35,12 +27,11 @@ class Entrepot extends BaseController
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
-            echo view('entrepot/entrepot_view', $arr);
+            echo view('entrepot/list_view', $arr);
             return;
         }
-        echo view('entrepot/entrepot_view', $arr);
+        echo view('entrepot/list_view', $arr);
     }
-
 
     public function insertEntrepot()
     {
@@ -83,9 +74,8 @@ class Entrepot extends BaseController
         $arr["data"] = $arrData;
         $arr["disabled"] = ($action == "voir") ? "disabled=disabled" : "";
         $arr["display"] = ($action == "voir") ? 'style="display:none;"' : "";
-        echo view('entrepot/maj_entrepot_view', $arr);
+        echo view('entrepot/maj_view', $arr);
     }
-
 
     public function majEntrepot()
     {
@@ -96,11 +86,18 @@ class Entrepot extends BaseController
         }
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_ENTREPOT);
+        $emplacementController = new Emplacement();
         if (!empty($arr_data)) {
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
+
+            $arrFilter = ['entrepot_id' => $arr_data['id'], 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+
             if ($is_code_exist > 0) {
                 return json_encode(2); // code doublon
+            } else if ($nb > 0) {
+                return json_encode(3); // Impossible de faire la modification car l’emplacement associé à cet entrepôt est occupé.
             } else if ($is_data_exist > 0) {
                 return json_encode(4); // aucune modification
             } else {
@@ -125,9 +122,11 @@ class Entrepot extends BaseController
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_ENTREPOT);
-            $arr_base = $crud->getDataById(array("id = " . $id => null));
-            if ($arr_base->emplacement > 0) {
-                return json_encode(2); // l'entrepôt contient encore un ou des emplacements (c'est pas supprimable)
+            $emplacementController = new Emplacement();
+            $arrFilter = ['entrepot_id' => $id, 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+            if ($nb > 0) {
+                return json_encode(2); // Impossible de faire la modification car l’emplacement associé à cet entrepôt est occupé.
             }
             $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 11);
             return json_encode($result);

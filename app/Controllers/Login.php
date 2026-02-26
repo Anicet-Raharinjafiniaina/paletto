@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Models\CrudModel;
 use App\Libraries\LibLdap;
-use App\Models\UsersModel;
-use App\Models\HistoriqueConnexionsModel;
 
 class Login extends BaseController
 {
@@ -35,6 +33,9 @@ class Login extends BaseController
             return json_encode(0); //l'utilisateurn'est pas autorisé à accéder à cette application
         }
 
+        $crudProfil = new CrudModel(TBL_PROFIL);
+        $arrProfil = $crudProfil->getDataByIdArray(['id' => $arrUser['profil_id'], 'actif' => 1, 'flag_suppression' => 0]);
+
         // Authentification via LDAP
         $ldap = new LibLdap($login, $password, $login);
         $res = $ldap->getInfos();
@@ -59,8 +60,9 @@ class Login extends BaseController
             'direction'    => $infoLower['department'][0] ?? '',
             'bureau'       => $infoLower['physicaldeliveryofficename'][0] ?? '',
             'thumbnailphoto'    => $infoLower['thumbnailphoto'][0] ?? '',
-            'user_id'      => $arrUser['id'],
-            'profil_id'    => $arrUser['profil_id'],
+            'user_id'      => $arrUser['id'] ?? '',
+            'profil_id'    => $arrUser['profil_id'] ?? '',
+            'profil'       => $arrProfil['libelle'] ?? '',
             'mdp'    => $password
         ]);
 

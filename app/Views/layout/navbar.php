@@ -49,6 +49,13 @@
                                  </i></u> </span>
                          </div>
                          <div class="dropdown-divider"></div>
+                         <div class="d-flex align-items-center px-3 py-2">
+                             <i class="mdi mdi-account-multiple font-size-16 me-2"></i>
+                             <span class="fw-medium"><i><u>
+                                         <?= session()->get('utilisateur')['profil'] ?? "" ?>
+                                 </i></u> </span>
+                         </div>
+                         <div class="dropdown-divider"></div>
                          <a class="dropdown-item" href="<?= base_url("/Login/logout") ?>"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Se déconnecter</a>
                      </div>
                  </div>

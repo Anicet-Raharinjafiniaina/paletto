@@ -57,8 +57,8 @@
 
     <?php if ($disabled == ""): ?>
         <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
-            <button type="button" class="btn btn-secondary btn-xs btn-sm" data-bs-dismiss="modal">Annuler</button>
-            <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="maj()"
+            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary btn-sm float-right" id="save_upd" onclick="maj()"
                 data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer" <?= $disabled; ?>>
                 Enregistrer</button>
         </div>

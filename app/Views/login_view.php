@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMS Gestion Palette</title>
     <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/libs/font_awesome/all.min.css') ?>">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> -->
+
 </head>
 
 <body>
@@ -27,9 +30,16 @@
                 <input type="text" id="login" placeholder="Entrez votre login">
                 <small id="login-error" class="error"></small>
 
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" placeholder="Entrez votre mot de passe">
-                <small id="password-error" class="error"></small>
+                <div class="password-wrapper">
+                    <label class="label">Mot de passe</label>
+
+                    <div class="password-box">
+                        <input type="password" id="password" placeholder="Entrez votre mot de passe">
+
+                        <i id="eyeIcon" class="fa-regular fa-eye" onclick="togglePassword()"></i>
+                    </div>
+                </div>
+
 
                 <button type="button" id="btn_connecter" class="btn-primary">Se connecter</button>
             </form>
