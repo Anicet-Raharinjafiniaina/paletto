@@ -78,17 +78,24 @@ function checkInput() {
     if (!valid) return false; // on bloque le submit
 }
 
-function togglePassword() {
-    let password = document.getElementById("password");
-    let icon = document.getElementById("eyeIcon");
+document.addEventListener("DOMContentLoaded", function () {
 
-    if (password.type === "password") {
-        password.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-    } else {
-        password.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-    }
-}
+    feather.replace();
+
+    const password = document.getElementById("password");
+    const toggle = document.getElementById("togglePassword");
+
+    toggle.addEventListener("click", function () {
+
+        if (password.type === "password") {
+            password.type = "text";
+            toggle.innerHTML = '<i data-feather="eye-off"></i>';
+        } else {
+            password.type = "password";
+            toggle.innerHTML = '<i data-feather="eye"></i>';
+        }
+
+        feather.replace();
+    });
+
+});
