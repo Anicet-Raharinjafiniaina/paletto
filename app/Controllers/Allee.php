@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Models\CrudModel;
 use App\Controllers\Acces;
+use App\Controllers\Emplacement;
+use App\Models\CrudModel;
 
 class Allee extends BaseController
 {
@@ -115,6 +116,14 @@ class Allee extends BaseController
         if (!empty($arr_data)) {
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "entrepot_id" => $arr_data['entrepot_id'], "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
+
+            $emplacementController = new Emplacement();
+            $arrFilter = ['allee_id' => $arr_data['id'], 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+            if ($nb > 0) {
+                return json_encode(4); // Impossible de faire la modification car l’emplacement associé à cette allée est occupé.
+            }
+
             if ($is_code_exist > 0) {
                 return json_encode(2); // code doublon
             } else if ($is_data_exist > 0) {
@@ -141,8 +150,15 @@ class Allee extends BaseController
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_ALLEE);
-            $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 14);
-            return json_encode($result);
+            $emplacementController = new Emplacement();
+            $arrFilter = ['allee_id' => $id, 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+            if ($nb > 0) {
+                return json_encode(2); // Impossible de faire la suppression car l’emplacement associé à cette allée est occupé.
+            } else {
+                $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 14);
+                return json_encode($result);
+            }
         }
         return json_encode(0);
     }

@@ -25,15 +25,16 @@
             <p class="subtitle"><i>Système de traçabilité des palettes</i></p>
 
             <form>
-                <label for="login">Login (LDAP)</label>
-                <input type="text" id="login" placeholder="Entrez votre login">
-
-                <!-- <div class="password-box">
-                    <input type="password" id="password" placeholder="Entrez votre mot de passe">
-                    <span id="togglePassword" class="toggle-eye">
-                        <i data-feather="eye"></i>
-                    </span>
-                </div> -->
+                <div class="form-group">
+                    <div class="input-group">
+                        <!-- Icône à gauche du champ de saisie -->
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="login" placeholder="Entrez votre login" required>
+                    </div>
+                    <label id="login-error" class="validation-error-label" for="login"></label>
+                </div>
 
                 <div class="form-group">
                     <div class="input-group">
@@ -41,7 +42,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                         </div>
-                        <input type="password" class="form-control" id="mdp" placeholder="Entrez votre mot de passe">
+                        <input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe">
                         <div class="input-group-append">
                             <!-- Icône d'œil pour montrer/cacher le mot de passe -->
                             <span class="input-group-text" id="togglePassword">
@@ -49,10 +50,10 @@
                             </span>
                         </div>
                     </div>
-                    <label id="mdp-error" class="validation-error-label" for="mdp"></label>
+                    <label id="password-error" class="validation-error-label" for="password"></label>
                 </div>
 
-                <button type="button" class="btn-primary">
+                <button type="button" id="btn_connecter" class="btn-primary">
                     Se connecter
                 </button>
             </form>

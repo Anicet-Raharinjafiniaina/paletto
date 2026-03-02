@@ -56,13 +56,13 @@ label {
     margin: 10px 0 6px;
 }
 
-input {
+/* input {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
     margin-bottom: 8px;
-}
+} */
 
 input:focus {
     border-color: #2563eb;
@@ -183,4 +183,24 @@ hr {
         cursor: pointer;
         width: 18px;
         height: 18px;
+    }
+
+     /* Ajustement pour que l'icône et l'input soient de la même hauteur */
+    .input-group-text {
+        height: calc(2.25rem + 2px);
+        /* Hauteur identique à celle de l'input */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .input-group .form-control {
+        height: calc(2.25rem + 2px);
+        /* Hauteur identique pour le champ de saisie */
+    }
+
+    /* Ajout d'un petit ajustement pour aligner parfaitement l'icône */
+    .input-group .input-group-text i {
+        font-size: 1.2rem;
+        /* Taille de l'icône */
     }

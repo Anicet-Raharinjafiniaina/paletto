@@ -63,17 +63,17 @@ function checkInput() {
     let valid = true;
 
     if (login == "") {
-        $("#login-error").text("Veuillez saisir votre login.");
+        $("#login-error").html("<i>Veuillez saisir votre login.</i>");
         valid = false;
     } else {
-        $("#login-error").text("");
+        $("#login-error").html("");
     }
 
     if (password == "") {
-        $("#password-error").text("Veuillez saisir votre mot de passe.");
+        $("#password-error").html("<i>Veuillez saisir votre mot de passe.</i>");
         valid = false;
     } else {
-        $("#password-error").text("");
+        $("#password-error").html("");
     }
     if (!valid) return false; // on bloque le submit
 }
