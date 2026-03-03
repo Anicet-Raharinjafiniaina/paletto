@@ -69,9 +69,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 <div id="modal_ajout_cage" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header justify-content-center position-relative">
                 <h5 class="modal-title" id="myModalLabel">Ajouter une cage</h5>
-                <button type="button" class="btn-close float-right" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
@@ -112,6 +112,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     </div>
 
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
                         <button type="button" class="btn btn-primary btn-xs btn-sm" id="save" onclick="insert()">Enregistrer</button>
                     </div>
                 </form>
@@ -126,9 +127,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 <div id="modal_view_cage" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center" id="title">Modification d'une cage</h5>
-                <button type="button" class="btn-close float-right" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header justify-content-center position-relative">
+                <h5 class="modal-title" id="myModalLabel">Modification d'une cage</h5>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="content-cage"></div>
         </div>

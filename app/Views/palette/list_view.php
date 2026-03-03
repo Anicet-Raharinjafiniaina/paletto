@@ -31,8 +31,8 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     <thead class="text-center">
                         <tr>
                             <th>ACTION</th>
-                            <th>CODE</th>
                             <th>ETAT</th>
+                            <th>CODE</th>
                             <th>CLIENT</th>
                         </tr>
                     </thead>
@@ -48,17 +48,17 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                         <button href="#" type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-popup="tooltip" title=" Mettre à jour" data-placement="bottom" onclick="view(<?= $value->id ?>,'upd')" <?= $disable_btn; ?>><img src="<?= base_url('assets/images/modifier.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
                                         <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_niveau" data-popup="tooltip" title="Supprimer" data-placement="bottom" onclick="deleteItem(<?= $value->id ?>)" <?= $disable_btn; ?>><img src="<?= base_url('assets/images/supprimer.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
                                     </td>
-                                    <td><?= $value->code ?></td>
                                     <?php $statutClasses = [
                                         1 => 'bg-success',
                                         2 => 'bg-secondary',
                                         3 => 'bg-danger',
                                     ];
                                     ?> <td>
-                                        <span class="badge rounded-pill <?= $statutClasses[$value->palette_statut_id] ?? 'bg-secondary' ?>">
+                                        <span class="badge rounded-pill p-2 <?= $statutClasses[$value->palette_statut_id] ?? 'bg-secondary' ?>">
                                             <?= $value->statut ?>
                                         </span>
                                     </td>
+                                    <td><?= $value->code ?></td>
                                     <td><?= $value->client_code . " - " . $value->client_nom ?></td>
                                 </tr>
                         <?php endforeach;
@@ -75,9 +75,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 <div id="modal_ajout_palette" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header justify-content-center position-relative">
                 <h5 class="modal-title" id="myModalLabel">Ajouter une palette</h5>
-                <button type="button" class="btn-close float-right" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
@@ -118,6 +118,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <label id="client-error" class="validation-error-label" for="client"></label>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
                         <button type="button" class="btn btn-primary btn-xs btn-sm" id="save" onclick="insert()">Enregistrer</button>
                     </div>
                 </form>
@@ -132,9 +133,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 <div id="modal_view_palette" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center" id="title">Modification d'une palette</h5>
-                <button type="button" class="btn-close float-right" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header justify-content-center position-relative">
+                <h5 class="modal-title" id="myModalLabel">Modification d'une palette</h5>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="content-palette"></div>
         </div>

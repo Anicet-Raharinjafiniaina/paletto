@@ -51,7 +51,7 @@
     </div>
     <br><br>
     <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
-        <button type="button" class="btn btn-secondary btn-xs btn-sm" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger btn-xs btn-sm" data-bs-dismiss="modal">Annuler</button>
         <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="imprimer('printable-emplacement-content')"
             data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer">
             Imprimer</button>

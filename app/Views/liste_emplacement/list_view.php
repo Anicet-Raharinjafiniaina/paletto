@@ -26,6 +26,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     <thead class="text-center">
                         <tr>
                             <th>ACTION</th>
+                            <th>ETAT</th>
                             <th>LOCALISATION</th>
                             <th>ENTREPÔT</th>
                             <th>ALLÉE</th>
@@ -33,7 +34,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                             <th>NIVEAU</th>
                             <th>CAGE</th>
                             <th>EMPLACEMENT</th>
-                            <th>ETAT</th>
                         </tr>
                     </thead>
 
@@ -45,13 +45,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                     <td class="text-center cursor-pointer td_no_border">
                                         <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_emplacement" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->emplacement_id ?>,'voir')"><i class="fas fa-qrcode fa-lg"></i></a></button>
                                     </td>
-                                    <td><?= $value->qr_code_texte ?></td>
-                                    <td><?= $value->entrepot_code ?></td>
-                                    <td><?= $value->allee_code ?></td>
-                                    <td><?= $value->rangee_code ?></td>
-                                    <td><?= $value->niveau_code ?></td>
-                                    <td><?= $value->cage_code ?></td>
-                                    <td><?= $value->emplacement_code ?></td>
                                     <?php $statutClasses = [
                                         1 => 'bg-success',
                                         2 => 'bg-danger'
@@ -61,6 +54,13 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                             <?= $value->statut ?>
                                         </span>
                                     </td>
+                                    <td><?= $value->qr_code_texte ?></td>
+                                    <td><?= $value->entrepot_code ?></td>
+                                    <td><?= $value->allee_code ?></td>
+                                    <td><?= $value->rangee_code ?></td>
+                                    <td><?= $value->niveau_code ?></td>
+                                    <td><?= $value->cage_code ?></td>
+                                    <td><?= $value->emplacement_code ?></td>
                                 </tr>
                         <?php endforeach;
                         endif;   ?>
