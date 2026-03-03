@@ -26,12 +26,13 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     <thead class="text-center">
                         <tr>
                             <th>ACTION</th>
-                            <th>EMPLACEMENT</th>
+                            <th>LOCALISATION</th>
                             <th>ENTREPÔT</th>
                             <th>ALLÉE</th>
                             <th>RANGÉE</th>
                             <th>NIVEAU</th>
                             <th>CAGE</th>
+                            <th>EMPLACEMENT</th>
                             <th>ETAT</th>
                         </tr>
                     </thead>
@@ -50,6 +51,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                     <td><?= $value->rangee_code ?></td>
                                     <td><?= $value->niveau_code ?></td>
                                     <td><?= $value->cage_code ?></td>
+                                    <td><?= $value->emplacement_code ?></td>
                                     <?php $statutClasses = [
                                         1 => 'bg-success',
                                         2 => 'bg-danger'

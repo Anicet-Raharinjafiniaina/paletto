@@ -138,6 +138,13 @@ function deleteItem(id) {
                 stopLoaderContent('main')
                 if (response === 1) {
                     return true;
+                } else if (response == 2) {
+                    Swal.fire({
+                        title: "Suppression impossible",
+                        html: "Impossible de faire la suppression car l'emplacement associé à ce niveau est <b>occupé</b>.",
+                        icon: "warning",
+                        showConfirmButton: true,
+                    });
                 } else {
                     throw new Error("Erreur lors de la suppression.");
                 }
@@ -211,6 +218,14 @@ function maj() {
                                 icon: "warning",
                                 timer: 2000,
                                 showConfirmButton: false,
+                            });
+                            $("#save_upd").prop("disabled", false);
+                        } else if (res == 4) {
+                            Swal.fire({
+                                title: "Modification impossible",
+                                html: "Impossible de faire la modification car l'emplacement associé à ce niveau est <b>occupé</b>.",
+                                icon: "warning",
+                                showConfirmButton: true,
                             });
                             $("#save_upd").prop("disabled", false);
                         } else {

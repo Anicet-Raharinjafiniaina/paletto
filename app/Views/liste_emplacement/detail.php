@@ -39,6 +39,11 @@
         </div>
 
         <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Emplacement :</div>
+            <div class="col-7 text-start"><?= $data->emplacement_code ?></div>
+        </div>
+
+        <div class="row mb-1 align-items-center">
             <div class="col-5 fw-semibold text-end">Etat : </div>
             <div class="col-7 text-start"><?= $data->statut ?></div>
         </div>

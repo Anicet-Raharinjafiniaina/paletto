@@ -53,7 +53,7 @@ class Cage extends BaseController
             ],
         ];
         $select = TBL_CAGE . ".id, " . TBL_CAGE . ".code, " . TBL_NIVEAU . ".code AS niveau," . TBL_RANGEE . ".code AS rangee," . TBL_ALLEE . ".code AS allee," . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) AS entrepot";
-        $arr['arr_data_cage'] = $crud->getAllData(array(TBL_CAGE . '.flag_suppression' => 0), $arrJoin, $select);
+        $arr['arr_data_cage'] = $crud->getAllData(array(TBL_CAGE . '.flag_suppression' => 0, TBL_ENTREPOT . '.flag_suppression' => 0, TBL_ALLEE . '.flag_suppression' => 0, TBL_RANGEE . '.flag_suppression' => 0, TBL_NIVEAU . '.flag_suppression' => 0), $arrJoin, $select);
         $arr['titre'] = "Gestion des cages";
         $rangee = new Rangee();
         $arr['arr_data_entrepot'] = $rangee->getAllEntrepot();
@@ -139,6 +139,14 @@ class Cage extends BaseController
             unset($arr_data['niveau_id_base']);
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "entrepot_id" => $arr_data['entrepot_id'], "allee_id" => $arr_data['allee_id'], "rangee_id" => $arr_data['rangee_id'], "niveau_id" => $arr_data['niveau_id'], "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
+
+            $emplacementController = new Emplacement();
+            $arrFilter = ['cage_id' => $arr_data['id'], 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+            if ($nb > 0) {
+                return json_encode(4); // Impossible de faire la modification car l’emplacement associé à cette cage est occupé.
+            }
+
             if ($is_code_exist > 0) {
                 return json_encode(2); // code doublon
             } else if ($is_data_exist > 0) {
@@ -165,8 +173,15 @@ class Cage extends BaseController
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_CAGE);
-            $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 23);
-            return json_encode($result);
+            $emplacementController = new Emplacement();
+            $arrFilter = ['cage_id' => $id, 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+            if ($nb > 0) {
+                return json_encode(2); // Impossible de faire la suppression car l’emplacement associé à cette cage est occupé.
+            } else {
+                $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 23);
+                return json_encode($result);
+            }
         }
         return json_encode(0);
     }

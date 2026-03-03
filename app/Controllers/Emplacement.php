@@ -50,7 +50,7 @@ class Emplacement extends BaseController
             ],
         ];
         $select = TBL_EMPLACEMENT . ".id, " . TBL_EMPLACEMENT . ".code, " . TBL_CAGE . ".code AS cage," . TBL_NIVEAU . ".code AS niveau," . TBL_RANGEE . ".code AS rangee," . TBL_ALLEE . ".code AS allee," . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) AS entrepot";
-        $arr['arr_data_emplacement'] = $crud->getAllData(array(TBL_EMPLACEMENT . '.flag_suppression' => 0), $arrJoin, $select);
+        $arr['arr_data_emplacement'] = $crud->getAllData(array(TBL_EMPLACEMENT . '.flag_suppression' => 0, TBL_ENTREPOT . '.flag_suppression' => 0, TBL_ALLEE . '.flag_suppression' => 0, TBL_RANGEE . '.flag_suppression' => 0, TBL_NIVEAU . '.flag_suppression' => 0, TBL_CAGE . '.flag_suppression' => 0), $arrJoin, $select);
         $arr['titre'] = "Gestion des emplacements";
         $arr['menu_emplacement'] = 'Emplacement';
         $rangee = new Rangee();

@@ -2,20 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Models\CrudModel;
 use App\Controllers\Acces;
+use App\Controllers\Emplacement;
+use App\Models\CrudModel;
 
 class Rangee extends BaseController
 {
-    protected $db;
-    protected $session;
-
-    public function __construct()
-    {
-        $this->db = db_connect();
-        $this->session = \Config\Services::session();
-    }
-
     public function index()
     {
         $acces  = new Acces();
@@ -42,7 +34,7 @@ class Rangee extends BaseController
             ],
         ];
         $select = TBL_RANGEE . ".id, " . TBL_RANGEE . ".code, "  . TBL_ALLEE . ".code AS allee," . "CONCAT(" . TBL_ENTREPOT . ".code, ' - ', " . TBL_ENTREPOT . ".nom) AS entrepot";
-        $arr['arr_data_rangee'] = $crud->getAllData(array(TBL_RANGEE . '.flag_suppression' => 0), $arrJoin, $select);
+        $arr['arr_data_rangee'] = $crud->getAllData(array(TBL_RANGEE . '.flag_suppression' => 0, TBL_ENTREPOT . '.flag_suppression' => 0, TBL_ALLEE . '.flag_suppression' => 0), $arrJoin, $select);
         $arr['titre'] = "Gestion des rangées";
         $arr['arr_data_entrepot'] = $this->getAllEntrepot();
         // $arr['arr_data_allee'] = $this->getAllAllee();
@@ -140,6 +132,14 @@ class Rangee extends BaseController
             unset($arr_data['allee_id_base']);
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "entrepot_id" => $arr_data['entrepot_id'], "allee_id" => $arr_data['allee_id'], "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
+
+            $emplacementController = new Emplacement();
+            $arrFilter = ['rangee_id' => $arr_data['id'], 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+            if ($nb > 0) {
+                return json_encode(4); // Impossible de faire la modification car l’emplacement associé à cette rangée est occupé.
+            }
+
             if ($is_code_exist > 0) {
                 return json_encode(2); // code doublon
             } else if ($is_data_exist > 0) {
@@ -166,8 +166,15 @@ class Rangee extends BaseController
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_RANGEE);
-            $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 17);
-            return json_encode($result);
+            $emplacementController = new Emplacement();
+            $arrFilter = ['rangee_id' => $id, 'statut_id' => 2];
+            $nb = $emplacementController->compterListeEmplacement($arrFilter);
+            if ($nb > 0) {
+                return json_encode(2); // Impossible de faire la suppression car l’emplacement associé à cette rangée est occupé.
+            } else {
+                $result = $crud->del(["id" => $id], ["flag_suppression" => 1], 17);
+                return json_encode($result);
+            }
         }
         return json_encode(0);
     }
