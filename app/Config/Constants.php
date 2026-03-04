@@ -66,6 +66,8 @@ defined('TBL_PALETTE_STATUT') || define('TBL_PALETTE_STATUT', 'palette_statut');
 defined('TBL_ARTICLE') || define('TBL_ARTICLE', 'article');
 defined('TBL_MOUVEMENT') || define('TBL_MOUVEMENT', 'mouvement');
 defined('TBL_MOUVEMENT_TYPE') || define('TBL_MOUVEMENT_TYPE', 'mouvement_type');
+defined('TBL_ARTICLE_HORS_X3') || define('TBL_ARTICLE_HORS_X3', 'article_hors_x3');
+
 /** Tables */
 
 /* View */
