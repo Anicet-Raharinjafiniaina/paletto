@@ -7,7 +7,7 @@ $controllers = [
     'Allee'       => 'Allee',
     'Rangee'      => 'Rangee',
     'Niveau'      => 'Niveau',
-    'Cage'        => 'Cage',
+    'Cage / Alvéole'        => 'Cage',
     'Emplacement' => 'Emplacement'
 ];; ?>
 <div class="bg-white shadow-sm rounded-3 p-4 mb-4">

@@ -7,12 +7,17 @@ use App\Controllers\Acces;
 use App\Controllers\Palette;
 use App\Controllers\QrCodeController;
 
+/**
+ *  Gestion des articles liés au client et à la palette
+ *   */
 class Article extends BaseController
 {
     protected $dbX3;
+    protected $db;
 
     public function __construct()
     {
+        $this->db = db_connect();
         $this->dbX3 = db_connect('connex_v12');
     }
 
@@ -52,7 +57,7 @@ class Article extends BaseController
             'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
         ]];
         $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.qr_code_text';
-        return  $crud->getAllData([TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0, TBL_ARTICLE . '.affectee_emplacement' => 0, TBL_ARTICLE . '.commentaire' => null], $arrJoin, $select);
+        return  $crud->getAllData([TBL_ARTICLE . '.flag_suppression' => 0, TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0, /*TBL_ARTICLE . '.affectee_emplacement' => 0,*/ TBL_ARTICLE . '.commentaire' => null], $arrJoin, $select);
     }
 
     public function getAllPaletteNoTOccuped()
@@ -61,13 +66,30 @@ class Article extends BaseController
         return  $crud->getAllData(['palette_statut_id != 3' => null, 'flag_suppression' => 0], [], "id, code");
     }
 
-    public function getAllArticle1() // venant de X3
+    // public function getAllArticle1() // venant de X3
+    // {
+    //     $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
+    //     $a =  $crud->getAllData(['ITMREF_0' => 200019783], [], "*", "", "", "", "", 1);
+    //     echo '<pre>';
+    //     print_r($a);
+    //     echo '</pre>';
+    // }
+
+    public function getUnitePCB() // PCU
     {
+        $code = trim($this->request->getPost('code'));
         $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
-        $a =  $crud->getAllData(['ITMREF_0' => 200019783], [], "*", "", "", "", "", 1);
-        echo '<pre>';
-        print_r($a);
-        echo '</pre>';
+        $arrDataPCU = $crud->getDataById(['ITMREF_0' => $code], [], 'PCU_0,PCU_1,PCU_2,PCU_3,PCU_4,PCU_5');
+        $arrPCU = [];
+        foreach ($arrDataPCU as $v) {
+            if (!empty(trim($v))) {
+                $arrPCU[] = [
+                    "id" => $v,
+                    "text" => $v
+                ];
+            }
+        }
+        return json_encode($arrPCU);
     }
 
     public function getClientForPalette()
@@ -81,13 +103,11 @@ class Article extends BaseController
     public function getArticleTypeahead()
     {
         $search = trim($this->request->getPost('code') ?? '');
-
         $sql = "SELECT TOP 10
                     ITMREF_0 AS id
                 FROM BASANEXP.ITMMASTER
                 WHERE ITMREF_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
                 ORDER BY ITMREF_0";
-
         $res = $this->dbX3->query($sql, [$search . '%'])->getResult();
         $arr = [];
         foreach ($res as $k => $v) :
@@ -96,6 +116,23 @@ class Article extends BaseController
         return json_encode($arr);
     }
 
+    public function getArticleHorsX3Typeahead()
+    {
+        $search = trim($this->request->getPost('code') ?? '');
+        $sql = "SELECT 
+                    code AS id
+                FROM article_hors_x3
+                WHERE code ILIKE ?
+                AND flag_suppression = 0
+                ORDER BY code
+                LIMIT 10";
+        $res = $this->db->query($sql, [$search . '%'])->getResult();
+        $arr = [];
+        foreach ($res as $k => $v) :
+            array_push($arr, $v->id);
+        endforeach;
+        return json_encode($arr);
+    }
 
     public function getDetailArticleByCode()
     {
@@ -104,11 +141,25 @@ class Article extends BaseController
                     ITMREF_0 AS code,
                     ITMDES1_0 AS libelle,
                     ZPCB_0 AS pcb,
-                    ACCCOD_0 AS palettisation
+                    ACCCOD_0 AS palettisation,
+                    STU_0 AS unite_stockage
                 FROM BASANEXP.ITMMASTER
                 WHERE ITMREF_0 = ? COLLATE SQL_Latin1_General_CP1_CI_AS";
 
         $res = $this->dbX3->query($sql, [$code])->getRow();
+        return json_encode($res);
+    }
+
+    public function getDetailArticleHorsX3ByCode()
+    {
+        $code = trim($this->request->getPost('code') ?? '');
+        $sql = "SELECT 
+                    code,
+                    nom AS libelle
+                FROM article_hors_x3
+                WHERE code = ?
+                LIMIT 1";
+        $res = $this->db->query($sql, [$code])->getRow();
         return json_encode($res);
     }
 
@@ -207,7 +258,7 @@ class Article extends BaseController
             'type'  => 'LEFT',
             'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
         ]];
-        $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_code,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.quantite,' . TBL_ARTICLE . '.lot,' . TBL_ARTICLE . '.dluo,' . TBL_ARTICLE . '.unite_pcb,' . TBL_ARTICLE . '.palettisation,' . TBL_ARTICLE . '.qr_code_image,' . TBL_PALETTE . '.code as palette_code';
+        $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_code,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.quantite,' . TBL_ARTICLE . '.lot,' . TBL_ARTICLE . '.dluo,' . TBL_ARTICLE . '.unite_pcb,' . TBL_ARTICLE . '.palettisation,' . TBL_ARTICLE . '.unite_stockage,'  . TBL_ARTICLE . '.observation,' . TBL_ARTICLE . '.qr_code_text,' . TBL_ARTICLE . '.qr_code_image,' . TBL_PALETTE . '.code as palette_code';
         $id = trim($this->request->getVar('id'));
         $action = trim($this->request->getVar('action'));
         $arrData = $crud->getDataById(array(TBL_ARTICLE . '.id' => intval($id)), $arrJoin, $select);
@@ -215,6 +266,6 @@ class Article extends BaseController
         $arr["data"] = $arrData;
         $arr["disabled"] = ($action == "voir") ? "disabled=disabled" : "";
         $arr["display"] = ($action == "voir") ? 'style="display:none;"' : "";
-        echo view('article/maj_view', $arr);
+        echo view('article/detail', $arr);
     }
 }

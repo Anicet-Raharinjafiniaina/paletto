@@ -42,12 +42,15 @@ class Mouvement extends BaseController
         $search = trim($this->request->getPost('code') ?? '');
         $emplacement_statut_id = $this->request->getPost('statut_1');
         $sql = "SELECT qr_code_texte
-                FROM emplacement
+                FROM liste_emplacement
+                JOIN emplacement ON emplacement.id = liste_emplacement.emplacement_id
                 WHERE qr_code_texte ILIKE ?
                     AND emplacement_statut_id = $emplacement_statut_id
+                    AND liste_emplacement.flag_suppression = 0
+                    AND emplacement.flag_suppression = 0
                 ORDER BY qr_code_texte
                 LIMIT 10";
-        $res = $this->db->query($sql, [$search . '%'])->getResult();
+        $res = $this->db->query($sql, ['%' . $search . '%'])->getResult();
         $arr = [];
         foreach ($res as $v) {
             $arr[] = $v->qr_code_texte;
@@ -67,10 +70,12 @@ class Mouvement extends BaseController
                 WHERE article.qr_code_text ILIKE ?
                     AND palette.palette_statut_id = $palette_statut_id 
                     AND article.affectee_emplacement = $affectee_emplacement
+                    AND article.flag_suppression = 0
+                    AND palette.flag_suppression = 0
                     AND article.commentaire IS DISTINCT FROM 'Sortie'
                 ORDER BY article.qr_code_text
                 LIMIT 10";
-        $res = $this->db->query($sql, [$search . '%'])->getResult();
+        $res = $this->db->query($sql, ['%' . $search . '%'])->getResult();
         $arr = [];
         foreach ($res as $v) {
             $arr[] = $v->qr_code_text;

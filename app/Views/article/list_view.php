@@ -46,8 +46,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                 <tr id="<?= $value->id ?>" class="text-center">
                                     <td class="text-center cursor-pointer td_no_border">
                                         <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-qrcode fa-lg"></i></a></button>
-                                        <button href="#" type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-popup="tooltip" title=" Mettre à jour" data-placement="bottom" onclick="view(<?= $value->id ?>,'upd')"><img src="<?= base_url('assets/images/modifier.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
-                                        <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_niveau" data-popup="tooltip" title="Supprimer" data-placement="bottom" onclick="deleteItem(<?= $value->id ?>)"><img src="<?= base_url('assets/images/supprimer.png') ?>" alt="" style="width: 20px; height: 20px;"></button>
                                     </td>
                                     <td><?= $value->qr_code_text ?></td>
                                     <td><?= $value->code ?></td>
@@ -73,8 +71,31 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label class="border rounded p-3 d-flex align-items-center gap-3 option-check w-100">
+                            <input type="checkbox" value="x3" class="form-check-input article-option">
+                            <i class="fas fa-box"></i>
+                            <span>Article X3</span>
+                        </label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="border rounded p-3 d-flex align-items-center gap-3 option-check w-100">
+                            <input type="checkbox" value="non_x3" class="form-check-input article-option">
+                            <i class="fas fa-box-open"></i>
+                            <span>Article hors X3</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="type_article" class="mb-5">
+                    <i class="fa fa-exclamation-circle text-danger"></i>
+                    <span class="text-danger font-italic">Veuillez choisir le type d'article.</span>
+                </div>
+
                 <form class="form-validate-jquery add-article-content">
-                    <div class="row g-3">
+                    <div class="row g-3 form-article">
                         <!-- Ligne 1 -->
                         <div class="col-md-4">
                             <div class="form-group">
@@ -125,8 +146,27 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>UNITÉ PCB <span class="text-bold text-danger-600">*</span></label>
-                                <input type="text" class="form-control input-xs obligatoire" placeholder="Unité PCB" name="unite_pcb" id="unite_pcb" required="required" disabled>
-                                <label id="unite_pcb-error" class="validation-error-label" for="unite_pcb"></label>
+                                <!-- SELECT pour X3 -->
+                                <div id="bloc_unite_pcb_select" style="display:none;">
+                                    <select class="select select-search obligatoire"
+                                        data-placeholder="Choisir une unité PCB..."
+                                        name="unite_pcb"
+                                        id="unite_pcb_select"
+                                        style="width:100%;">
+                                    </select>
+                                    <label id="unite_pcb_select-error" class="validation-error-label" for="unite_pcb_select"></label>
+                                </div>
+
+
+                                <!-- INPUT pour article normal -->
+                                <div id="bloc_unite_pcb_input">
+                                    <input type="text"
+                                        class="form-control input-xs obligatoire"
+                                        placeholder="Unité PCB"
+                                        name="unite_pcb"
+                                        id="unite_pcb_input">
+                                    <label id="unite_pcb_input-error" class="validation-error-label" for="unite_pcb_input"></label>
+                                </div>
                             </div>
                         </div>
 
@@ -154,13 +194,25 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         </div>
 
                         <!-- Observation -->
-                        <div class="col-12">
-                            <label for="observation" class="form-label">OBSERVATION</label>
-                            <textarea id="observation" name="observation" class="form-control" rows="3" placeholder="Remarques..."></textarea>
+                        <div class="col-12 row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>UNITE DE STOCKAGE <span class="text-bold text-danger-600">*</span></label>
+                                    <input type="text" class="form-control input-xs obligatoire" placeholder="Unité de stockage" name="unite_stockage" id="unite_stockage" required="required" disabled>
+                                    <label id="unite_stockage-error" class="validation-error-label" for="unite_stockage"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="observation" class="form-label">OBSERVATION</label>
+                                    <textarea id="observation" name="observation" class="form-control" rows="3" placeholder="Remarques..."></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
                         <button type="button" class="btn btn-primary btn-xs btn-sm" id="save" onclick="insert()">Enregistrer</button>
                     </div>
                 </form>
@@ -175,9 +227,9 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 <div id="modal_view_article" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header d-flex justify-content-between align-items-center">
-                <h5 class="modal-title text-center flex-grow-1" id="myModalLabel">Détail de l'article</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header justify-content-center position-relative">
+                <h5 class="modal-title" id="myModalLabel">Détail de l'article</h5>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="content-article"></div>
         </div>

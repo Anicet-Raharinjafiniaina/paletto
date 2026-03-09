@@ -108,9 +108,13 @@ function checkObligatoire(parentClass, childClass) {
         let name = id.replace(/_upd$/, "");
         name = name.replace(/_id$/, "")
 
+        // ✅ Ignore les champs cachés (important ⭐)
+        if (!input.is(":visible")) {
+            return true;
+        }
+
         if (!value || String(value).trim() === "") {
-            // errorLabel.html('<i class= "fa fa-exclamation-circle"> <span class="text-danger font-italic">Ce champ ' + name + ' est obligatoire.</span>');
-            errorLabel.html('<i class= "fa fa-exclamation-circle"> <span class="text-danger font-italic">Ce champ est obligatoire.</span>');
+            errorLabel.html('<i class= "fa fa-exclamation-circle text-danger"> <span class="text-danger font-italic">Ce champ est obligatoire.</span>');
             isValid = false;
         } else {
             errorLabel.text(""); // Clear previous error

@@ -34,7 +34,7 @@
         </div>
 
         <div class="row mb-1 align-items-center">
-            <div class="col-5 fw-semibold text-end">Cage :</div>
+            <div class="col-5 fw-semibold text-end">Cage / Alvéole:</div>
             <div class="col-7 text-start"><?= $data->cage_code ?></div>
         </div>
 

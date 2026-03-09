@@ -70,7 +70,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header justify-content-center position-relative">
-                <h5 class="modal-title" id="myModalLabel">Ajouter une cage</h5>
+                <h5 class="modal-title" id="myModalLabel">Ajouter une cage / alvéole</h5>
                 <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -128,7 +128,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header justify-content-center position-relative">
-                <h5 class="modal-title" id="myModalLabel">Modification d'une cage</h5>
+                <h5 class="modal-title" id="myModalLabel">Modification d'une cage / alvéole</h5>
                 <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="content-cage"></div>

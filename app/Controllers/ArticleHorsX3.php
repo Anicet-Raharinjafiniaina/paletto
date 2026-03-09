@@ -5,6 +5,9 @@ namespace App\Controllers;
 use App\Models\CrudModel;
 use App\Controllers\Acces;
 
+/**
+ *  Gestion des articles dans l'application 
+ * */
 class ArticleHorsX3 extends BaseController
 {
     public function index()

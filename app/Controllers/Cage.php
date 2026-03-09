@@ -94,7 +94,7 @@ class Cage extends BaseController
             if ($is_exist > 0) {
                 return json_encode(2); // code doublon
             } else {
-                $result = $crud->createReturnId($arr, 21); // insertion cage
+                $result = $crud->create($arr, 21); // insertion cage
                 return json_encode(intVal($result));
             }
         }

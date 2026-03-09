@@ -32,7 +32,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                             <th>ALLÉE</th>
                             <th>RANGÉE</th>
                             <th>NIVEAU</th>
-                            <th>CAGE</th>
+                            <th>CAGE / ALVÉOLE</th>
                             <th>EMPLACEMENT</th>
                         </tr>
                     </thead>

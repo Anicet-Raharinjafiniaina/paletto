@@ -67,26 +67,22 @@ class Palette extends BaseController
     public function getAllClientTypeahead()
     {
         $search = trim($this->request->getPost('client') ?? '');
-        $sql = "SELECT client
-                FROM (
-                    SELECT TOP 10
-                        CONCAT(BPCNUM_0, ' - ', BPCNAM_0) AS client
-                    FROM BASANEXP.BPCUSTOMER
-                    WHERE CONCAT(BPCNUM_0, ' - ', BPCNAM_0)
-                        COLLATE SQL_Latin1_General_CP1_CI_AS LIKE ?
-                    ORDER BY BPCNUM_0
-                ) t
-            ";
 
+        $sql = "SELECT TOP 10
+            CAST(CONCAT(BPCNUM_0, ' - ', BPCNAM_0) AS NVARCHAR(MAX)) AS client
+        FROM BASANEXP.BPCUSTOMER
+        WHERE UPPER(BPCNUM_0) LIKE UPPER(?)
+           OR UPPER(BPCNAM_0) LIKE UPPER(?)
+        ORDER BY BPCNUM_0";
         $params = [
-            '%' . $search . '%'
+            $search . '%',
+            $search . '%'
         ];
-
         $res = $this->dbX3->query($sql, $params)->getResult();
-
         $arr = [];
         foreach ($res as $k => $v) :
-            array_push($arr, $v->client);
+            // array_push($arr, $v->client);
+            $arr[] = mb_convert_encoding($v->client, 'UTF-8', 'Windows-1252');
         endforeach;
         return json_encode($arr);
     }

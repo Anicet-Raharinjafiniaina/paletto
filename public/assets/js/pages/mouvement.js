@@ -251,13 +251,13 @@ $(document).ready(function () {
                 data: 'type',
                 render: function (data) {
                     if (data === 'Entrée') {
-                        return '<span class="badge bg-success">Entrée</span>';
+                        return '<span class="badge rounded-pill p-2 bg-success">Entrée</span>';
                     }
                     if (data === 'Sortie') {
-                        return '<span class="badge bg-danger">Sortie</span>';
+                        return '<span class="badge rounded-pill p-2 bg-danger">Sortie</span>';
                     }
                     if (data === 'Transfert') {
-                        return '<span class="badge bg-primary">Transfert</span>';
+                        return '<span class="badge rounded-pill p-2 bg-primary">Transfert</span>';
                     }
                     return data;
                 }

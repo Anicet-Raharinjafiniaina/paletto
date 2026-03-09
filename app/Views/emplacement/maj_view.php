@@ -41,7 +41,7 @@
     </div>
 
     <div class="form-group">
-        <label>CAGE <span class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
+        <label>CAGE / ALVÉOLE<span class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
         <input type="hidden" id="cage_id_base" name="cage_id_base" value="<?= $data->cage_id ?>">
         <select class="select select-search obligatoire" data-placeholder="Choisir une cage..." name="cage_id_upd" id="cage_id_upd" required="required" style="width: 100%;" <?= $disabled; ?>>
         </select>

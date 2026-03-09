@@ -1,38 +1,105 @@
 $(function () {
     initialiseSelect2Modal("palette_id", "modal_ajout_article")
+    initialiseSelect2Modal("unite_pcb_select", "modal_ajout_article")
+});
+
+/** toggle choice */
+$('.article-option').on('change', function () {
+    $('.article-option').not(this).prop('checked', false);
+    $('.option-check').removeClass('border-primary bg-light');
+    if ($(this).is(':checked')) {
+        $(this).closest('.option-check').addClass('border-primary bg-light');
+    }
 });
 
 $("#btn-add-article").click(function () {
     loaderContent('main')
+    $('input[type="checkbox"]').prop('checked', false);
+    $('.option-check').removeClass('border-primary bg-light');
+    $(".form-article").hide()
+    $("#type_article").hide()
     $("#modal_ajout_article").modal("show");
-    $('.add-article-content')
-        .find('input[type="text"], input[type="hidden"], textarea, select')
-        .val('')
-        .trigger('change');
+    resetArticleForm()
     $('#quantite').val(0);
     $(".validation-error-label").html("");
-    loadCodeArticle()
-    loadClient("client")
     inputDateForm('dluo')
     stopLoaderContent('main')
 });
 
+function resetArticleForm() {
+    $('.add-article-content')
+        .find('input[type="text"], input[type="hidden"], textarea, select')
+        .val('')
+        .trigger('change');
+}
+
+/** pour type d'article */
+var typeArticle = null;
+$('.article-option').on('change', function () { // toggle choice
+    $('.article-option').not(this).prop('checked', false);
+    $(".form-article").show()
+    $(".validation-error-label").html("");
+    typeArticle = $('.article-option:checked').val();
+    if (typeArticle == "x3") {
+        $("#palettisation").prop("disabled", true);
+        $("#unite_stockage").prop("disabled", true);
+        $("#bloc_unite_pcb_select").show();
+        $("#bloc_unite_pcb_input").hide();
+    } else {
+        $("#palettisation").prop("disabled", false);
+        $("#unite_stockage").prop("disabled", false);
+        $("#bloc_unite_pcb_select").hide();
+        $("#bloc_unite_pcb_input").show();
+    }
+    $('.option-check').removeClass('border-primary bg-light');
+    if ($(this).is(':checked')) {
+        $(this).closest('.option-check').addClass('border-primary bg-light');
+    }
+    resetArticleForm()
+    loadCodeArticle()
+    loadClient("client")
+});
+/** /pour type d'article */
+
+function getAllUnitePCB() {
+    $("#unite_pcb_select").prop("disabled", true);
+    $("#unite_pcb_select").trigger("change.select2");
+    $.ajax({
+        url: urlProject + "Article/getUnitePCB",
+        type: "POST",
+        dataType: "json",
+        data: { code: $('#code').val() },
+        success: function (res) {
+            setDataSelect("unite_pcb_select", res)
+            $("#unite_pcb_select").prop("disabled", false);
+            $("#unite_pcb_select").trigger("change.select2");
+        }
+    })
+}
+
+
 function loadCodeArticle() {
+    let url = "";
+    if (typeArticle == "x3") {
+        url = urlProject + "Article/getArticleTypeahead";
+    } else {
+        url = urlProject + "Article/getArticleHorsX3Typeahead";
+    }
+    $("#code").typeahead('destroy');
     $("#code").typeahead({
         minLength: 2,
         items: 20,
         source: function (query, process) {
             return $.post(
-                "Article/getArticleTypeahead",
-                {
-                    code: query,
-                },
+                url,
+                { code: query },
                 function (data) {
                     data = $.parseJSON(data);
                     return process(data);
                 }
             );
-        },
+
+        }
     });
 }
 
@@ -62,24 +129,50 @@ function getClientForPalette(idPalette, idClient, idmodal = null) {
 }
 
 function getDetailArticle(idmodal = null) {
-    //loaderContent(idmodal)
+    let url = "";
+    if (typeArticle == "x3") {
+        url = urlProject + "Article/getDetailArticleByCode";
+    } else {
+        url = urlProject + "Article/getDetailArticleHorsX3ByCode";
+    }
     $.ajax({
-        url: urlProject + "Article/getDetailArticleByCode",
+        url: url,
         type: "POST",
         data: {
             code: $('#code').val()
         },
         success: function (res) {
-            // stopLoaderContent(idmodal)
             res = $.parseJSON(res);
             if (res != null) {
-                $("#nom").val(res.libelle);
-                $("#unite_pcb").val(res.pcb);
-                $("#palettisation").val(res.palettisation);
+                if (typeArticle == "x3") {
+                    $("#nom").val(res.libelle);
+                    $("#unite_pcb").val(res.pcb);
+                    $("#palettisation").val(res.palettisation);
+                    $("#unite_stockage").val(res.unite_stockage);
+                    getAllUnitePCB()
+                } else if (typeArticle == "non_x3") {
+                    $("#nom").val(res.libelle);
+                    $("#unite_pcb").val("");
+                    $("#palettisation").val("");
+                    $("#unite_stockage").val("");
+                }
             }
         }
     });
 }
+
+function getUnitePCBValue() {
+    // Select visible seulement
+    let unite_pcb = "";
+    if ($("#unite_pcb_select").is(":visible")) {
+        unite_pcb = $("#unite_pcb_select").val();
+    }
+    else if ($("#unite_pcb_input").is(":visible")) {
+        unite_pcb = $("#unite_pcb_input").val();
+    }
+    return unite_pcb ? unite_pcb.trim() : "";
+}
+
 
 function insert() {
     $(".validation-error-label").html("");
@@ -87,6 +180,7 @@ function insert() {
     if (isValid == true) {
         $("#save").prop("disabled", true);
         let arr_data = getFormDataFromParentClass(".add-article-content")
+        arr_data['unite_pcb'] = getUnitePCBValue()
         loaderContent('modal_ajout_article')
         $.ajax({
             url: urlProject + "Article/insertArticle",
@@ -97,7 +191,7 @@ function insert() {
                 if (res == 1) {
                     Swal.fire({
                         title: "Création",
-                        html: "L'article a été atribué à la palette.",
+                        html: "L'article a été attribué à la palette.",
                         icon: "success",
                         showConfirmButton: true
                     }).then(function (result) {
@@ -143,7 +237,7 @@ function insert() {
 
 function view(id, action) {
     var t = $("#l" + id).text();
-    $("#content-article").html("");
+
     loaderContent('main')
     $.ajax({
         url: urlProject + "Article/getArticle",

@@ -5,10 +5,16 @@
     <img src="data:image/png;base64,<?= $data->qr_code_image ?>" alt="QR Code" class="img-fluid mb-2" style="max-width:120px;">
 
     <!-- CODE -->
-    <h6 class="fw-bold mb-3">PAL - <?= $data->palette_code ?> </h6>
+    <h6 class="fw-bold mb-3"> <?= $data->qr_code_text ?> </h6>
 
     <!-- INFOS -->
     <div class="mx-auto">
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Palette : </div>
+            <div class="col-7 text-start">
+                <?= $data->palette_code ?>
+            </div>
+        </div>
 
         <div class="row mb-1 align-items-center">
             <div class="col-5 fw-semibold text-end">Client : </div>
@@ -43,7 +49,7 @@
         </div>
 
         <div class="row mb-1 align-items-center">
-            <div class="col-5 fw-semibold text-end">PCB : </div>
+            <div class="col-5 fw-semibold text-end">Unité PCB : </div>
             <div class="col-7 text-start"><?= $data->unite_pcb ?></div>
         </div>
 
@@ -52,9 +58,22 @@
             <div class="col-7 text-start"><?= $data->palettisation ?></div>
         </div>
 
+        <div class="row mb-1 align-items-center">
+            <div class="col-5 fw-semibold text-end">Unité de stockage : </div>
+            <div class="col-7 text-start"><?= $data->unite_stockage ?></div>
+        </div>
+
+        <?php if ($data->observation  != " " && $data->observation != null) : ?>
+            <div class="row mb-1 align-items-center">
+                <div class="col-5 fw-semibold text-end">Observation : </div>
+                <div class="col-7 text-start"><?= $data->observation ?></div>
+            </div>
+        <?php endif; ?>
+
     </div>
     <br><br>
     <div class="modal-footer d-flex justify-content-end" id="div-upd-footer">
+        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
         <button type="button" class="btn btn-primary btn-sm  float-right" id="save_upd" onclick="imprimer('printable-article-content')"
             data-loading-text="<i class='icon-spinner10 spinner'></i> Enregistrer">
             Imprimer</button>
