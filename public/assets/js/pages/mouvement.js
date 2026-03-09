@@ -119,11 +119,18 @@ function validerSortie() {
                         showConfirmButton: true,
                     });
                     $("#save").prop("disabled", false);
-                }
-                else if (res == 3) {
+                } else if (res == 3) {
                     Swal.fire({
                         title: "Données non valides",
                         html: "La palette <b><i>" + $('#qr_palette_sortie').val() + "</b></i> est <b>invalide</b>.",
+                        icon: "warning",
+                        showConfirmButton: true,
+                    });
+                    $("#save").prop("disabled", false);
+                } else if (res == 4) {
+                    Swal.fire({
+                        title: "Données non valides",
+                        html: "La palette <b><i>" + $('#qr_palette_sortie').val() + "</b></i> ne correspond pas à l'emplacement <b><i>" + $('#qr_emplacement_sortie').val() + "</b></i>.",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -233,13 +240,6 @@ function validerTransfert() {
 }
 
 $(document).ready(function () {
-    // initDataTableServerSide({
-    //     selector: '#tbl_mouvement',
-    //     ajaxUrl: urlProject + "Mouvement/historiqueMouvement",
-    //     columns: ['emplacement', 'palette_article', 'type'],
-    //     actions: true
-    // });
-
     initDataTableServerSide({
         selector: '#tbl_mouvement',
         ajaxUrl: urlProject + "Mouvement/historiqueMouvement",

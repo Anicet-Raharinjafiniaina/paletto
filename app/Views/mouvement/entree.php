@@ -37,6 +37,7 @@
                         </div>
                     </div>
                     <div class="modal-footer align-items-end">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
                         <button type="button" class="btn btn-success btn-xs btn-sm" id="save" onclick="validerEntree()">Valider entrée</button>
                     </div>
                 </form>

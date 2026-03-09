@@ -75,8 +75,8 @@ class Palette extends BaseController
            OR UPPER(BPCNAM_0) LIKE UPPER(?)
         ORDER BY BPCNUM_0";
         $params = [
-            $search . '%',
-            $search . '%'
+            '%' . $search . '%',
+            '%' . $search . '%'
         ];
         $res = $this->dbX3->query($sql, $params)->getResult();
         $arr = [];

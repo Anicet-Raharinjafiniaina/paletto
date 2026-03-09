@@ -71,6 +71,10 @@
             <div class="col-7 text-start"><?= $data->palettisation ?></div>
         </div>
 
+        <div class="row align-items-center">
+            <div class="col-5 fw-semibold text-end">Unité de stockage : </div>
+            <div class="col-7 text-start"><?= $data->unite_stockage ?></div>
+        </div>
         <br>
 
         <div class="row align-items-center">
@@ -88,5 +92,9 @@
             <div class="col-7 text-start"><?= $data->auteur ?></div>
         </div>
         <br><br>
+    </div>
+
+    <div class="modal-footer align-items-end">
+        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
     </div>
 </form>

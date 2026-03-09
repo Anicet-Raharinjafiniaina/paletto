@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl modal-transfert-centered modal-transfert-scrollable">
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-between align-items-center">
-                <h5 class="modal-title text-center flex-grow-1" id="myModalLabel">Enregistrement Entrée</h5>
+                <h5 class="modal-title text-center flex-grow-1" id="myModalLabel">Enregistrement Transfert</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -37,6 +37,7 @@
                         </div>
                     </div>
                     <div class="modal-footer align-items-end">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Annuler</button>
                         <button type="button" class="btn btn-success btn-xs btn-sm" id="save" onclick="validerTransfert()">Valider transfert</button>
                     </div>
                 </form>

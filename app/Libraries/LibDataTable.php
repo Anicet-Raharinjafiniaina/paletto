@@ -51,7 +51,7 @@ class LibDataTable
     //     ]);
     // }
 
-    public function index($table, $columns, $searchable = [], $action = [], $joins = [])
+    public function index($table, $columns, $searchable = [], $action = [], $joins = [], $where = [], $orderBy = null)
     {
         $request = service('request');
         $db = \Config\Database::connect();
@@ -59,7 +59,6 @@ class LibDataTable
         $start  = $request->getPost('start');
         $length = $request->getPost('length');
         $search = $request->getPost('search')['value'] ?? '';
-
 
         $orderIndex = $request->getPost('order')[0]['column'] ?? 0;
         $order  = $columns[$orderIndex] ?? $columns[0];
@@ -85,6 +84,12 @@ class LibDataTable
                     $builder->where($key, $value);
                 }
             }
+        }
+
+        // order By
+        if ($orderBy) {
+            $order = $orderBy['column'];
+            $dir   = $orderBy['dir'];
         }
 
         // Recherche

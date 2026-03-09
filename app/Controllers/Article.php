@@ -51,13 +51,15 @@ class Article extends BaseController
     public function getAllArticle()
     {
         $crud = new CrudModel(TBL_ARTICLE);
-        $arrJoin = [[
-            'table' => TBL_PALETTE,
-            'type'  => 'LEFT',
-            'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
-        ]];
+        $arrJoin = [
+            [
+                'table' => TBL_PALETTE,
+                'type'  => 'LEFT',
+                'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
+            ],
+        ];
         $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.qr_code_text';
-        return  $crud->getAllData([TBL_ARTICLE . '.flag_suppression' => 0, TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0, /*TBL_ARTICLE . '.affectee_emplacement' => 0,*/ TBL_ARTICLE . '.commentaire' => null], $arrJoin, $select);
+        return  $crud->getAllData([TBL_ARTICLE . '.flag_suppression' => 0, TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0, /*TBL_ARTICLE . '.affectee_emplacement' => 0,*/ TBL_ARTICLE . '.mouvement_type_id' => null], $arrJoin, $select);
     }
 
     public function getAllPaletteNoTOccuped()
@@ -108,7 +110,7 @@ class Article extends BaseController
                 FROM BASANEXP.ITMMASTER
                 WHERE ITMREF_0 LIKE ? COLLATE SQL_Latin1_General_CP1_CI_AS
                 ORDER BY ITMREF_0";
-        $res = $this->dbX3->query($sql, [$search . '%'])->getResult();
+        $res = $this->dbX3->query($sql, ['%' . $search . '%'])->getResult();
         $arr = [];
         foreach ($res as $k => $v) :
             array_push($arr, $v->id);
@@ -126,7 +128,7 @@ class Article extends BaseController
                 AND flag_suppression = 0
                 ORDER BY code
                 LIMIT 10";
-        $res = $this->db->query($sql, [$search . '%'])->getResult();
+        $res = $this->db->query($sql, ['%' . $search . '%'])->getResult();
         $arr = [];
         foreach ($res as $k => $v) :
             array_push($arr, $v->id);
