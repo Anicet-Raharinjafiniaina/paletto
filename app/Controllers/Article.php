@@ -94,6 +94,24 @@ class Article extends BaseController
         return json_encode($arrPCU);
     }
 
+    public function getUnitePCBHorsX3() // PCU
+    {
+        $code = trim($this->request->getPost('code'));
+        $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
+        $arrDataPCU = $crud->getDataById(['code' => $code], [], 'unite_pcb');
+        $arrDataPCU = explode(',', trim($arrDataPCU->unite_pcb, '{}'));
+        $arrPCU = [];
+        foreach ($arrDataPCU as $v) {
+            if (!empty(trim($v))) {
+                $arrPCU[] = [
+                    "id" => $v,
+                    "text" => $v
+                ];
+            }
+        }
+        return json_encode($arrPCU);
+    }
+
     public function getClientForPalette()
     {
         $palette_id = trim($this->request->getPost('palette_id') ?? '');
@@ -157,7 +175,9 @@ class Article extends BaseController
         $code = trim($this->request->getPost('code') ?? '');
         $sql = "SELECT 
                     code,
-                    nom AS libelle
+                    nom AS libelle,
+                    palettisation AS palettisation,
+                    unite_stockage AS unite_stockage
                 FROM article_hors_x3
                 WHERE code = ?
                 LIMIT 1";

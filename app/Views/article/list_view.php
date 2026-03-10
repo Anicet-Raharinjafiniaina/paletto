@@ -146,27 +146,13 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>UNITÉ PCB <span class="text-bold text-danger-600">*</span></label>
-                                <!-- SELECT pour X3 -->
-                                <div id="bloc_unite_pcb_select" style="display:none;">
-                                    <select class="select select-search obligatoire"
-                                        data-placeholder="Choisir une unité PCB..."
-                                        name="unite_pcb"
-                                        id="unite_pcb_select"
-                                        style="width:100%;">
-                                    </select>
-                                    <label id="unite_pcb_select-error" class="validation-error-label" for="unite_pcb_select"></label>
-                                </div>
-
-
-                                <!-- INPUT pour article normal -->
-                                <div id="bloc_unite_pcb_input">
-                                    <input type="text"
-                                        class="form-control input-xs obligatoire"
-                                        placeholder="Unité PCB"
-                                        name="unite_pcb"
-                                        id="unite_pcb_input">
-                                    <label id="unite_pcb_input-error" class="validation-error-label" for="unite_pcb_input"></label>
-                                </div>
+                                <select class="select select-search obligatoire"
+                                    data-placeholder="Choisir une unité PCB..."
+                                    name="unite_pcb"
+                                    id="unite_pcb"
+                                    style="width:100%;">
+                                </select>
+                                <label id="unite_pcb-error" class="validation-error-label" for="unite_pcb"></label>
                             </div>
                         </div>
 

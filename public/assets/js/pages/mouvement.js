@@ -244,9 +244,6 @@ $(document).ready(function () {
         selector: '#tbl_mouvement',
         ajaxUrl: urlProject + "Mouvement/historiqueMouvement",
         columns: [
-            'emplacement',
-            'palette_article',
-            'date_mouvement',
             {
                 data: 'type',
                 render: function (data) {
@@ -261,7 +258,10 @@ $(document).ready(function () {
                     }
                     return data;
                 }
-            }
+            },
+            'emplacement',
+            'palette_article',
+            'date_mouvement'
         ],
         actions: true
     });

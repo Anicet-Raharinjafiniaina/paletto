@@ -20,14 +20,14 @@
 <div id="tbl_content" class="d-none">
     <div class="card">
         <div class="card-body">
-            <table id="tbl_mouvement" class="table table-bordered dt-responsive nowrap w-100" style="width:100%">
+            <table id="tbl_mouvement" class="table table-bordered dt-responsive nowrap w-100 text-center" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Action</th>
-                        <th>Emplacement</th>
-                        <th>Palette</th>
-                        <th>Date du mouvement</th>
-                        <th>Type</th>
+                        <th>ACTION</th>
+                        <th>ETAT</th>
+                        <th>EMPLACEMENT</th>
+                        <th>PALETTE</th>
+                        <th>DATE DU MOUVEMENT</th>
                     </tr>
                 </thead>
             </table>

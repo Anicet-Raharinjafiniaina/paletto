@@ -42,6 +42,7 @@ class ArticleHorsX3 extends BaseController
             return redirect()->to('/');
         }
         $arr = $this->request->getVar('data');
+        $arr =  $this->traiterUnitePCB($arr);
         if (!empty($arr)) {
             $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr['code'])), "flag_suppression" => 0));
@@ -56,6 +57,21 @@ class ArticleHorsX3 extends BaseController
     }
 
     /**
+     * Transformer les différentes valeurs unité PCB en {x,x,x,x,..} 
+     */
+    public function traiterUnitePCB($arrData)
+    {
+        $unite_pcb = [];
+        foreach ($arrData as $key => $value) { // Récupérer toutes les clés 'unite_pcb_x'
+            if (preg_match('/^unite_pcb(_upd)?_\d+$/', $key)) {
+                $unite_pcb[] = $value;
+                unset($arrData[$key]);
+            }
+        }
+        $arrData['unite_pcb'] = '{' . implode(',', $unite_pcb) . '}';         // Transformer le tableau en string "{1,2,3,4}"
+        return $arrData;
+    }
+    /**
      * Visualisation d'un détail
      */
     public function getArticle()
@@ -69,6 +85,8 @@ class ArticleHorsX3 extends BaseController
         $id = trim($this->request->getVar('id'));
         $action = trim($this->request->getVar('action'));
         $arrData = $crud->getDataById(array('id' => intval($id)));
+        $arrUnitePCB = explode(',', trim($arrData->unite_pcb, '{}'));
+        $arrData->unite_pcb = $arrUnitePCB;
         $arr["action"] = $action;
         $arr["data"] = $arrData;
         $arr["disabled"] = ($action == "voir") ? "disabled=disabled" : "";
@@ -84,6 +102,7 @@ class ArticleHorsX3 extends BaseController
             return redirect()->to('/');
         }
         $arr_data = $this->request->getVar('data');
+        $arr_data =  $this->traiterUnitePCB($arr_data);
         $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
         if (!empty($arr_data)) {
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "id != " . $arr_data['id'] => null, "flag_suppression" => 0));

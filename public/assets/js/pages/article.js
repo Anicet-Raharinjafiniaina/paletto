@@ -1,15 +1,6 @@
 $(function () {
     initialiseSelect2Modal("palette_id", "modal_ajout_article")
-    initialiseSelect2Modal("unite_pcb_select", "modal_ajout_article")
-});
-
-/** toggle choice */
-$('.article-option').on('change', function () {
-    $('.article-option').not(this).prop('checked', false);
-    $('.option-check').removeClass('border-primary bg-light');
-    if ($(this).is(':checked')) {
-        $(this).closest('.option-check').addClass('border-primary bg-light');
-    }
+    initialiseSelect2Modal("unite_pcb", "modal_ajout_article")
 });
 
 $("#btn-add-article").click(function () {
@@ -31,26 +22,24 @@ function resetArticleForm() {
         .find('input[type="text"], input[type="hidden"], textarea, select')
         .val('')
         .trigger('change');
+    intiSelect();
+}
+
+function intiSelect() {    // Réinitialiser tous les selects (Select2 inclus)
+    $('.add-article-content select').each(function () {
+        $(this).empty();
+        $(this).val(null).trigger('change'); // fonctionne pour single et multiple
+    });
 }
 
 /** pour type d'article */
 var typeArticle = null;
 $('.article-option').on('change', function () { // toggle choice
+    $("#type_article").hide();
     $('.article-option').not(this).prop('checked', false);
     $(".form-article").show()
     $(".validation-error-label").html("");
     typeArticle = $('.article-option:checked').val();
-    if (typeArticle == "x3") {
-        $("#palettisation").prop("disabled", true);
-        $("#unite_stockage").prop("disabled", true);
-        $("#bloc_unite_pcb_select").show();
-        $("#bloc_unite_pcb_input").hide();
-    } else {
-        $("#palettisation").prop("disabled", false);
-        $("#unite_stockage").prop("disabled", false);
-        $("#bloc_unite_pcb_select").hide();
-        $("#bloc_unite_pcb_input").show();
-    }
     $('.option-check').removeClass('border-primary bg-light');
     if ($(this).is(':checked')) {
         $(this).closest('.option-check').addClass('border-primary bg-light');
@@ -62,17 +51,22 @@ $('.article-option').on('change', function () { // toggle choice
 /** /pour type d'article */
 
 function getAllUnitePCB() {
-    $("#unite_pcb_select").prop("disabled", true);
-    $("#unite_pcb_select").trigger("change.select2");
+    var url = "";
+    if (typeArticle == "x3") {
+        url = urlProject + "Article/getUnitePCB";
+    } else {
+        url = urlProject + "Article/getUnitePCBHorsX3";
+    }
+    loaderContent('modal_ajout_article')
     $.ajax({
-        url: urlProject + "Article/getUnitePCB",
+        url: url,
         type: "POST",
         dataType: "json",
         data: { code: $('#code').val() },
         success: function (res) {
-            setDataSelect("unite_pcb_select", res)
-            $("#unite_pcb_select").prop("disabled", false);
-            $("#unite_pcb_select").trigger("change.select2");
+            intiSelect()
+            stopLoaderContent('modal_ajout_article')
+            setDataSelect("unite_pcb", res)
         }
     })
 }
@@ -144,28 +138,20 @@ function getDetailArticle(idmodal = null) {
         success: function (res) {
             res = $.parseJSON(res);
             if (res != null) {
-                if (typeArticle == "x3") {
-                    $("#nom").val(res.libelle);
-                    $("#unite_pcb").val(res.pcb);
-                    $("#palettisation").val(res.palettisation);
-                    $("#unite_stockage").val(res.unite_stockage);
-                    getAllUnitePCB()
-                } else if (typeArticle == "non_x3") {
-                    $("#nom").val(res.libelle);
-                    $("#unite_pcb").val("");
-                    $("#palettisation").val("");
-                    $("#unite_stockage").val("");
-                }
+                $("#nom").val(res.libelle);
+                $("#unite_pcb").val(res.pcb);
+                $("#palettisation").val(res.palettisation);
+                $("#unite_stockage").val(res.unite_stockage);
+                getAllUnitePCB()
             }
         }
     });
 }
 
 function getUnitePCBValue() {
-    // Select visible seulement
     let unite_pcb = "";
-    if ($("#unite_pcb_select").is(":visible")) {
-        unite_pcb = $("#unite_pcb_select").val();
+    if ($("#unite_pcb").is(":visible")) {
+        unite_pcb = $("#unite_pcb").val();
     }
     else if ($("#unite_pcb_input").is(":visible")) {
         unite_pcb = $("#unite_pcb_input").val();
@@ -176,6 +162,13 @@ function getUnitePCBValue() {
 
 function insert() {
     $(".validation-error-label").html("");
+    console.log("typeArticle : " + typeArticle);
+
+    if (typeArticle == undefined && typeArticle == null) {
+        $("#type_article").show();
+        return;
+    }
+    $("#type_article").hide();
     isValid = checkObligatoire(".add-article-content", ".obligatoire")
     if (isValid == true) {
         $("#save").prop("disabled", true);

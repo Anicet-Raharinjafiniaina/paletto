@@ -78,6 +78,33 @@
                     </div>
 
                     <div class="form-group">
+                        <label>UNITÉ PCB <span class="text-bold text-danger-600">*</span></label>
+                        <div id="container_inputs_add" class="border border-1 p-2">
+                            <div class="input-group mb-2 dynamic-row">
+                                <input type="text" id="unite_pcb_1" name="unite_pcb_1" class="form-control input-xs obligatoire">
+                                <div class="buttons-area ms-2">
+                                    <button type="button" class="btn btn-primary btn-xs btn-add">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <label id="unite_pcb_1-error" class="validation-error-label" for="unite_pcb_1"></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>PALETTISATION <span class="text-bold text-danger-600">*</span></label>
+                        <input type="text" class="form-control input-xs obligatoire" placeholder="Palettisation" name="palettisation" id="palettisation" required="required">
+                        <label id="palettisation-error" class="validation-error-label" for="palettisation"></label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>UNITÉ DE STOCKAGE <span class="text-bold text-danger-600">*</span></label>
+                        <input type="text" class="form-control input-xs obligatoire" placeholder="Unité de stockage" name="unite_stockage" id="unite_stockage" required="required">
+                        <label id="unite_stockage-error" class="validation-error-label" for="unite_stockage"></label>
+                    </div>
+
+                    <div class="form-group">
                         <label>DESCRIPTION </label>
                         <input type="text" class="form-control input-xs" placeholder="Description" name="description" id="description">
                         <label id="description-error" class="validation-error-label" for="description"></label>
