@@ -36,7 +36,7 @@ function validerEntree() {
                 } else if (res == 2) {
                     Swal.fire({
                         title: "Données non valides",
-                        html: "L'emplacement <b><i>" + $('#qr_emplacement_entree').val() + "</b></i> est <b>invalide</b>.",
+                        html: "L'emplacement <b><i>" + $('#qr_emplacement_entree').val() + "</b></i> est <b>invalide</b> (<i>n'existe pas ou occupé</i>).",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -45,7 +45,7 @@ function validerEntree() {
                 else if (res == 3) {
                     Swal.fire({
                         title: "Données non valides",
-                        html: "La palette <b><i>" + $('#qr_palette_entree').val() + "</b></i> est <b>invalide</b>.",
+                        html: "La palette <b><i>" + $('#qr_palette_entree').val() + "</b></i> est <b>invalide</b> (<i>n'existe pas ou occupée</i>).",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -199,7 +199,7 @@ function validerTransfert() {
                 } else if (res == 2) {
                     Swal.fire({
                         title: "Données non valides",
-                        html: "L'emplacement <b><i>" + $('#qr_emplacement_transfert').val() + "</b></i> est <b>invalide</b>.",
+                        html: "L'emplacement <b><i>" + $('#qr_emplacement_transfert').val() + "</b></i> est <b>invalide</b> (<i>n'existe pas ou occupé</i>).",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -208,7 +208,7 @@ function validerTransfert() {
                 else if (res == 3) {
                     Swal.fire({
                         title: "Données non valides",
-                        html: "La palette <b><i>" + $('#qr_palette_transfert').val() + "</b></i> est <b>invalide</b>.",
+                        html: "La palette <b><i>" + $('#qr_palette_transfert').val() + "</b></i> est <b>invalide</b> (<i> n'existe pas ou occupée</i>).",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -237,58 +237,6 @@ function validerTransfert() {
             }
         });
     }
-}
-
-$(document).ready(function () {
-    initDataTableServerSide({
-        selector: '#tbl_mouvement',
-        ajaxUrl: urlProject + "Mouvement/historiqueMouvement",
-        columns: [
-            {
-                data: 'type',
-                render: function (data) {
-                    if (data === 'Entrée') {
-                        return '<span class="badge rounded-pill p-2 bg-success">Entrée</span>';
-                    }
-                    if (data === 'Sortie') {
-                        return '<span class="badge rounded-pill p-2 bg-danger">Sortie</span>';
-                    }
-                    if (data === 'Transfert') {
-                        return '<span class="badge rounded-pill p-2 bg-primary">Transfert</span>';
-                    }
-                    return data;
-                }
-            },
-            'emplacement',
-            'palette_article',
-            'date_mouvement'
-        ],
-        actions: true
-    });
-
-});
-
-$.fn.toggleText = function (t1, t2) {
-    return this.each(function () {
-        const $this = $(this);
-        $this.text($this.text() === t1 ? t2 : t1);
-    });
-};
-
-function toggleHistorique(e) {
-    $('#tbl_content').toggleClass('d-none');
-    $('#historique a').toggleText('Afficher l\'historique', 'Masquer l\'historique');
-
-    setTimeout(function () {
-        /* réinitialiser les datatables */
-        let table = $('.table').DataTable();
-        table.destroy();
-        $('.table').DataTable({
-            responsive: true,
-            autoWidth: false
-        });
-        /* /réinitialiser les datatables */
-    }, 50);
 }
 
 function view(id, action) {

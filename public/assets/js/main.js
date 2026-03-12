@@ -4,7 +4,7 @@ $(function () {
 
     // On prépare le menu : visible mais transparent
     $('.vertical-menu').css({
-        'background': '#8a120f',
+        'background': '#1E293B',
         'opacity': 0
     });
 

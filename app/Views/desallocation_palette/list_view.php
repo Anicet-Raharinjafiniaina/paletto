@@ -18,11 +18,6 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                     <div class="col-md-6 d-flex justify-content-start">
                         <h5>Liste des palettes attribuées</h5>
                     </div>
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="btn-add-article" <?= $style_btn; ?>>
-                            <i class="fas fa-plus position-left"></i> Ajouter
-                        </button>
-                    </div>
                 </div>
 
             </div>
