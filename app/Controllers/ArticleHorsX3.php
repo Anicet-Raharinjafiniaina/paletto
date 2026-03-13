@@ -43,6 +43,7 @@ class ArticleHorsX3 extends BaseController
         }
         $arr = $this->request->getVar('data');
         $arr =  $this->traiterUnitePCB($arr);
+        $arr =  $this->traiterPalettisation($arr);
         if (!empty($arr)) {
             $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr['code'])), "flag_suppression" => 0));
@@ -71,6 +72,22 @@ class ArticleHorsX3 extends BaseController
         $arrData['unite_pcb'] = '{' . implode(',', $unite_pcb) . '}';         // Transformer le tableau en string "{1,2,3,4}"
         return $arrData;
     }
+
+    /**
+     * Transformer les différentes valeurs de palettisation en {x,x,x,x,..} 
+     */
+    public function traiterPalettisation($arrData)
+    {
+        $unite_pcb = [];
+        foreach ($arrData as $key => $value) { // Récupérer toutes les clés 'palettisation'
+            if (preg_match('/^palettisation(_upd)?_\d+$/', $key)) {
+                $unite_pcb[] = $value;
+                unset($arrData[$key]);
+            }
+        }
+        $arrData['palettisation'] = '{' . implode(',', $unite_pcb) . '}';         // Transformer le tableau en string "{1,2,3,4}"
+        return $arrData;
+    }
     /**
      * Visualisation d'un détail
      */
@@ -85,13 +102,27 @@ class ArticleHorsX3 extends BaseController
         $id = trim($this->request->getVar('id'));
         $action = trim($this->request->getVar('action'));
         $arrData = $crud->getDataById(array('id' => intval($id)));
-        $arrUnitePCB = explode(',', trim($arrData->unite_pcb, '{}'));
-        $arrData->unite_pcb = $arrUnitePCB;
+        $arrPcbPal = $this->getPCBPalettisation($arrData);
+        $arrData->arrPcbPal = $arrPcbPal;
         $arr["action"] = $action;
         $arr["data"] = $arrData;
         $arr["disabled"] = ($action == "voir") ? "disabled=disabled" : "";
         $arr["display"] = ($action == "voir") ? 'style="display:none;"' : "";
         echo view('article_hors_x3/maj_view', $arr);
+    }
+
+    /**
+     * Pour avoir la combinaison unité PCB-Palettisation
+     */
+    public function getPCBPalettisation($arr, $keyUnite = 'unite_pcb', $keyPal = 'palettisation')
+    {
+        if (!isset($arr->$keyUnite) || !isset($arr->$keyPal)) { // Vérifie si les propriétés existent
+            return [];
+        }
+        $unites = explode(',', trim($arr->$keyUnite, '{}')); // Transforme les chaînes en tableaux
+        $palettisations = explode(',', trim($arr->$keyPal, '{}')); // Convertit les valeurs en int        
+        $palettisations = array_map('intval', $palettisations); // Combine en tableau associatif        
+        return array_combine($unites, $palettisations);
     }
 
     public function majArticle()
@@ -103,6 +134,7 @@ class ArticleHorsX3 extends BaseController
         }
         $arr_data = $this->request->getVar('data');
         $arr_data =  $this->traiterUnitePCB($arr_data);
+        $arr_data =  $this->traiterPalettisation($arr_data);
         $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
         if (!empty($arr_data)) {
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "id != " . $arr_data['id'] => null, "flag_suppression" => 0));

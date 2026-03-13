@@ -77,26 +77,46 @@
                         <label id="nom-error" class="validation-error-label" for="nom"></label>
                     </div>
 
-                    <div class="form-group">
-                        <label>UNITÉ PCB <span class="text-bold text-danger-600">*</span></label>
-                        <div id="container_inputs_add" class="border border-1 p-2">
-                            <div class="input-group mb-2 dynamic-row">
-                                <input type="text" id="unite_pcb_1" name="unite_pcb_1" class="form-control input-xs obligatoire">
-                                <div class="buttons-area ms-2">
-                                    <button type="button" class="btn btn-primary btn-xs btn-add">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <label id="unite_pcb_1-error" class="validation-error-label" for="unite_pcb_1"></label>
-                        </div>
+                    <div class="d-flex align-items-center gap-2 dynamic-row mb-2">
+                        <label class="flex-fill">
+                            UNITÉ PCB <span class="text-bold text-danger-600">*</span>
+                        </label>
+
+                        <label class="flex-fill">
+                            PALETTISATION <span class="text-bold text-danger-600">*</span>
+                        </label>
                     </div>
 
                     <div class="form-group">
+                        <div id="container_inputs_add" class="border border-1 p-2">
+                            <!-- Ligne initiale -->
+                            <div class="d-flex align-items-center gap-2 dynamic-row mb-2" data-index="1">
+                                <input type="text" id="unite_pcb_1" name="unite_pcb_1"
+                                    placeholder="Unité PCB" class="form-control obligatoire flex-fill">
+                                <input type="text" id="palettisation_1" name="palettisation_1"
+                                    placeholder="Palettisation" class="form-control obligatoire flex-fill">
+                                <div class="buttons-area flex-shrink-0"> <button type="button" class="btn btn-primary btn-xs btn-add">
+                                        <i class="fas fa-plus"></i>
+                                    </button></div>
+                            </div>
+
+                            <!-- Ligne erreurs -->
+                            <div class="d-flex align-items-center gap-2 mb-2 error-row">
+                                <span class="flex-shrink-0" style="width: 50%;">
+                                    <label id="unite_pcb_1-error" class="validation-error-label" for="unite_pcb_1"></label>
+                                </span>
+                                <span class="flex-shrink-0" style="width: 50%;">
+                                    <label id="palettisation_1-error" class="validation-error-label" for="palettisation_1"></label>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group">
                         <label>PALETTISATION <span class="text-bold text-danger-600">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Palettisation" name="palettisation" id="palettisation" required="required">
                         <label id="palettisation-error" class="validation-error-label" for="palettisation"></label>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label>UNITÉ DE STOCKAGE <span class="text-bold text-danger-600">*</span></label>

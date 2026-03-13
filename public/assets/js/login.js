@@ -26,7 +26,7 @@ $(document).ready(function () {
                     $('#password').val('');
                 } else if (response == 2) {
                     flashMessage("success", "Connexion réussie !");
-                    window.location.href = urlProject + "Acceuil";
+                    window.location.href = urlProject + "Accueil";
                 } else {
                     flashMessage("error", "Erreur lors de la connexion !");
                 }

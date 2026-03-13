@@ -8,30 +8,42 @@
         <label id="code_upd-error" class="validation-error-label" for="code_upd"></label>
     </div>
 
+    <div class="d-flex align-items-center gap-2 dynamic-row mb-2">
+        <label class="flex-fill">
+            UNITÉ PCB <span class="text-bold text-danger-600">*</span>
+        </label>
+
+        <label class="flex-fill">
+            PALETTISATION <span class="text-bold text-danger-600">*</span>
+        </label>
+    </div>
+
     <div class="form-group">
-        <label>UNITÉ PCB <span class="text-bold text-danger-600">*</span></label>
         <div id="container_inputs_upd" class="border border-1 p-2">
             <?php $i = 1;
-            foreach ($data->unite_pcb as $key => $value): ?>
-                <div class="input-group mb-2 dynamic-row">
-                    <input type="text" id="unite_pcb_upd_<?= $i ?>" name="unite_pcb_upd_<?= $i ?>" class="form-control input-xs obligatoire" value="<?= $value ?>">
-                    <div class="buttons-area ms-2">
-                        <button type="button" class="btn btn-primary btn-xs btn-add">
+            foreach ($data->arrPcbPal as $key => $value): ?>
+                <div class="d-flex align-items-center gap-2 dynamic-row mb-2" data-index="1">
+                    <input type="text" id="unite_pcb_upd_<?= $i ?>" name="unite_pcb_upd_<?= $i ?>"
+                        placeholder="Unité PCB" class="form-control obligatoire flex-fill" value="<?= $key ?>">
+                    <input type=" text" id="palettisation_upd_<?= $i ?>" name="palettisation_upd_<?= $i ?>"
+                        placeholder="Palettisation" class="form-control obligatoire flex-fill" value="<?= $value ?>">
+                    <div class=" buttons-area flex-shrink-0"> <button type="button" class="btn btn-primary btn-xs btn-add">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
                 </div>
-                <label id="unite_pcb_upd_<?= $i ?>-error" class="validation-error-label" for="unite_pcb_upd_<?= $i ?>"></label>
+
+                <div class="d-flex align-items-center gap-2 mb-2 error-row">
+                    <span class="flex-shrink-0" style="width: 50%;">
+                        <label id="unite_pcb_upd_<?= $i ?>-error" class="validation-error-label" for="unite_pcb_upd_<?= $i ?>"></label>
+                    </span>
+                    <span class="flex-shrink-0" style="width: 50%;">
+                        <label id="palettisation_upd_<?= $i ?>-error" class="validation-error-label" for="palettisation_upd_<?= $i ?>"></label>
+                    </span>
+                </div>
             <?php $i++;
             endforeach; ?>
         </div>
-    </div>
-
-    <div class="form-group">
-        <label>PALETTISATION <span class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
-        <input type="text" class="form-control input-xs obligatoire" placeholder="Palettisation" name="palettisation_upd"
-            id="palettisation_upd" required="required" value="<?= $data->palettisation ?>">
-        <label id="palettisation_upd-error" class="validation-error-label" for="palettisation_upd"></label>
     </div>
 
     <div class="form-group">

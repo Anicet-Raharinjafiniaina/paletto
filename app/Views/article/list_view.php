@@ -150,7 +150,8 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                     data-placeholder="Choisir une unité PCB..."
                                     name="unite_pcb"
                                     id="unite_pcb"
-                                    style="width:100%;">
+                                    style="width:100%;"
+                                    onchange="getPalettisation()">
                                 </select>
                                 <label id="unite_pcb-error" class="validation-error-label" for="unite_pcb"></label>
                             </div>

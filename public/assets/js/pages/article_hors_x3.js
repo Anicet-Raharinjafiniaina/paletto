@@ -83,7 +83,7 @@ function view(id, action) {
             stopLoaderContent('main')
             $("#content-article_hors_x3").html(res);
             $("#modal_view_article_hors_x3").modal("show");
-            refreshButtons('#container_inputs_upd')
+            refreshButtons($('#container_inputs_upd'))
             if (action == "voir") {
                 $("#div-upd-footer").css("display", "none");
                 $("#title").html("Détail du l'article <b>" + t + "</b>");
@@ -242,66 +242,138 @@ function maj() {
 */
 /** Input dynamique pour ajout */
 $(document).on('click', '#container_inputs_add .btn-add', function () {
-    addInputUnitePCB('#container_inputs_add', 'unite_pcb');
+    addInput('#container_inputs_add');
 });
 
 /** Input dynamique pour modification */
 $(document).on('click', '#container_inputs_upd .btn-add', function () {
-    addInputUnitePCB('#container_inputs_upd', 'unite_pcb_upd');
+    addInput('#container_inputs_upd');
 });
 
-// Supprimer dynamiquement
+
+/** Supprimer dynamiquement */
 $(document).on('click', '.btn-remove', function () {
     let row = $(this).closest('.dynamic-row');
-    let container = row.closest('.border'); // pour savoir dans quel container on est
-    let inputId = row.find('input').attr('id');
+    let container = row.closest('.border');
+
+    let uniteId = row.find('input[id^="unite_pcb"]').attr('id');
+    let palletId = row.find('input[id^="palettisation"]').attr('id');
+
+    row.next('.error-row').remove(); // supprimer la ligne d'erreur
     row.remove();
-    $("#" + inputId + "-error").remove();
+
+    $("#" + uniteId + "-error").remove();
+    $("#" + palletId + "-error").remove();
     refreshButtons(container);
 });
 
-// Calcul de l'index spécifique au container et au préfixe
-function getNextIndex(containerSelector, prefix) {
+
+/** Calcul index */
+function getNextIndex(containerSelector) {
     let max = 1;
-    $(`${containerSelector} input[id^="${prefix}_"]`).each(function () {
+    $(`${containerSelector} input[id^="unite_pcb_"]`).each(function () {
         let parts = this.id.split('_');
-        let num = parseInt(parts[parts.length - 1], 10);
+        let num = parseInt(parts[parts.length - 1]);
         if (!isNaN(num) && num > max) max = num;
     });
     return max + 1;
 }
 
-// Ajouter input spécifique au container avec préfixe
-function addInputUnitePCB(containerSelector, prefix) {
-    let index = getNextIndex(containerSelector, prefix);
-    let id = `${prefix}_${index}`;
+
+/** Ajouter ligne */
+function addInput(containerSelector) {
+    let index = getNextIndex(containerSelector);
+    let uniteId = `unite_pcb_${index}`;
+    let palletId = `palettisation_${index}`;
     let html = `
-        <div class="input-group mb-2 dynamic-row">
-            <input type="text" id="${id}" name="${id}" class="form-control input-xs obligatoire">
-            <div class="buttons-area ms-2"></div>
-        </div>
-        <label id="${id}-error" class="validation-error-label" for="${id}"></label>
+               <!-- Ligne initiale -->
+                            <div class="d-flex align-items-center gap-2 dynamic-row mb-2" data-index="1">
+                                <input type="text"  id="${uniteId}" name="${uniteId}"
+                                    placeholder="Unité PCB" class="form-control obligatoire flex-fill">
+                                <input type="text" id="${palletId}" name="${palletId}"
+                                    placeholder="Palettisation" class="form-control obligatoire flex-fill">
+                                <div class="buttons-area flex-shrink-0"> <button type="button" class="btn btn-primary btn-xs btn-add">
+                                        <i class="fas fa-plus"></i>
+                                    </button></div>
+                            </div>
+
+                            <!-- Ligne erreurs -->
+                            <div class="d-flex align-items-center gap-2 mb-2 error-row">
+                                <span class="flex-shrink-0" style="width: 50%;">
+                                    <label id="${uniteId}-error" class="validation-error-label" for="${uniteId}"></label>
+                                </span>
+                                <span class="flex-shrink-0" style="width: 50%;">
+                                    <label id="${palletId}-error" class="validation-error-label" for="${palletId}"></label>
+                                </span>
+                            </div>
     `;
+
     $(containerSelector).append(html);
     refreshButtons($(containerSelector));
 }
 
-// Refresh buttons spécifique au container
+
+/** Refresh boutons */
 function refreshButtons(container) {
-    let rows = $(container).find('.dynamic-row');
+    let rows = container.find('.dynamic-row');
     rows.each(function (i) {
         let btnArea = $(this).find('.buttons-area');
         btnArea.html('');
         if (rows.length === 1) {
-            btnArea.append(`<button type="button" class="btn btn-primary btn-xs btn-add"><i class="fas fa-plus"></i></button>`);
+            btnArea.append(`
+                <button type="button" class="btn btn-primary btn-xs btn-add">
+                    <i class="fas fa-plus"></i>
+                </button>
+            `);
         } else if (i === rows.length - 1) {
             btnArea.append(`
-                <button type="button" class="btn btn-primary btn-xs btn-add"><i class="fas fa-plus"></i></button>
-                <button type="button" class="btn btn-danger btn-xs btn-remove ms-1"><i class="fas fa-times"></i></button>
+                <button type="button" class="btn btn-primary btn-xs btn-add">
+                    <i class="fas fa-plus"></i>
+                </button>
+
+                <button type="button" class="btn btn-danger btn-xs btn-remove ms-1">
+                    <i class="fas fa-times"></i>
+                </button>
             `);
+
         } else {
-            btnArea.append(`<button type="button" class="btn btn-danger btn-xs btn-remove"><i class="fas fa-times"></i></button>`);
+            btnArea.append(`
+                <button type="button" class="btn btn-danger btn-xs btn-remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            `);
         }
+
     });
 }
 /** /input dynamique unité PCB */
+
+
+$('#modal_ajout_article_hors_x3').on('show.bs.modal', function () {
+    let container = $('#container_inputs_add');
+    container.empty();     // Vider le container
+
+    // Remettre la ligne initiale
+    let html = `
+        <div class="d-flex align-items-center gap-2 dynamic-row mb-2" data-index="1">
+            <input type="text" id="unite_pcb_1" name="unite_pcb_1" placeholder="Unité PCB" class="form-control obligatoire flex-fill">
+            <input type="text" id="palettisation_1" name="palettisation_1" placeholder="Palettisation" class="form-control obligatoire flex-fill">
+            <div class="buttons-area flex-shrink-0"></div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 mb-2 error-row">
+            <span class="flex-shrink-0" style="width:50%">
+                <label id="unite_pcb_1-error" class="validation-error-label" for="unite_pcb_1"></label>
+            </span>
+            <span class="flex-shrink-0" style="width:50%">
+                <label id="palettisation_1-error" class="validation-error-label" for="palettisation_1"></label>
+            </span>
+        </div>
+    `;
+
+    container.append(html);
+
+    // Rafraîchir les boutons
+    refreshButtons(container);
+
+});

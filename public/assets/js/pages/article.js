@@ -140,7 +140,6 @@ function getDetailArticle(idmodal = null) {
             if (res != null) {
                 $("#nom").val(res.libelle);
                 $("#unite_pcb").val(res.pcb);
-                $("#palettisation").val(res.palettisation);
                 $("#unite_stockage").val(res.unite_stockage);
                 getAllUnitePCB()
             }
@@ -159,6 +158,24 @@ function getUnitePCBValue() {
     return unite_pcb ? unite_pcb.trim() : "";
 }
 
+function getPalettisation() {
+    if (typeArticle == "x3") {
+
+    }
+    $.ajax({
+        url: urlProject + "Article/getPalettisation",
+        type: "POST",
+        dataType: "json",
+        data: {
+            code: $('#code').val()
+        },
+        success: function (res) {
+            console.log(res);
+            var unitePcb = $('#unite_pcb').val()
+            $('#palettisation').val(res[unitePcb]);
+        }
+    });
+}
 
 function insert() {
     $(".validation-error-label").html("");
