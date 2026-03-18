@@ -7,7 +7,7 @@
 <?php endif; ?>
 <link rel="stylesheet" href="assets/libs/flatpickr/flatpickr.min.css">
 
-<div class="card">
+<div class="card" style="margin-top: 100px;">
     <div class="card-body">
         <?= $this->include('mouvement/menu'); ?>
     </div>

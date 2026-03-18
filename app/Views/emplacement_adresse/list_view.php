@@ -27,7 +27,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <tr>
                             <th>ACTION</th>
                             <th>ETAT</th>
-                            <th>LOCALISATION</th>
+                            <th>ADRESSE</th>
                             <th>ENTREPÔT</th>
                             <th>ALLÉE</th>
                             <th>RANGÉE</th>
