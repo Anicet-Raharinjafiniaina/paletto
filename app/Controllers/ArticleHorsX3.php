@@ -15,7 +15,9 @@ class ArticleHorsX3 extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(6);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -39,7 +41,9 @@ class ArticleHorsX3 extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(6);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         $arr =  $this->traiterUnitePCB($arr);
@@ -96,7 +100,9 @@ class ArticleHorsX3 extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(6);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
         $id = trim($this->request->getVar('id'));
@@ -130,7 +136,9 @@ class ArticleHorsX3 extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(6);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_data = $this->request->getVar('data');
         $arr_data =  $this->traiterUnitePCB($arr_data);
@@ -167,7 +175,9 @@ class ArticleHorsX3 extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(6);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {

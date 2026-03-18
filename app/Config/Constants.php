@@ -47,6 +47,8 @@ define('AES_128_ECB', 'aes-128-ecb');
 define('AES_128_CBC', 'aes-128-cbc');
 define('ENCRYPTION_KEY', 'Pa13p3rman3n!32022');
 
+defined('URL_FILE') || define('URL_FILE', WRITEPATH . 'doc/');
+
 /** Tables */
 defined('TBL_UTILISATEUR') || define('TBL_UTILISATEUR', 'utilisateur');
 defined('TBL_PROFIL') || define('TBL_PROFIL', 'profil');
@@ -59,7 +61,7 @@ defined('TBL_RANGEE') || define('TBL_RANGEE', 'rangee');
 defined('TBL_NIVEAU') || define('TBL_NIVEAU', 'niveau');
 defined('TBL_CAGE') || define('TBL_CAGE', 'cage');
 defined('TBL_EMPLACEMENT') || define('TBL_EMPLACEMENT', 'emplacement');
-defined('TBL_LISTE_EMPLACEMENT') || define('TBL_LISTE_EMPLACEMENT', 'liste_emplacement');
+defined('TBL_EMPLACEMENT_ADRESSE') || define('TBL_EMPLACEMENT_ADRESSE', 'emplacement_adresse');
 defined('TBL_EMPLACEMENT_STATUT') || define('TBL_EMPLACEMENT_STATUT', 'emplacement_statut');
 defined('TBL_PALETTE') || define('TBL_PALETTE', 'palette');
 defined('TBL_PALETTE_STATUT') || define('TBL_PALETTE_STATUT', 'palette_statut');
@@ -71,7 +73,7 @@ defined('TBL_ACTION') || define('TBL_ACTION', 'action');
 /** Tables */
 
 /* View */
-defined('VIEW_LISTE_EMPLACEMENT') || define('VIEW_LISTE_EMPLACEMENT', 'liste_emplacement_view');
+defined('VIEW_EMPLACEMENT_ADRESSE') || define('VIEW_EMPLACEMENT_ADRESSE', 'emplacement_adresse_view');
 /** /View */
 
 /*

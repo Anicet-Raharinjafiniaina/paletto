@@ -12,7 +12,9 @@ class ListeEmplacement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -26,15 +28,15 @@ class ListeEmplacement extends BaseController
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
-            echo view('liste_emplacement/list_view', $arr);
+            echo view('emplacement_adresse/list_view', $arr);
             return;
         }
-        echo view('liste_emplacement/list_view', $arr);
+        echo view('emplacement_adresse/list_view', $arr);
     }
 
     public function getListeEmplacementById($emplacement_id = null)
     {
-        $crud = new CrudModel(VIEW_LISTE_EMPLACEMENT);
+        $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
         $arr = [];
         if ($emplacement_id != null) {
             $arr = $crud->getDataById(array('emplacement_id' => $emplacement_id));
@@ -44,13 +46,13 @@ class ListeEmplacement extends BaseController
 
     public function getAllEmplacement()
     {
-        $crud = new CrudModel(VIEW_LISTE_EMPLACEMENT);
+        $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
         return  $crud->getAllData();
     }
 
     public function checkListeEmplacementById($emplacement_id = null)
     {
-        $crud = new CrudModel(TBL_LISTE_EMPLACEMENT);
+        $crud = new CrudModel(TBL_EMPLACEMENT_ADRESSE);
         $nb = 0;
         if ($emplacement_id != null) {
             $nb = $crud->getNb(array('emplacement_id' => $emplacement_id, "flag_suppression" => 0));
@@ -63,7 +65,9 @@ class ListeEmplacement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         if ($id == null || $id == "") {
             return;
@@ -73,7 +77,7 @@ class ListeEmplacement extends BaseController
         if (!empty($arrEmplacement)) {
             $qrCodeController = new QrCodeController();
             $qr_code_image = $qrCodeController->generateBase64($arrEmplacement->qr_code_texte);
-            $crudEmplacement = new CrudModel(TBL_LISTE_EMPLACEMENT);
+            $crudEmplacement = new CrudModel(TBL_EMPLACEMENT_ADRESSE);
             if ($isEmplacementExist == 0) {
                 return $crudEmplacement->create(array("emplacement_id" => $id, "qr_code_texte" => $arrEmplacement->qr_code_texte, "qr_code_image" => $qr_code_image), $action);
             } else {
@@ -85,19 +89,19 @@ class ListeEmplacement extends BaseController
     public function getDetailEmplacement()
     {
         $id = $this->request->getPost('id');
-        $crud = new CrudModel(VIEW_LISTE_EMPLACEMENT);
+        $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
         $arrJoin = array(
-            array("table" => TBL_EMPLACEMENT_STATUT, "on" => VIEW_LISTE_EMPLACEMENT . ".statut_id = " . TBL_EMPLACEMENT_STATUT . ".id", "type" => "left"),
+            array("table" => TBL_EMPLACEMENT_STATUT, "on" => VIEW_EMPLACEMENT_ADRESSE . ".statut_id = " . TBL_EMPLACEMENT_STATUT . ".id", "type" => "left"),
         );
         $arr['data'] = $crud->getDataById(['emplacement_id' => $id], $arrJoin, "*");
-        echo view('liste_emplacement/detail', $arr);
+        echo view('emplacement_adresse/detail', $arr);
     }
 
     /** /Liste des emplacements */
 
     /** Gestion emplacement  */
-    public function getListeEmplacement() // afficher la listes des emplacements 
-    {}
+    // public function getListeEmplacement() // afficher la listes des emplacements 
+    // {}
 
     /** /Gestion emplacement  */
 }

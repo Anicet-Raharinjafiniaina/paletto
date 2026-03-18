@@ -26,7 +26,9 @@ class Article extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -34,7 +36,6 @@ class Article extends BaseController
     public function load()
     {
         $arr['arr_article'] = $this->getAllArticle();
-        $arr['arr_palette'] = $this->getAllPaletteNoTOccuped();
         $palette = new Palette();
         $arr['arr_client'] = $palette->getAllClient();
         $arr['titre'] = "Gestion des palettes";
@@ -65,7 +66,8 @@ class Article extends BaseController
     public function getAllPaletteNoTOccuped()
     {
         $crud = new CrudModel(TBL_PALETTE);
-        return  $crud->getAllData(['palette_statut_id != 3' => null, 'flag_suppression' => 0], [], "id, code");
+        $arr =  $crud->getAllData(['palette_statut_id != 3' => null, 'flag_suppression' => 0], [], "id, code as text");
+        return json_encode($arr);
     }
 
     public function getAllArticle1() // venant de X3
@@ -99,7 +101,6 @@ class Article extends BaseController
         $code = trim($this->request->getPost('code'));
         $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
         $arrData = $crud->getDataById(['ITMREF_0' => $code], [], 'PCU_0,PCU_1,PCU_2,PCU_3,PCU_4,PCU_5,PCUSTUCOE_0,PCUSTUCOE_1,PCUSTUCOE_2,PCUSTUCOE_3,PCUSTUCOE_4,PCUSTUCOE_5');
-
 
         $arrPal = [];
         for ($i = 0; $i <= 5; $i++) {
@@ -209,7 +210,9 @@ class Article extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
@@ -291,7 +294,9 @@ class Article extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(4);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $crud = new CrudModel(TBL_ARTICLE);
         $arrJoin = [[

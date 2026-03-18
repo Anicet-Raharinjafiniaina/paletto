@@ -50,7 +50,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                     </td>
                                     <?php $statutClasses = [
                                         1 => 'bg-success',
-                                        2 => 'bg-secondary',
+                                        2 => 'bg-primary',
                                         3 => 'bg-danger',
                                     ];
                                     ?> <td>

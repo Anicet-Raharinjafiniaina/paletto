@@ -17,7 +17,7 @@
              <div class="d-flex">
                  <!-- LOGO -->
                  <div class="navbar-brand-box">
-                     <a href="index.html" class="logo logo-light">
+                     <a href="#" class="logo logo-light" onclick="loadPage('Accueil', true)">
                          <span class="logo-sm">
                              <img src="assets/images/logoBoost.png" alt="" height="30">
                          </span>

@@ -23,7 +23,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -63,7 +65,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
 
         $name = trim($this->request->getVar('c'));
@@ -90,7 +94,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $name = trim($this->request->getVar('n'));
         $filtre = '(cn=' . $name . ')';
@@ -112,7 +118,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $name = trim($this->request->getVar('n'));
         $filtre = '(cn=' . $name . ')';
@@ -134,7 +142,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $name = trim($this->request->getVar('n'));
         $filtre = '(cn=' . $name . ')';
@@ -156,7 +166,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_user = $this->request->getVar('data');
         if (!empty($arr_user)) {
@@ -182,7 +194,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $crud = new CrudModel(TBL_UTILISATEUR);
 
@@ -204,7 +218,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_UTILISATEUR);
@@ -232,7 +248,9 @@ class User extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(1);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {

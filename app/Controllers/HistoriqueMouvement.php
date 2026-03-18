@@ -14,7 +14,9 @@ class HistoriqueMouvement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(9);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -34,18 +36,20 @@ class HistoriqueMouvement extends BaseController
     public function historiqueMouvement()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(5);
+        $is_ok = $acces->is_ok(9);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
 
-        $select = [TBL_MOUVEMENT . '.id', TBL_LISTE_EMPLACEMENT . '.qr_code_texte as emplacement', TBL_ARTICLE . '.qr_code_text as palette_article', TBL_MOUVEMENT_TYPE . '.type', TBL_MOUVEMENT . '.date_mouvement'];
-        $searchable = [TBL_LISTE_EMPLACEMENT . '.qr_code_texte', TBL_ARTICLE . '.qr_code_text', TBL_MOUVEMENT_TYPE . '.type'];
+        $select = [TBL_MOUVEMENT . '.id', TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte as emplacement', TBL_ARTICLE . '.qr_code_text as palette_article', TBL_MOUVEMENT_TYPE . '.type', TBL_MOUVEMENT . '.date_mouvement'];
+        $searchable = [TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte', TBL_ARTICLE . '.qr_code_text', TBL_MOUVEMENT_TYPE . '.type'];
 
         $arrJoin = [
             [
-                'table' => TBL_LISTE_EMPLACEMENT,
-                'condition' => TBL_LISTE_EMPLACEMENT . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
+                'table' => TBL_EMPLACEMENT_ADRESSE,
+                'condition' => TBL_EMPLACEMENT_ADRESSE . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
                 'type' => 'left'
             ],
             [
@@ -65,7 +69,7 @@ class HistoriqueMouvement extends BaseController
             ]
         ];
         /* $where = [
-            TBL_LISTE_EMPLACEMENT . '.flag_suppression' => 1
+            TBL_EMPLACEMENT_ADRESSE . '.flag_suppression' => 1
         ];*/
         $libDataTable = new LibDataTable();
         $orderBy = ['column' => TBL_MOUVEMENT . '.date_mouvement', 'dir' => 'desc'];
@@ -78,8 +82,8 @@ class HistoriqueMouvement extends BaseController
         $crud = new CrudModel(TBL_MOUVEMENT);
         $arrJoin = [
             [
-                'table' => TBL_LISTE_EMPLACEMENT,
-                'on' => TBL_LISTE_EMPLACEMENT . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
+                'table' => TBL_EMPLACEMENT_ADRESSE,
+                'on' => TBL_EMPLACEMENT_ADRESSE . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
                 'type' => 'left'
             ],
             [
@@ -103,7 +107,7 @@ class HistoriqueMouvement extends BaseController
                 'type' => 'left'
             ]
         ];
-        $select = [TBL_MOUVEMENT . '.id', TBL_LISTE_EMPLACEMENT . '.qr_code_texte as emplacement', TBL_PALETTE . '.code as palette_code', TBL_ARTICLE . '.client_code', TBL_ARTICLE . '.client_nom', TBL_ARTICLE . '.code as article_code', TBL_ARTICLE . '.nom as article_nom', TBL_ARTICLE . '.dluo', TBL_ARTICLE . '.unite_pcb', TBL_ARTICLE . '.quantite', TBL_ARTICLE . '.lot',  TBL_ARTICLE . '.palettisation', TBL_ARTICLE . '.unite_stockage', TBL_MOUVEMENT_TYPE . '.type as mouvement_type', TBL_MOUVEMENT . '.date_mouvement', TBL_UTILISATEUR . '.nom as auteur'];
+        $select = [TBL_MOUVEMENT . '.id', TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte as emplacement', TBL_PALETTE . '.code as palette_code', TBL_ARTICLE . '.client_code', TBL_ARTICLE . '.client_nom', TBL_ARTICLE . '.code as article_code', TBL_ARTICLE . '.nom as article_nom', TBL_ARTICLE . '.dluo', TBL_ARTICLE . '.unite_pcb', TBL_ARTICLE . '.quantite', TBL_ARTICLE . '.lot',  TBL_ARTICLE . '.palettisation', TBL_ARTICLE . '.unite_stockage', TBL_MOUVEMENT_TYPE . '.type as mouvement_type', TBL_MOUVEMENT . '.date_mouvement', TBL_UTILISATEUR . '.nom as auteur'];
         $arr['data'] = $crud->getDataById([TBL_MOUVEMENT . '.id' => $id], $arrJoin, $select);
         echo view('historique/detail_mouvement', $arr);
     }

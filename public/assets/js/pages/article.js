@@ -11,22 +11,34 @@ $("#btn-add-article").click(function () {
     $("#type_article").hide()
     $("#modal_ajout_article").modal("show");
     resetArticleForm()
+    getListPalette()
     $('#quantite').val(0);
     $(".validation-error-label").html("");
     inputDateForm('dluo')
     stopLoaderContent('main')
 });
 
+function getListPalette() {
+    $.ajax({
+        url: urlProject + "Article/getAllPaletteNoTOccuped",
+        type: "POST",
+        dataType: "json",
+        success: function (res) {
+            setDataSelect("palette_id", res)
+        }
+    })
+}
+
 function resetArticleForm() {
     $('.add-article-content')
         .find('input[type="text"], input[type="hidden"], textarea, select')
         .val('')
         .trigger('change');
-    intiSelect();
+    intiSelectUnitePcb();
 }
 
-function intiSelect() {    // Réinitialiser tous les selects (Select2 inclus)
-    $('.add-article-content select').each(function () {
+function intiSelectUnitePcb() {    // Réinitialiser tous les selects (Select2 inclus)
+    $('#unite_pcb').each(function () {
         $(this).empty();
         $(this).val(null).trigger('change'); // fonctionne pour single et multiple
     });
@@ -45,6 +57,7 @@ $('.article-option').on('change', function () { // toggle choice
         $(this).closest('.option-check').addClass('border-primary bg-light');
     }
     resetArticleForm()
+    getListPalette()
     loadCodeArticle()
     loadClient("client")
 });
@@ -64,7 +77,7 @@ function getAllUnitePCB() {
         dataType: "json",
         data: { code: $('#code').val() },
         success: function (res) {
-            intiSelect()
+            intiSelectUnitePcb()
             stopLoaderContent('modal_ajout_article')
             setDataSelect("unite_pcb", res)
         }
@@ -187,6 +200,8 @@ function insert() {
     }
     $("#type_article").hide();
     isValid = checkObligatoire(".add-article-content", ".obligatoire")
+    console.log("isavalid : " + isValid);
+
     if (isValid == true) {
         $("#save").prop("disabled", true);
         let arr_data = getFormDataFromParentClass(".add-article-content")

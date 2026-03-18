@@ -19,7 +19,9 @@ class Mouvement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(5);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -41,11 +43,11 @@ class Mouvement extends BaseController
         $search = trim($this->request->getPost('code') ?? '');
         $emplacement_statut_id = $this->request->getPost('statut_1');
         $sql = "SELECT qr_code_texte
-                FROM liste_emplacement
-                JOIN emplacement ON emplacement.id = liste_emplacement.emplacement_id
+                FROM emplacement_adresse
+                JOIN emplacement ON emplacement.id = emplacement_adresse.emplacement_id
                 WHERE qr_code_texte ILIKE ?
                     AND emplacement_statut_id = $emplacement_statut_id
-                    AND liste_emplacement.flag_suppression = 0
+                    AND emplacement_adresse.flag_suppression = 0
                     AND emplacement.flag_suppression = 0
                 ORDER BY qr_code_texte
                 LIMIT 10";
@@ -86,7 +88,7 @@ class Mouvement extends BaseController
     /*** QR code de l'emplacement */
     public function getEmplacementIdByQrCode($code, $statut_id)
     {
-        $crud = new CrudModel(TBL_LISTE_EMPLACEMENT);
+        $crud = new CrudModel(TBL_EMPLACEMENT_ADRESSE);
         $arr = $crud->getDataById(['qr_code_texte' => trim($code), 'emplacement_statut_id' => $statut_id, 'flag_suppression' => 0], [], "id");
         return (!empty($arr)) ? $arr->id : null;
     }
@@ -111,12 +113,14 @@ class Mouvement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(5);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
             $crud = new CrudModel(TBL_MOUVEMENT);
-            $emplacement_id = $this->getEmplacementIdByQrCode($arr['qr_emplacement_entree'], 1); // emplacement ID (table : liste_emplacement)
+            $emplacement_id = $this->getEmplacementIdByQrCode($arr['qr_emplacement_entree'], 1); // emplacement ID (table : emplacement_adresse)
             $palette_id = $this->getPaletteIdByQrCode($arr['qr_palette_entree'], 3);
             if (is_null($emplacement_id)) {
                 return json_encode(2); // emplacement non valide
@@ -136,7 +140,7 @@ class Mouvement extends BaseController
     public function majStatutEmplacement($id, $statut_id)
     {
         if ($id != null && $id != "") {
-            $crud = new CrudModel(TBL_LISTE_EMPLACEMENT);
+            $crud = new CrudModel(TBL_EMPLACEMENT_ADRESSE);
             $crud->maj(["id" => $id], ['emplacement_statut_id' => $statut_id], 0);
         }
     }
@@ -182,7 +186,9 @@ class Mouvement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(5);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
@@ -216,7 +222,9 @@ class Mouvement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(5);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
@@ -264,13 +272,13 @@ class Mouvement extends BaseController
     //             return redirect()->to('/');
     //         }
 
-    //         $select = [TBL_MOUVEMENT . '.id', TBL_LISTE_EMPLACEMENT . '.qr_code_texte as emplacement', TBL_ARTICLE . '.qr_code_text as palette_article', TBL_MOUVEMENT_TYPE . '.type', TBL_MOUVEMENT . '.date_mouvement'];
-    //         $searchable = [TBL_LISTE_EMPLACEMENT . '.qr_code_texte', TBL_ARTICLE . '.qr_code_text', TBL_MOUVEMENT_TYPE . '.type'];
+    //         $select = [TBL_MOUVEMENT . '.id', TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte as emplacement', TBL_ARTICLE . '.qr_code_text as palette_article', TBL_MOUVEMENT_TYPE . '.type', TBL_MOUVEMENT . '.date_mouvement'];
+    //         $searchable = [TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte', TBL_ARTICLE . '.qr_code_text', TBL_MOUVEMENT_TYPE . '.type'];
 
     //         $arrJoin = [
     //             [
-    //                 'table' => TBL_LISTE_EMPLACEMENT,
-    //                 'condition' => TBL_LISTE_EMPLACEMENT . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
+    //                 'table' => TBL_EMPLACEMENT_ADRESSE,
+    //                 'condition' => TBL_EMPLACEMENT_ADRESSE . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
     //                 'type' => 'left'
     //             ],
     //             [
@@ -290,7 +298,7 @@ class Mouvement extends BaseController
     //             ]
     //         ];
     //         /* $where = [
-    //             TBL_LISTE_EMPLACEMENT . '.flag_suppression' => 1
+    //             TBL_EMPLACEMENT_ADRESSE . '.flag_suppression' => 1
     //         ];*/
     //         $libDataTable = new LibDataTable();
     //         $orderBy = ['column' => TBL_MOUVEMENT . '.date_mouvement', 'dir' => 'desc'];
@@ -303,8 +311,8 @@ class Mouvement extends BaseController
     //         $crud = new CrudModel(TBL_MOUVEMENT);
     //         $arrJoin = [
     //             [
-    //                 'table' => TBL_LISTE_EMPLACEMENT,
-    //                 'on' => TBL_LISTE_EMPLACEMENT . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
+    //                 'table' => TBL_EMPLACEMENT_ADRESSE,
+    //                 'on' => TBL_EMPLACEMENT_ADRESSE . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
     //                 'type' => 'left'
     //             ],
     //             [
@@ -328,7 +336,7 @@ class Mouvement extends BaseController
     //                 'type' => 'left'
     //             ]
     //         ];
-    //         $select = [TBL_MOUVEMENT . '.id', TBL_LISTE_EMPLACEMENT . '.qr_code_texte as emplacement', TBL_PALETTE . '.code as palette_code', TBL_ARTICLE . '.client_code', TBL_ARTICLE . '.client_nom', TBL_ARTICLE . '.code as article_code', TBL_ARTICLE . '.nom as article_nom', TBL_ARTICLE . '.dluo', TBL_ARTICLE . '.unite_pcb', TBL_ARTICLE . '.quantite', TBL_ARTICLE . '.lot',  TBL_ARTICLE . '.palettisation', TBL_ARTICLE . '.unite_stockage', TBL_MOUVEMENT_TYPE . '.type as mouvement_type', TBL_MOUVEMENT . '.date_mouvement', TBL_UTILISATEUR . '.nom as auteur'];
+    //         $select = [TBL_MOUVEMENT . '.id', TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte as emplacement', TBL_PALETTE . '.code as palette_code', TBL_ARTICLE . '.client_code', TBL_ARTICLE . '.client_nom', TBL_ARTICLE . '.code as article_code', TBL_ARTICLE . '.nom as article_nom', TBL_ARTICLE . '.dluo', TBL_ARTICLE . '.unite_pcb', TBL_ARTICLE . '.quantite', TBL_ARTICLE . '.lot',  TBL_ARTICLE . '.palettisation', TBL_ARTICLE . '.unite_stockage', TBL_MOUVEMENT_TYPE . '.type as mouvement_type', TBL_MOUVEMENT . '.date_mouvement', TBL_UTILISATEUR . '.nom as auteur'];
     //         $arr['data'] = $crud->getDataById([TBL_MOUVEMENT . '.id' => $id], $arrJoin, $select);
     //         echo view('mouvement/detail', $arr);
     //     }

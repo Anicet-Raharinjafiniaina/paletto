@@ -1,0 +1,87 @@
+  /* Conteneur calendrier */
+    .daterangepicker {
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: 1px solid #dee2e6;
+        font-family: "Inter", "Segoe UI", sans-serif;
+    }
+
+    /* Header du calendrier */
+    .daterangepicker .drp-calendar .calendar-table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #495057;
+    }
+
+    /* Jours du calendrier */
+    .daterangepicker .calendar-table td {
+        border-radius: 0.25rem;
+        transition: background-color 0.15s;
+    }
+
+    .daterangepicker .calendar-table td.available:hover {
+        background-color: #e9ecef;
+    }
+
+    .daterangepicker .calendar-table td.active,
+    .daterangepicker .calendar-table td.active:hover {
+        background-color: #0d6efd;
+        /* bleu primary */
+        color: #fff;
+    }
+
+    /* Boutons */
+    .daterangepicker .applyBtn {
+        background-color: #0d6efd;
+        /* primary */
+        color: #fff;
+        border-radius: 0.25rem;
+        border: 1px solid #0d6efd;
+        padding: 0.25rem 0.75rem;
+        font-weight: 500;
+    }
+
+    .daterangepicker .applyBtn:hover {
+        background-color: #0b5ed7;
+    }
+
+    .daterangepicker .cancelBtn {
+        background-color: #dc3545;
+        color: #fff;
+        border-radius: 0.25rem;
+        border: 1px solid #dc3545;
+        padding: 0.25rem 0.75rem;
+        font-weight: 500;
+    }
+
+    .daterangepicker .cancelBtn:hover {
+        background-color: #bb2d3b;
+    }
+
+    /* Valeurs rapides (Aujourd'hui, Hier...) */
+    .daterangepicker .ranges li {
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    .daterangepicker .ranges li:hover {
+        background-color: #e7f1ff;
+        color: #0d6efd;
+    }
+
+    .daterangepicker .ranges li.active,
+    .daterangepicker .ranges li.active:hover {
+        background-color: #0d6efd;
+        /* bleu primary */
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* Input placeholder */
+    #periode_range::placeholder {
+        color: #6c757d;
+        opacity: 1;
+    }

@@ -22,7 +22,9 @@ class Allee extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -64,7 +66,9 @@ class Allee extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
@@ -88,7 +92,9 @@ class Allee extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $crud = new CrudModel(TBL_ALLEE);
 
@@ -109,7 +115,9 @@ class Allee extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_ALLEE);
@@ -145,7 +153,9 @@ class Allee extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {

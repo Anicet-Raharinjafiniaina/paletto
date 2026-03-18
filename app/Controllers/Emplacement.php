@@ -14,7 +14,9 @@ class Emplacement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -83,7 +85,9 @@ class Emplacement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
@@ -109,7 +113,9 @@ class Emplacement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $crud = new CrudModel(TBL_EMPLACEMENT);
         $id = trim($this->request->getVar('id'));
@@ -129,7 +135,9 @@ class Emplacement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_EMPLACEMENT);
@@ -172,13 +180,15 @@ class Emplacement extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $id = $this->request->getVar('id');
         $result = 0;
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_EMPLACEMENT);
-            $crudDetailEmplacement = new CrudModel(TBL_LISTE_EMPLACEMENT);
+            $crudDetailEmplacement = new CrudModel(TBL_EMPLACEMENT_ADRESSE);
             $arrFilter = ['emplacement_id' => $id, 'statut_id' => 1];
             $nb = $this->compterListeEmplacement($arrFilter);
             if ($nb > 0) { // emplacement libre
@@ -195,7 +205,7 @@ class Emplacement extends BaseController
 
     function compterListeEmplacement($arrFilter)
     {
-        $crud = new CrudModel(VIEW_LISTE_EMPLACEMENT);
+        $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
         return $crud->getNb($arrFilter);
     }
 }

@@ -22,7 +22,9 @@ class Cage extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -85,7 +87,9 @@ class Cage extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr = $this->request->getVar('data');
         if (!empty($arr)) {
@@ -109,7 +113,9 @@ class Cage extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $crud = new CrudModel(TBL_CAGE);
         $id = trim($this->request->getVar('id'));
@@ -129,7 +135,9 @@ class Cage extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_data = $this->request->getVar('data');
         $crud = new CrudModel(TBL_CAGE);
@@ -168,7 +176,9 @@ class Cage extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(3);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {

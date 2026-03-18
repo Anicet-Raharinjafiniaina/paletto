@@ -102,13 +102,13 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                 <label>PALETTE <span class="text-bold text-danger-600">*</span></label>
                                 <select class="select select-search obligatoire" data-placeholder="Choisir une palette..." name="palette_id" id="palette_id" onchange="getClientForPalette('palette_id','client','modal_ajout_article')" style="width: 100%;">
                                     <option value=""></option>
-                                    <?php if (!empty($arr_palette)): ?>
+                                    <?php /*if (!empty($arr_palette)): ?>
                                         <?php foreach ($arr_palette as $row): ?>
                                             <option value="<?= $row->id ?>">
                                                 <?= $row->code ?>
                                             </option>
                                         <?php endforeach; ?>
-                                    <?php endif; ?>
+                                    <?php endif;*/ ?>
                                 </select>
                                 <label id="palette_id-error" class="validation-error-label" for="palette_id"></label>
                             </div>

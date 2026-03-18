@@ -23,7 +23,9 @@ class Profil extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(2);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -94,7 +96,9 @@ class Profil extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(2);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_page_id = $this->request->getVar('arr_page_id');
         sort($arr_page_id);
@@ -127,7 +131,9 @@ class Profil extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(2);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $crud_profil = new CrudModel(TBL_PROFIL);
         $crud_acces = new CrudModel(TBL_ACCES);
@@ -151,7 +157,9 @@ class Profil extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(2);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $arr_page_id = $this->request->getVar('arr_page_id');
         sort($arr_page_id);
@@ -192,7 +200,9 @@ class Profil extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(2);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {

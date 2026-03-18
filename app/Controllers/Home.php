@@ -4,6 +4,13 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
+    protected $session;
+
+    public function __construct()
+    {
+        $this->session = \Config\Services::session();
+        date_default_timezone_set('Indian/Antananarivo'); // centralisation timezone
+    }
 
     public function index()
     {
@@ -17,6 +24,7 @@ class Home extends BaseController
         //     return;
         // }
         // echo view('test', $arr);
+        $this->session->destroy();
 
         echo view('login_view');
     }

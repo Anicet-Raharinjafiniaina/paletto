@@ -24,9 +24,9 @@
             foreach ($data->arrPcbPal as $key => $value): ?>
                 <div class="d-flex align-items-center gap-2 dynamic-row mb-2" data-index="1">
                     <input type="text" id="unite_pcb_upd_<?= $i ?>" name="unite_pcb_upd_<?= $i ?>"
-                        placeholder="Unité PCB" class="form-control obligatoire flex-fill" value="<?= $key ?>">
+                        placeholder="Unité PCB" class="form-control obligatoire flex-fill" value="<?= $key ?>" <?= $disabled; ?>>
                     <input type=" text" id="palettisation_upd_<?= $i ?>" name="palettisation_upd_<?= $i ?>"
-                        placeholder="Palettisation" class="form-control obligatoire flex-fill" value="<?= $value ?>">
+                        placeholder="Palettisation" class="form-control obligatoire flex-fill" value="<?= $value ?>" <?= $disabled; ?>>
                     <div class=" buttons-area flex-shrink-0"> <button type="button" class="btn btn-primary btn-xs btn-add">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -49,14 +49,14 @@
     <div class="form-group">
         <label>UNITÉ de STOCKAGE <span class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
         <input type="text" class="form-control input-xs obligatoire" placeholder="Unité de stockage" name="unite_stockage_upd"
-            id="unite_stockage_upd" required="required" value="<?= $data->unite_stockage ?>">
+            id="unite_stockage_upd" required="required" value="<?= $data->unite_stockage ?>" <?= $disabled; ?>>
         <label id="unite_stockage_upd-error" class="validation-error-label" for="unite_stockage_upd"></label>
     </div>
 
     <div class="form-group">
         <label>DESCRIPTION </label>
         <input type="text" class="form-control input-xs" placeholder="Description" name="description_upd"
-            id="description_upd" required="required" value="<?= $data->description ?>">
+            id="description_upd" required="required" value="<?= $data->description ?>" <?= $disabled; ?>>
         <label id="description_upd-error" class="validation-error-label" for="description_upd"></label>
     </div>
 

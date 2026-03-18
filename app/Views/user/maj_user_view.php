@@ -47,9 +47,12 @@
 
     <?php $checked = ($data->actif == 1) ? 'checked="checked"' : ""; ?>
     <div class="form-group">
-        <div class="form-check form-switch switch-label">
-            <input type="checkbox" class="form-check-input" name="actif" id="actif" value="<?= $data->actif; ?>"
-                <?= $checked; ?> <?= $disabled; ?>>
+        <div class="d-flex align-items-center gap-2">
+            <span class="mb-n2"><label for="actif">Actif</label></span>
+            <div class="form-check form-switch switch-label">
+                <input type="checkbox" class="form-check-input" name="actif" id="actif" value="<?= $data->actif; ?>"
+                    <?= $checked; ?> <?= $disabled; ?>>
+            </div>
         </div>
     </div>
 

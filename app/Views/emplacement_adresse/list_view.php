@@ -9,7 +9,7 @@
 $acces_btn = "";
 $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "display:none;"'; ?>
 
-<?= $this->include('liste_emplacement/menu'); ?>
+<?= $this->include('emplacement_adresse/menu'); ?>
 <div class="row">
     <div class="col-12">
         <div class="card">

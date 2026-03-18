@@ -22,6 +22,7 @@ $(document).ready(function () {
 
                         setTimeout(function () {
                             initGraphs()
+                            feather.replace(); // réinitialisation des icons Feather
                             activateMenuByUrl();// activer le menu après un court délai pour s'assurer que le DOM est prêt (c'est pour marquer le menu actif correctement)
                             document.body.click(); // fermer le menu sidebar sur mobile après le chargement de la page
                             /* réinitialiser les datatables */
@@ -32,6 +33,7 @@ $(document).ready(function () {
                                 autoWidth: false
                             });
                             /* /réinitialiser les datatables */
+                            $('.daterangepicker.ltr.show-ranges.opensright').hide(); // masquer le résidu daterange
                         }, 50);
                     });
 
@@ -139,26 +141,30 @@ function activateMenuByUrl() { // Fonction pour activer le menu en fonction de l
     }
 }
 
+// Objet global pour stocker les charts
+const charts = {};
 
 function initGraphs() {
     const graphs = [
-        { id: 'pie_emplacement', data: [75, 20], labels: ['Libre', 'Occupé'] },
-        { id: 'pie_palette', data: [70, 20, 10], labels: ['Libre', 'Attribuée', 'Occupée'] },
-        { id: 'pie_entrepot', data: [70, 20, 10], labels: ['ENT1', 'ENT2', 'ENT3'] },
-        { id: 'pie_mouvement', data: [70, 20, 10], labels: ['Entrée', 'Transfert', 'Sortie'] }
+        { id: 'pie_emplacement', data: [0, 0], labels: ['Libre', 'Occupé'] },
+        { id: 'pie_palette', data: [0, 0, 0], labels: ['Libre', 'Attribuée', 'Occupée'] },
+        { id: 'pie_entrepot', data: [0, 0, 0], labels: ['ENT1', 'ENT2', 'ENT3'] },
+        { id: 'pie_mouvement', data: [0, 0, 0], labels: ['Entrée', 'Transfert', 'Sortie'] }
     ];
 
     graphs.forEach(g => {
         const canvas = document.getElementById(g.id);
-        if (!canvas) return; // Skip si le canvas n'existe pas
+        if (!canvas) return;
 
-        // Détruire l'ancien chart attaché au canvas
-        const oldChart = Chart.getChart(canvas); // récupère l’instance existante
-        if (oldChart) oldChart.destroy();
+        // Si un chart existait déjà, le détruire
+        if (charts[g.id]) {
+            charts[g.id].destroy();
+        }
 
         const ctx = canvas.getContext('2d');
 
-        window[g.id] = new Chart(ctx, {
+        // Créer un nouveau chart et le stocker
+        charts[g.id] = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: g.labels,
@@ -179,7 +185,7 @@ function initGraphs() {
                         formatter: function (value, context) {
                             let data = context.chart.data.datasets[0].data;
                             let total = data.reduce((a, b) => a + b, 0);
-                            return (value / total * 100).toFixed(1) + "%";
+                            return total ? (value / total * 100).toFixed(1) + "%" : "0%";
                         }
                     }
                 }

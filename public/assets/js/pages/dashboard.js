@@ -1,5 +1,4 @@
-let charts = {};
-
+//var charts = {};
 function animateCounter($el, value) {
     $({ countNum: 0 }).animate({ countNum: value }, {
         duration: 1000,
@@ -53,67 +52,153 @@ function updateCard(cardSelector, values, chartLabels, chartColors) {
     });
 }
 
-function updateBarChart(cardSelector, values, chartLabels, chartColors) {
-    const $card = $(cardSelector);
+function updateEntrepotChart(canvasId, data) {
+    const labels = data.map(e => e.entrepot_code);    // Labels → codes des entrepôts
 
-    // Mettre à jour les compteurs si présents
-    $card.find('.counter-value').each(function (index) {
-        let value = values[index] || 0;
-        $(this).data('target', value);
-        animateCounter($(this), value);
-    });
+    // Convertir les valeurs en nombres
+    const libreData = data.map(e => parseFloat(e.libre) || 0);
+    const occupeData = data.map(e => parseFloat(e.occupe) || 0);
 
-    // Mettre à jour le graphique
-    const canvas = $card.find('canvas')[0];
+    const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext('2d');
 
-    if (charts[canvas.id]) charts[canvas.id].destroy();
+    const oldChart = Chart.getChart(canvas); // récupère l'instance existante
+    if (oldChart) oldChart.destroy();
 
-    charts[canvas.id] = new Chart(ctx, {
-        type: 'bar', // graphe vertical
+    charts[canvasId] = new Chart(ctx, {
+        type: 'bar',
         data: {
-            labels: chartLabels,
-            datasets: [{
-                label: 'Valeurs',
-                data: values,
-                backgroundColor: chartColors,
-                borderColor: chartColors.map(c => c + 'BB'),
-                borderWidth: 1
-            }]
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Libre',
+                    data: libreData,
+                    backgroundColor: '#10B981'
+                },
+                {
+                    label: 'Occupé',
+                    data: occupeData,
+                    backgroundColor: '#EF4444'
+                }
+            ]
         },
         options: {
-            responsive: true,
+            layout: {
+                padding: {
+                    top: 30   // espace entre le canvas et le haut (légende)
+                }
+            },
             plugins: {
-                legend: { display: false },
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        font: { size: 14, weight: 'bold' }
+                    }
+                },
                 datalabels: {
-                    color: '#000',
-                    anchor: 'end',
-                    align: 'top',
+                    color: '#ffffff',       // couleur blanche
+                    anchor: 'center',       // au centre de la barre
+                    align: 'center',        // centré
                     font: { weight: 'bold', size: 12 },
-                    formatter: (value) => value
+                    formatter: value => value + '%'   // ajoute le %
                 }
             },
             scales: {
-                y: { beginAtZero: true, title: { display: true, text: 'Nombre' } },
-                x: { title: { display: true, text: 'Catégorie' } }
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: { display: true, text: 'Pourcentage (%)' }
+                },
+                x: {
+                    title: { display: true, text: 'Entrepôt' }
+                }
             }
         },
         plugins: [ChartDataLabels]
     });
 }
 
+function loadMouvementFlux(fluxChart, data) {
+
+    // const labels = data.map(e => e.periode);
+    // const entree = data.map(e => e.entree);
+    // const sortie = data.map(e => e.sortie);
+    // const transfert = data.map(e => e.transfert);
+
+    const labels = data.map(e => e.periode);
+    const entree = data.map(e => Number(e.entree));
+    const sortie = data.map(e => Number(e.sortie));
+    const transfert = data.map(e => Number(e.transfert));
+
+    const ctx = document.getElementById(fluxChart);
+
+    if (window.fluxChart) {
+        window.fluxChart.destroy();
+    }
+
+    window.fluxChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Entrée',
+                    data: entree,
+                    borderColor: '#4CAF50',
+                    backgroundColor: '#4CAF50',
+                    tension: 0.3
+                },
+                {
+                    label: 'Sortie',
+                    data: sortie,
+                    borderColor: '#F44336',
+                    backgroundColor: '#F44336',
+                    tension: 0.3
+                },
+                {
+                    label: 'Transfert',
+                    data: transfert,
+                    borderColor: '#2196F3',
+                    backgroundColor: '#2196F3',
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+$(document).ready(function () {
+    setTimeout(function () {
+        $('#periode').val('mensuel').trigger('change');
+    }, 500);
+});
 
 $('#periode').on('change', function () {
     let periode = $(this).val();
-
     $.ajax({
         url: urlProject + 'Dashboard/getDataForChartPie',
         type: 'POST',
         dataType: 'json',
         data: { periode: periode },
         success: function (data) {
-            console.log(data);
-
             updateCard('.card:has(#pie_emplacement)',
                 [parseInt(data.emplacement.nb_libre), parseInt(data.emplacement.nb_occupe)],
                 ['Libre', 'Occupé'],
@@ -129,10 +214,9 @@ $('#periode').on('change', function () {
                 ['Entrée', 'Transfert', 'Sortie'],
                 ['#10B981', '#2563EB', '#EF4444']);
 
-            updateBarChart('.card:has(#bar_entrepot)',
-                [parseInt(data.entrepot.nb_libre), parseInt(data.entrepot.nb_occupe), parseInt(data.entrepot.nb_reserve)],
-                ['Libre', 'Occupé', 'Réservé'],
-                ['#10B981', '#EF4444', '#2563EB']);
+            updateEntrepotChart('bar_entrepot', data.entrepot);
+
+            loadMouvementFlux('flux_chart', data.fluxMouvement)
         }
     });
 });

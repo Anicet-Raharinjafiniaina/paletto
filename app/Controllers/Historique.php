@@ -13,7 +13,9 @@ class Historique extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(8);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
         $this->load();
     }
@@ -35,7 +37,9 @@ class Historique extends BaseController
         $acces  = new Acces();
         $is_ok = $acces->is_ok(8);
         if (!$is_ok) {
-            return redirect()->to('/');
+            return $this->response->setBody(
+                '<script>window.location.href="' . base_url('/') . '";</script>'
+            );
         }
 
         $arrJoin = [

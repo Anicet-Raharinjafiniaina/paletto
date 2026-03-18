@@ -7,15 +7,15 @@
 <?php endif; ?>
 
 <div class="col-md-12 mb-3">
-    <label class="form-label fw-semibold">Période</label>
+    <!-- <label class="form-label fw-semibold">Période</label> -->
     <div class="input-group shadow-sm">
-        <span class="input-group-text">
-            📅
+        <span class="input-group-text bg-primary text-white">
+            <i data-feather="calendar"></i>
         </span>
         <select class="form-select" id="periode" name="periode">
             <option value="quotidien">Quotidien</option>
             <option value="hebdomadaire">Hebdomadaire</option>
-            <option value="mensuel" selected>Mensuel</option>
+            <option value="mensuel">Mensuel</option>
             <option value="annuel">Annuel</option>
         </select>
     </div>
@@ -32,10 +32,10 @@
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> libre(s)
+                            <span class="text-dark counter-value" data-target="0">0</span> libre(s)
                         </span>
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> occupé(s)
+                            <span class="text-dark counter-value" data-target="0">0</span> occupé(s)
                         </span>
                     </div>
 
@@ -57,13 +57,13 @@
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> libre(s)
+                            <span class="text-dark counter-value" data-target="0">0</span> libre(s)
                         </span>
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> attribuée(s)
+                            <span class="text-dark counter-value" data-target="0">0</span> attribuée(s)
                         </span>
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> occupée(s)
+                            <span class="text-dark counter-value" data-target="0">0</span> occupée(s)
                         </span>
                     </div>
 
@@ -85,13 +85,13 @@
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> entrée
+                            <span class="text-dark counter-value" data-target="0">0</span> entrée
                         </span>
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> transfert
+                            <span class="text-dark counter-value" data-target="0">0</span> transfert
                         </span>
                         <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="354.5">0</span> sortie
+                            <span class="text-dark counter-value" data-target="0">0</span> sortie
                         </span>
                     </div>
 
@@ -113,7 +113,22 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div style="width: 600px; margin: auto;">
-                        <canvas id="myBarChart"></canvas>
+                        <canvas id="bar_entrepot"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 col-md-6">
+        <div class="card card-h-100">
+            <div class="card-header">
+                <h5 class="mb-0 text-center">Flux mouvement</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div style="width: 600px; margin: auto;">
+                        <canvas id="flux_chart"></canvas>
                     </div>
                 </div>
             </div>
