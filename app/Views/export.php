@@ -23,9 +23,10 @@
                         <option value="">Veuillez séléctionner ...</option>
                         <option value="1">Liste des mouvements</option>
                         <option value="2">Liste des emplacements</option>
-                        <option value="3">Liste des palettes</option>
-                        <option value="4">Liste des entrepôts</option>
-                        <option value="5">Liste des articles gérés dans l'application</option>
+                        <option value="3">Liste des emplacements occupés par les clients</option>
+                        <option value="4">Liste des palettes</option>
+                        <option value="5">Liste des entrepôts</option>
+                        <option value="6">Liste des articles gérés dans l'application</option>
                     </select>
                 </div>
                 <label id="type-error" class="validation-error-label mt-2" for="type"></label>

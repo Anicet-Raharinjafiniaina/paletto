@@ -22,7 +22,6 @@ class Export extends BaseController
         $this->load();
     }
 
-
     public function load()
     {
         $arr['titre'] = "Export des données";
@@ -60,24 +59,31 @@ class Export extends BaseController
                 return $this->exportExcel(
                     'Emplacement',
                     'Emplacement.xlsx',
-                    ["Emplacement", "Statut"],
+                    ["Emplacement", "Statut", "Code de l'entrepôt", "Nom de l'entrepôt", "Localisation de l'entrepôt"],
                     'getEmplacement' // string, pas tableau
                 );
             case 3:
+                return $this->exportExcel(
+                    'Entrepôt',
+                    'Entrepôt.xlsx',
+                    ["Emplacement", "Statut", "Code de l'entrepôt", "Nom de l'entrepôt", "Localisation de l'entrepôt", "Code du client", "Nom du client", "Code de l'article", "Nom de l'article"],
+                    'getEmplacementClient'
+                );
+            case 4:
                 return $this->exportExcel(
                     'Palette',
                     'Palette.xlsx',
                     ["Code", "Statut"],
                     'getPalette'
                 );
-            case 4:
+            case 5:
                 return $this->exportExcel(
                     'Entrepot',
                     'Entrepôt.xlsx',
                     ["Code", "Nom", "Localisation"],
                     'getEntrepot'
                 );
-            case 5:
+            case 6:
                 return $this->exportExcel(
                     'Article',
                     'Article.xlsx',
@@ -169,12 +175,16 @@ class Export extends BaseController
 
     public function getEmplacement()
     {
-        $crud = new CrudModel(TBL_EMPLACEMENT_ADRESSE);
+        $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
         $arrJoin = [
-            ['table' => TBL_EMPLACEMENT_STATUT, 'type' => 'LEFT', 'on' => TBL_EMPLACEMENT_STATUT . '.id=' . TBL_EMPLACEMENT_ADRESSE . '.emplacement_statut_id'],
+            [
+                'table' => TBL_ENTREPOT,
+                'type' => 'LEFT',
+                'on' => TBL_ENTREPOT . '.id = ' . VIEW_EMPLACEMENT_ADRESSE . '.entrepot_id'
+            ]
         ];
-        $select = TBL_EMPLACEMENT_ADRESSE . ".qr_code_texte," . TBL_EMPLACEMENT_STATUT . ".statut";
-        return $crud->getAllDataArray([TBL_EMPLACEMENT_ADRESSE . ".flag_suppression" => 0], $arrJoin, $select);
+        $select = VIEW_EMPLACEMENT_ADRESSE . ".qr_code_texte," . VIEW_EMPLACEMENT_ADRESSE . ".statut," . TBL_ENTREPOT . ". code as code_entrepot," . TBL_ENTREPOT . ". nom as nom_entrepot," . TBL_ENTREPOT . ". localisation as localisation_entrepot";
+        return $crud->getAllDataArray([], $arrJoin, $select);
     }
 
     public function getPalette()
@@ -203,6 +213,43 @@ class Export extends BaseController
             . TBL_ARTICLE_HORS_X3 . ".palettisation, "
             . TBL_ARTICLE_HORS_X3 . ".unite_stockage";
         return $crud->getAllDataArray([TBL_ARTICLE_HORS_X3 . ".flag_suppression" => 0], [], $select);
+    }
+
+    public function getEmplacementClient()
+    {
+        $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
+        $arrJoin = [
+            [
+                'table' => TBL_MOUVEMENT,
+                'type' => 'LEFT',
+                'on' => TBL_MOUVEMENT . '.emplacement_id = ' . VIEW_EMPLACEMENT_ADRESSE . '.emplacement_adresse_id'
+            ],
+            [
+                'table' => TBL_ARTICLE,
+                'type' => 'LEFT',
+                'on' => TBL_ARTICLE . '.id = ' . TBL_MOUVEMENT . '.article_id'
+            ],
+            [
+                'table' => TBL_ENTREPOT,
+                'type' => 'LEFT',
+                'on' => TBL_ENTREPOT . '.id = ' . VIEW_EMPLACEMENT_ADRESSE . '.entrepot_id'
+            ]
+        ];
+        $select =
+            VIEW_EMPLACEMENT_ADRESSE . ".qr_code_texte," .
+            VIEW_EMPLACEMENT_ADRESSE . ".statut," .
+            TBL_ENTREPOT . ". code as code_entrepot," .
+            TBL_ENTREPOT . ". nom as nom_entrepot," .
+            TBL_ENTREPOT . ". localisation as localisation_entrepot," .
+            TBL_ARTICLE . ".client_code," .
+            TBL_ARTICLE . ".client_nom," .
+            TBL_ARTICLE . ".code," .
+            TBL_ARTICLE . ".nom";
+        $where = [
+            VIEW_EMPLACEMENT_ADRESSE . '.statut_id' => 2, // occupé
+            TBL_ARTICLE . ".flag_suppression" => 0
+        ];
+        return $crud->getAllDataArray($where, $arrJoin, $select);
     }
 
     function parseDateRange($range, $delimiter = ' - ')

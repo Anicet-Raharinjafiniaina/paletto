@@ -48,7 +48,7 @@ function exporter() {
     if (isValid) {
         const form = $('<form>', {
             method: 'POST',
-            action: urlProject + 'Rapport/doExport',
+            action: urlProject + 'Export/doExport',
             target: 'downloadFrame'
         });
         form.append($('<input>', { type: 'hidden', name: 'periode', value: $('#periode_range').val() }));
