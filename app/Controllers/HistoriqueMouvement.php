@@ -43,13 +43,32 @@ class HistoriqueMouvement extends BaseController
             );
         }
 
-        $select = [TBL_MOUVEMENT . '.id', TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte as emplacement', TBL_ARTICLE . '.qr_code_text as palette_article', TBL_MOUVEMENT_TYPE . '.type', TBL_MOUVEMENT . '.date_mouvement'];
-        $searchable = [TBL_EMPLACEMENT_ADRESSE . '.qr_code_texte', TBL_ARTICLE . '.qr_code_text', TBL_MOUVEMENT_TYPE . '.type'];
+        $select = [
+            TBL_MOUVEMENT . '.id',
+            VIEW_EMPLACEMENT_ADRESSE . '.qr_code_texte as emplacement',
+            TBL_ARTICLE . '.qr_code_text as palette_article',
+            TBL_MOUVEMENT_TYPE . '.type',
+            TBL_ENTREPOT . ".code as code_entrepot",
+            TBL_ENTREPOT . ".nom as nom_entrepot",
+            TBL_ARTICLE . ".client_code",
+            TBL_ARTICLE . ".client_nom",
+            TBL_MOUVEMENT . '.date_mouvement'
+        ];
+        $searchable = [
+            VIEW_EMPLACEMENT_ADRESSE . '.qr_code_texte',
+            TBL_ARTICLE . '.qr_code_text',
+            TBL_MOUVEMENT_TYPE . '.type',
+            TBL_ENTREPOT . ".code",
+            TBL_ENTREPOT . ".nom",
+            TBL_ARTICLE . ".client_code",
+            TBL_ARTICLE . ".client_nom",
+            "TO_CHAR(" . TBL_MOUVEMENT . ".date_mouvement, 'DD/MM/YYYY \"à\" HH24\"h\"MI\"mn\"SS\"s\"')"
+        ];
 
         $arrJoin = [
             [
-                'table' => TBL_EMPLACEMENT_ADRESSE,
-                'condition' => TBL_EMPLACEMENT_ADRESSE . '.id = ' . TBL_MOUVEMENT . '.emplacement_id',
+                'table' => VIEW_EMPLACEMENT_ADRESSE,
+                'condition' => VIEW_EMPLACEMENT_ADRESSE . '.emplacement_id = ' . TBL_MOUVEMENT . '.emplacement_id',
                 'type' => 'left'
             ],
             [
@@ -66,6 +85,11 @@ class HistoriqueMouvement extends BaseController
                 'table' => TBL_MOUVEMENT_TYPE,
                 'condition' => TBL_MOUVEMENT_TYPE . '.id = ' . TBL_MOUVEMENT . '.mouvement_type_id',
                 'type' => 'left'
+            ],
+            [
+                'table' => TBL_ENTREPOT,
+                'type' => 'left',
+                'condition' => TBL_ENTREPOT . '.id = ' . VIEW_EMPLACEMENT_ADRESSE . '.entrepot_id'
             ]
         ];
         /* $where = [

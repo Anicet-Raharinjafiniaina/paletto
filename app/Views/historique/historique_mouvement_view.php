@@ -13,9 +13,13 @@
                 <tr>
                     <th>ACTION</th>
                     <th>ETAT</th>
+                    <th>DATE DU MOUVEMENT</th>
                     <th>EMPLACEMENT</th>
                     <th>PALETTE</th>
-                    <th>DATE DU MOUVEMENT</th>
+                    <th>CODE DU CLIENT</th>
+                    <th>NOM DU CLIENT</th>
+                    <th>CODE DE L'ENTREPÔT</th>
+                    <th>NOM DE L'ENTREPÔT</th>
                 </tr>
             </thead>
         </table>

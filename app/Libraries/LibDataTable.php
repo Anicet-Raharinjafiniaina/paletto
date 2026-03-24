@@ -96,7 +96,8 @@ class LibDataTable
         if (!empty($search) && !empty($searchable)) {
             $builder->groupStart();
             foreach ($searchable as $col) {
-                $builder->orLike($col, $search);
+                // $builder->orLike($col, $search);
+                $builder->orLike($col, $search, 'both', null, true);
             }
             $builder->groupEnd();
         }

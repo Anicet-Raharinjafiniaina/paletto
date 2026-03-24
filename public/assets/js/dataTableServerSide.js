@@ -43,6 +43,7 @@ function initDataTableServerSide(tableConfig) {
     $(tableConfig.selector).DataTable({
         processing: true,
         serverSide: true,
+        ordering: false, // désactiver le tri sur la table ↑↓
         ajax: {
             url: tableConfig.ajaxUrl,
             type: 'POST'

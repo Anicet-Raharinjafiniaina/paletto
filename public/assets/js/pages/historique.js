@@ -5,7 +5,13 @@ $(document).ready(function () {
         columns: [
             {
                 data: 'type',
-                render: function (data) {
+                render: function (data, type, row) {
+
+                    // 👉 Pour la recherche et le tri → retourner texte brut
+                    if (type === 'filter' || type === 'sort') {
+                        return data;
+                    }
+                    // 👉 Pour l'affichage → HTML
                     if (data === 'Entrée') {
                         return '<span class="badge rounded-pill p-2 bg-success">Entrée</span>';
                     }
@@ -18,8 +24,6 @@ $(document).ready(function () {
                     return data;
                 }
             },
-            'emplacement',
-            'palette_article',
             {
                 data: 'date_mouvement',
                 render: function (data) {
@@ -27,7 +31,13 @@ $(document).ready(function () {
                     const d = new Date(data.replace(' ', 'T'));
                     return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} à ${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}mn${String(d.getSeconds()).padStart(2, '0')}s`;
                 }
-            }
+            },
+            'emplacement',
+            'palette_article',
+            'client_code',
+            'client_nom',
+            'code_entrepot',
+            'nom_entrepot'
         ],
         actions: true
     });
