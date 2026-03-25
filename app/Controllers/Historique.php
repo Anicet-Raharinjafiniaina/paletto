@@ -59,14 +59,14 @@ class Historique extends BaseController
             TBL_ACTION . '.libelle',
             TBL_UTILISATEUR . '.login',
             TBL_UTILISATEUR . '.nom',
-            "to_char(" . TBL_HISTORIQUE . ".date_creation,'DD/MM/YYYY HH24:MI:SS') as date_creation"
+            "to_char(" . TBL_HISTORIQUE . ".date_creation, 'DD/MM/YYYY \"à\" HH24\"h\"MI\"mn\"SS\"s\"') as date_creation"
         ];
 
         $searchable = [
             TBL_ACTION . '.libelle',
             TBL_UTILISATEUR . '.login',
             TBL_UTILISATEUR . '.nom',
-            "to_char(" . TBL_HISTORIQUE . ".date_creation,'DD/MM/YYYY HH24:MI:SS')"
+            "TO_CHAR(" . TBL_HISTORIQUE . ".date_creation, 'DD/MM/YYYY \"à\" HH24\"h\"MI\"mn\"SS\"s\"')"
         ];
         $libDataTable = new LibDataTable();
         $orderBy = ['column' => TBL_HISTORIQUE . '.id', 'dir' => 'desc'];

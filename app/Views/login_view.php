@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WMS Gestion Palette</title>
+    <title>Login</title>
+    <link rel="shortcut icon" href="<?= base_url('assets/images/logoBoost.png') ?>">
     <link href='<?= base_url("assets/css/icons.min.css") ?>' rel="stylesheet" type="text/css" />
     <link href='<?= base_url("assets/css/bootstrap.min.css") ?>' id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">

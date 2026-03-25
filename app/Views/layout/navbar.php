@@ -15,6 +15,9 @@
      <header id="page-topbar">
          <div class="navbar-header">
              <div class="d-flex">
+                 <button type="button" class="btn btn-sm px-3 font-size-16 header-item d-lg-none" id="vertical-menu-btn">
+                     <i class="fa fa-fw fa-bars"></i>
+                 </button>
                  <!-- LOGO -->
                  <div class="navbar-brand-box">
                      <a href="#" class="logo logo-light" onclick="loadPage('Accueil', true)">
@@ -27,9 +30,6 @@
                      </a>
                  </div>
 
-                 <button type="button" class="btn btn-sm px-3 font-size-16 header-item d-lg-none" id="vertical-menu-btn">
-                     <i class="fa fa-fw fa-bars"></i>
-                 </button>
              </div>
 
              <div class="d-flex">

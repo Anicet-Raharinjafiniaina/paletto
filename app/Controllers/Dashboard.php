@@ -230,8 +230,8 @@ class Dashboard extends BaseController
         $sql = "SELECT
                     {$p['label']} AS periode,
                     SUM(CASE WHEN mouvement_type_id = 1 THEN 1 ELSE 0 END) AS entree,
-                    SUM(CASE WHEN mouvement_type_id = 2 THEN 1 ELSE 0 END) AS transfert,
-                    SUM(CASE WHEN mouvement_type_id = 3 THEN 1 ELSE 0 END) AS sortie
+                    SUM(CASE WHEN mouvement_type_id = 2 THEN 1 ELSE 0 END) AS sortie,
+                    SUM(CASE WHEN mouvement_type_id = 3 THEN 1 ELSE 0 END) AS transfert
                 FROM mouvement
                 WHERE flag_suppression = 0
                 AND {$p['where']}
