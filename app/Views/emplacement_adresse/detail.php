@@ -14,7 +14,7 @@
         <div class="row mb-1 align-items-center">
             <div class="col-5 fw-semibold text-end">Entrepôt : </div>
             <div class="col-7 text-start">
-                <?= $data->entrepot_code ?>
+                <?= $data->entrepot_code . " - " . $data->entrepot_nom ?>
             </div>
         </div>
 

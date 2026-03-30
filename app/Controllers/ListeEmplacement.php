@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\CrudModel;
 use App\Controllers\Acces;
 
+/** Emplacement adresse */
 class ListeEmplacement extends BaseController
 {
     public function index()
@@ -96,12 +97,4 @@ class ListeEmplacement extends BaseController
         $arr['data'] = $crud->getDataById(['emplacement_id' => $id], $arrJoin, "*");
         echo view('emplacement_adresse/detail', $arr);
     }
-
-    /** /Liste des emplacements */
-
-    /** Gestion emplacement  */
-    // public function getListeEmplacement() // afficher la listes des emplacements 
-    // {}
-
-    /** /Gestion emplacement  */
 }

@@ -79,7 +79,7 @@
                 "ext-intl": "*",
                 "ext-mbstring": "*",
                 "laminas/laminas-escaper": "^2.18",
-                "php": "^8.2",
+                "php": "^8.4.11",
                 "psr/log": "^3.0"
             },
             "require-dev": {

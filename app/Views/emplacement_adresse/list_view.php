@@ -55,7 +55,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                         </span>
                                     </td>
                                     <td><?= $value->qr_code_texte ?></td>
-                                    <td><?= $value->entrepot_code ?></td>
+                                    <td><?= $value->entrepot_code . " - " . $value->entrepot_nom ?></td>
                                     <td><?= $value->allee_code ?></td>
                                     <td><?= $value->rangee_code ?></td>
                                     <td><?= $value->niveau_code ?></td>

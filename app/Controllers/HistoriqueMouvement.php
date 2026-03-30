@@ -8,7 +8,6 @@ use App\Models\CrudModel;
 
 class HistoriqueMouvement extends BaseController
 {
-
     public function index()
     {
         $acces  = new Acces();
