@@ -25,7 +25,7 @@ $(document).ready(function () {
                     flashMessage("error", "Identifiant ou mot de passe incorrect.");
                     $('#password').val('');
                 } else if (response == 2) {
-                    flashMessage("success", "Connexion réussie !");
+                    flashMessage("success", "Patientez ...");
                     window.location.href = urlProject + "Accueil";
                 } else {
                     flashMessage("error", "Erreur lors de la connexion !");

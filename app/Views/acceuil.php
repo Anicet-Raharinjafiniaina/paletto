@@ -2,47 +2,7 @@
     <?= $this->extend('layout/main') ?>
     <?= $this->section('link') ?>
 <?php endif; ?>
-<style>
-    .card-flex-wrapper {
-        display: flex;
-        justify-content: center;
-        /* centre le bloc interne */
-    }
-
-    .card-flex-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-        /* max-width: 1000px; */
-        /* optionnel : limite la largeur totale */
-    }
-
-    .card-flex-container .card {
-        flex: 0 0 300px;
-        /* taille fixe */
-        max-width: 300px;
-    }
-
-    .fixed-card {
-        width: 300px;
-    }
-
-    .card-title {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    .card-hover {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card-hover:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-</style>
+<link href="<?= base_url('assets/css/accueil.css') ?>" rel="stylesheet" type="text/css" />
 <?php if ($request_ajax == 0) : ?>
     <?= $this->endSection() ?>
     <?= $this->section('content') ?>
