@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title><?= esc($title ?? 'Mon application') ?></title>
+    <title><?= esc($title ?? 'Paletto') ?></title>
     <link rel="shortcut icon" href="<?= base_url('assets/images/logoBoost.png') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
     <link href="<?= base_url('assets/css/icons.min.css') ?>" rel="stylesheet" type="text/css" />

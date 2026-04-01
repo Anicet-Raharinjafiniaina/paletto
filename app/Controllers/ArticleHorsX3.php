@@ -193,7 +193,6 @@ class ArticleHorsX3 extends BaseController
         return json_encode(0);
     }
 
-
     /**
      * Pour avoir le nombre d'article 
      */

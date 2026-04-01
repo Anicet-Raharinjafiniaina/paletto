@@ -6,9 +6,7 @@ $(function () {
 $("#btn-add-user").click(function () {
     loaderContent('main')
     $("#modal_ajout_user").modal("show");
-    $("#login").val("");
-    $("#nom").val("");
-    $("#prenom").val("");
+    $('input[type="text"]').val('');
     $("#profil").val("");
     $("#profil").trigger("change");
     $(".validation-error-label").html("");
