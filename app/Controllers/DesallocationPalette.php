@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Acces;
-use App\Controllers\Article;
+use App\Models\ArticleModel;
 use App\Models\CrudModel;
 
 class DesallocationPalette extends BaseController
@@ -22,8 +22,8 @@ class DesallocationPalette extends BaseController
 
     public function load()
     {
-        $arrArticle = new Article();
-        $arr['arr_article'] = $arrArticle->getAllArticle();
+        $model = new ArticleModel();
+        $arr['arr_article'] = $model->getAllArticle();
         $arr['titre'] = "Désallocation de palette";
         $arr['menu_palette'] = "Désallocation palette";
         $arr['request_ajax'] = 0;
