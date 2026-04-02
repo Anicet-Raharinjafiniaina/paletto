@@ -29,6 +29,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                             <th>QR CODE</th>
                             <th>CODE PALETTE</th>
                             <th>CODE ARTICLE</th>
+                            <th>NOM ARTICLE</th>
                             <th>CLIENT</th>
                         </tr>
                     </thead>
@@ -43,6 +44,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                         <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" id="del_allee" data-popup="tooltip" title="Désallouer" data-placement="bottom" onclick="desallouer(<?= $value->id ?>)" <?= $style_btn; ?>><i class="fa fa-times"></i></button>
                                     </td>
                                     <td><?= $value->qr_code_text ?></td>
+                                    <td><?= $value->code_palette ?></td>
                                     <td><?= $value->code ?></td>
                                     <td><?= $value->nom ?></td>
                                     <td><?= $value->client_nom ?></td>

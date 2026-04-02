@@ -13,15 +13,6 @@ use App\Models\CrudModel;
  *   */
 class Article extends BaseController
 {
-    // protected $dbX3;
-    // protected $db;
-
-    // public function __construct()
-    // {
-    //     $this->db = db_connect();
-    //     $this->dbX3 = db_connect('connex_v12');
-    // }
-
     public function index()
     {
         $acces  = new Acces();
@@ -51,20 +42,6 @@ class Article extends BaseController
         echo view('article/list_view', $arr);
     }
 
-    // public function getAllArticle()
-    // {
-    //     $crud = new CrudModel(TBL_ARTICLE);
-    //     $arrJoin = [
-    //         [
-    //             'table' => TBL_PALETTE,
-    //             'type'  => 'LEFT',
-    //             'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
-    //         ],
-    //     ];
-    //     $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.qr_code_text';
-    //     return  $crud->getAllData([TBL_ARTICLE . '.flag_suppression' => 0, TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0, /*TBL_ARTICLE . '.affectee_emplacement' => 0,*/ TBL_ARTICLE . '.mouvement_type_id' => null], $arrJoin, $select);
-    // }
-
     public function getAllPaletteNoTOccuped()
     {
         $crud = new CrudModel(TBL_PALETTE);
@@ -84,15 +61,18 @@ class Article extends BaseController
     public function getUnitePCB() // PCU
     {
         $code = trim($this->request->getPost('code'));
-        $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
-        $arrDataPCU = $crud->getDataById(['ITMREF_0' => $code], [], 'PCU_0,PCU_1,PCU_2,PCU_3,PCU_4,PCU_5');
         $arrPCU = [];
-        foreach ($arrDataPCU as $v) {
-            if (!empty(trim($v))) {
-                $arrPCU[] = [
-                    "id" => $v,
-                    "text" => $v
-                ];
+        if ($code != null && $code != "") {
+            $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
+            $arrDataPCU = $crud->getDataById(['ITMREF_0' => $code], [], 'PCU_0,PCU_1,PCU_2,PCU_3,PCU_4,PCU_5');
+
+            foreach ($arrDataPCU as $v) {
+                if (!empty(trim($v))) {
+                    $arrPCU[] = [
+                        "id" => $v,
+                        "text" => $v
+                    ];
+                }
             }
         }
         return json_encode($arrPCU);
@@ -101,15 +81,39 @@ class Article extends BaseController
     public function getPalettisation()
     {
         $code = trim($this->request->getPost('code'));
-        $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
-        $arrData = $crud->getDataById(['ITMREF_0' => $code], [], 'PCU_0,PCU_1,PCU_2,PCU_3,PCU_4,PCU_5,PCUSTUCOE_0,PCUSTUCOE_1,PCUSTUCOE_2,PCUSTUCOE_3,PCUSTUCOE_4,PCUSTUCOE_5');
-
         $arrPal = [];
-        for ($i = 0; $i <= 5; $i++) {
-            $key = $arrData->{'PCU_' . $i};
-            $value = $arrData->{'PCUSTUCOE_' . $i};
-            if (!empty(trim($key))) {
-                $arrPal[$key] = (float) $value;
+        if ($code != null && $code != "") {
+            $crud = new CrudModel('BASANEXP.ITMMASTER', 'x3');
+            $arrData = $crud->getDataById(['ITMREF_0' => $code], [], 'PCU_0,PCU_1,PCU_2,PCU_3,PCU_4,PCU_5,PCUSTUCOE_0,PCUSTUCOE_1,PCUSTUCOE_2,PCUSTUCOE_3,PCUSTUCOE_4,PCUSTUCOE_5');
+
+            for ($i = 0; $i <= 5; $i++) {
+                $key = $arrData->{'PCU_' . $i};
+                $value = $arrData->{'PCUSTUCOE_' . $i};
+                if (!empty(trim($key))) {
+                    $arrPal[$key] = (float) $value;
+                }
+            }
+        }
+        return json_encode($arrPal);
+    }
+
+    public function getPalettisationHorsX3()
+    {
+        $code = trim($this->request->getPost('code'));
+        $arrPal = [];
+        if ($code != null && $code != "") {
+            $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
+            $arrData = $crud->getDataById(['code' => $code, 'flag_suppression' => 0], [], 'unite_pcb,palettisation');
+            $pcbArray = str_getcsv(trim($arrData->unite_pcb, '{}'));
+            $palArray = str_getcsv(trim($arrData->palettisation, '{}'));
+            $arrPal = [];
+            for ($i = 0; $i < count($pcbArray); $i++) {
+                $key = $pcbArray[$i] ?? null;
+                $value = $palArray[$i] ?? 0;
+
+                if (!empty(trim($key))) {
+                    $arrPal[$key] = (float) $value;
+                }
             }
         }
         return json_encode($arrPal);
@@ -119,16 +123,18 @@ class Article extends BaseController
     public function getUnitePCBHorsX3() // PCU
     {
         $code = trim($this->request->getPost('code'));
-        $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
-        $arrDataPCU = $crud->getDataById(['code' => $code], [], 'unite_pcb');
-        $arrDataPCU = explode(',', trim($arrDataPCU->unite_pcb, '{}'));
         $arrPCU = [];
-        foreach ($arrDataPCU as $v) {
-            if (!empty(trim($v))) {
-                $arrPCU[] = [
-                    "id" => $v,
-                    "text" => $v
-                ];
+        if ($code != null && $code != "") {
+            $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
+            $arrDataPCU = $crud->getDataById(['code' => $code], [], 'unite_pcb');
+            $arrDataPCU = explode(',', trim($arrDataPCU->unite_pcb, '{}'));
+            foreach ($arrDataPCU as $v) {
+                if (!empty(trim($v))) {
+                    $arrPCU[] = [
+                        "id" => $v,
+                        "text" => $v
+                    ];
+                }
             }
         }
         return json_encode($arrPCU);

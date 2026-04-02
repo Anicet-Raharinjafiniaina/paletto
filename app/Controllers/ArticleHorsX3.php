@@ -147,11 +147,11 @@ class ArticleHorsX3 extends BaseController
         if (!empty($arr_data)) {
             $is_code_exist = $crud->getNb(array("LOWER(code)" => strtolower(trim($arr_data['code'])), "id != " . $arr_data['id'] => null, "flag_suppression" => 0));
             $is_data_exist = $crud->getNb($arr_data);
-
-            $arrFilter = ["LOWER(code)" => strtolower(trim($arr_data['code'])), 'affectee_emplacement' => 1, 'flag_suppression' => 0];
-            $nb = $this->nbEmplacementsArticle($arrFilter);
+            $oldCode = $this->getOldCode($arr_data['id']);
+            $arrFilter = ["LOWER(code)" => strtolower(trim($oldCode)), 'actif' => 1, 'flag_suppression' => 0];
+            $nb = $this->isModifiable($arrFilter);
             if ($nb > 0) {
-                return json_encode(4); // Impossible d’effectuer la modification, car un ou plusieurs emplacement(s) sont utilisés par l’article.
+                return json_encode(4); // Impossible d’effectuer la modification, car un ou plusieurs emplacement(s)/ palette(s) sont utilisés par l’article.
             }
 
             if ($is_code_exist > 0) {
@@ -182,7 +182,9 @@ class ArticleHorsX3 extends BaseController
         $id = $this->request->getVar('id');
         if ($id != "" && $id != null) {
             $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
-            $nb = $this->nbEmplacementsArticle(["id" => $id]);
+            $oldCode = $this->getOldCode($id);
+            $arrFilter = ["LOWER(code)" => strtolower(trim($oldCode)), 'actif' => 1, 'flag_suppression' => 0];
+            $nb = $this->isModifiable($arrFilter);
             if ($nb > 0) {
                 return json_encode(2); // Impossible d’effectuer la suppression, car un ou plusieurs emplacement(s) sont utilisés par l’article.
             } else {
@@ -193,12 +195,17 @@ class ArticleHorsX3 extends BaseController
         return json_encode(0);
     }
 
-    /**
-     * Pour avoir le nombre d'article 
-     */
-    function nbEmplacementsArticle($arrFiltre)
+
+    function isModifiable($arrFiltre)
     {
         $crud = new CrudModel(TBL_ARTICLE);
         return $crud->getNb($arrFiltre);
+    }
+
+    function getOldCode($id)
+    {
+        $crud = new CrudModel(TBL_ARTICLE_HORS_X3);
+        $arr = $crud->getDataById(['id' => $id]);
+        return $arr->code;
     }
 }

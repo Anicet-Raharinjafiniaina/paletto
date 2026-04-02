@@ -84,7 +84,6 @@ function getAllUnitePCB() {
     })
 }
 
-
 function loadCodeArticle() {
     let url = "";
     if (typeArticle == "x3") {
@@ -172,18 +171,20 @@ function getUnitePCBValue() {
 }
 
 function getPalettisation() {
+    let url = "";
     if (typeArticle == "x3") {
-
+        url = urlProject + "Article/getPalettisation";
+    } else {
+        url = urlProject + "Article/getPalettisationHorsX3";
     }
     $.ajax({
-        url: urlProject + "Article/getPalettisation",
+        url: url,
         type: "POST",
         dataType: "json",
         data: {
             code: $('#code').val()
         },
         success: function (res) {
-            console.log(res);
             var unitePcb = $('#unite_pcb').val()
             $('#palettisation').val(res[unitePcb]);
         }
@@ -192,16 +193,12 @@ function getPalettisation() {
 
 function insert() {
     $(".validation-error-label").html("");
-    console.log("typeArticle : " + typeArticle);
-
     if (typeArticle == undefined && typeArticle == null) {
         $("#type_article").show();
         return;
     }
     $("#type_article").hide();
     isValid = checkObligatoire(".add-article-content", ".obligatoire")
-    console.log("isavalid : " + isValid);
-
     if (isValid == true) {
         $("#save").prop("disabled", true);
         let arr_data = getFormDataFromParentClass(".add-article-content")

@@ -122,7 +122,7 @@ function deleteItem(id) {
                 } else if (response == 2) {
                     Swal.fire({
                         title: "Suppression impossible",
-                        html: "Impossible de faire la suppression car l'emplacement associé à cet entrepôt est <b>occupé</b>.",
+                        html: "Impossible de faire la suppression car un ou plusieurs emplacement(s) / palette(s) sont utilisés par l'article.",
                         icon: "warning",
                         showConfirmButton: true,
                     });
@@ -195,7 +195,7 @@ function maj() {
                         } else if (res == 4) {
                             Swal.fire({
                                 title: "Modification impossible",
-                                html: "Impossible d'effectuer la modification, car un ou plusieurs emplacement(s) sont utilisés par l'article.",
+                                html: "Impossible d'effectuer la modification, car un ou plusieurs emplacement(s) / palette(s) sont utilisés par l'article.",
                                 icon: "warning",
                                 showConfirmButton: true,
                             });

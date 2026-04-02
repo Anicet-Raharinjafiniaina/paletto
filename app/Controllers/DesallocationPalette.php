@@ -81,7 +81,7 @@ class DesallocationPalette extends BaseController
             } else {
                 $crudArticle = new CrudModel(TBL_ARTICLE);
                 $arrArticle = $crudArticle->getDataById(["id" => $id]);
-                $crudArticle->maj(["id" => $id], ["flag_suppression" => 1], 0);
+                $crudArticle->maj(["id" => $id], ["actif" => 0, "flag_suppression" => 1], 0);
                 $crud = new CrudModel(TBL_PALETTE);
                 $result = $crud->maj(["id" => $arrArticle->palette_id], ["palette_statut_id" => 1, "client_code" => null, "client_nom" => null], 32);
                 return json_encode($result);

@@ -26,7 +26,7 @@ class ArticleModel extends Model
                 'on'    => TBL_PALETTE . '.id = ' . TBL_ARTICLE . '.palette_id'
             ],
         ];
-        $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.qr_code_text';
+        $select = TBL_ARTICLE . '.id,' . TBL_ARTICLE . '.code,' . TBL_ARTICLE . '.nom,' . TBL_ARTICLE . '.client_nom,' . TBL_ARTICLE . '.qr_code_text,' . TBL_PALETTE . '.code as code_palette';
         return  $crud->getAllData([TBL_ARTICLE . '.flag_suppression' => 0, TBL_PALETTE . '.palette_statut_id' => 3, TBL_PALETTE . '.flag_suppression' => 0, /*TBL_ARTICLE . '.affectee_emplacement' => 0,*/ TBL_ARTICLE . '.mouvement_type_id' => null], $arrJoin, $select);
     }
 

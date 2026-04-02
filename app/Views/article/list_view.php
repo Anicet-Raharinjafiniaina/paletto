@@ -35,6 +35,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                             <th>QR CODE</th>
                             <th>CODE PALETTE</th>
                             <th>CODE ARTICLE</th>
+                            <th>NOM ARTICLE</th>
                             <th>CLIENT</th>
                         </tr>
                     </thead>
@@ -48,6 +49,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                                         <button type="button" style="margin-right:0.3em;background:transparent" class="btn btn-icon btn-rounded btn-xs" data-toggle="modal" data-target="#modal_view_niveau" data-target="Visualiser" data-popup="tooltip" title="Visualiser" data-placement="bottom" onclick="view(<?= $value->id ?>,'voir')"><i class="fas fa-qrcode fa-lg"></i></a></button>
                                     </td>
                                     <td><?= $value->qr_code_text ?></td>
+                                    <td><?= $value->code_palette ?></td>
                                     <td><?= $value->code ?></td>
                                     <td><?= $value->nom ?></td>
                                     <td><?= $value->client_nom ?></td>
