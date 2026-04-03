@@ -45,7 +45,7 @@ function validerEntree() {
                 else if (res == 3) {
                     Swal.fire({
                         title: "Données non valides",
-                        html: "La palette <b><i>" + $('#qr_palette_entree').val() + "</b></i> est <b>invalide</b> (<i>n'existe pas ou occupée</i>).",
+                        html: "La palette <b><i>" + $('#qr_palette_entree').val() + "</b></i> est <b>invalide</b> (<i>n'existe pas ou déjà dans un emplacement</i>).",
                         icon: "warning",
                         showConfirmButton: true,
                     });

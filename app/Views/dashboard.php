@@ -13,10 +13,10 @@
             <i data-feather="calendar"></i>
         </span>
         <select class="form-select" id="periode" name="periode">
-            <option value="quotidien">Quotidien</option>
-            <option value="hebdomadaire">Hebdomadaire</option>
-            <option value="mensuel">Mensuel</option>
-            <option value="annuel">Annuel</option>
+            <option value="quotidien">Aujourd'hui</option>
+            <option value="hebdomadaire">Cette semaine</option>
+            <option value="mensuel">Ce mois-ci</option>
+            <option value="annuel">Cette année</option>
         </select>
     </div>
 </div>

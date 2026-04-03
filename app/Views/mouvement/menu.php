@@ -24,20 +24,19 @@
             </button>
         </div>
 
-        <!-- Sortie -->
-        <div class="col-md-4">
-            <button class="btn btn-danger-custom w-100 py-4 fw-bold rounded-4 shadow-sm" id="btn_sortie" data-bs-toggle="modal" data-bs-target="#modal_ajout_sortie">
-                <i class="fas fa-sign-out-alt fs-3 d-block mb-2"></i>
-                Sortie
-            </button>
-
-        </div>
-
         <!-- Transfert -->
         <div class="col-md-4">
             <button class="btn btn-primary w-100 py-4 fw-bold rounded-4 shadow-sm" id="btn_transfert" data-bs-toggle="modal" data-bs-target="#modal_ajout_transfert">
                 <i class="fas fa-exchange-alt fs-3 d-block mb-2"></i>
                 Transfert
+            </button>
+        </div>
+
+        <!-- Sortie -->
+        <div class="col-md-4">
+            <button class="btn btn-danger-custom w-100 py-4 fw-bold rounded-4 shadow-sm" id="btn_sortie" data-bs-toggle="modal" data-bs-target="#modal_ajout_sortie">
+                <i class="fas fa-sign-out-alt fs-3 d-block mb-2"></i>
+                Sortie
             </button>
         </div>
 

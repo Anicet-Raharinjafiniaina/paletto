@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\LibExcel;
 use App\Models\CrudModel;
+use App\Models\ExportModel;
 use DateTime;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -43,11 +44,13 @@ class Export extends BaseController
                 '<script>window.location.href="' . base_url('/') . '";</script>'
             );
         }
+        $model = new ExportModel();
         $typeExport = trim($this->request->getPost('type') ?? '');
         $periode = trim($this->request->getPost('periode') ?? '');
         $arrDate = $this->parseDateRange($periode);
         switch ($typeExport) {
             case 1:
+                $model->historique(39);
                 return $this->exportExcel(
                     'Mouvement',
                     'Mouvements.xlsx',
@@ -56,6 +59,7 @@ class Export extends BaseController
                     [$arrDate['dateDebut'], $arrDate['dateFin']]
                 );
             case 2:
+                $model->historique(40);
                 return $this->exportExcel(
                     'Emplacement',
                     'Emplacement.xlsx',
@@ -63,6 +67,7 @@ class Export extends BaseController
                     'getEmplacement' // string, pas tableau
                 );
             case 3:
+                $model->historique(41);
                 return $this->exportExcel(
                     'Entrepôt',
                     'Entrepôt.xlsx',
@@ -70,6 +75,7 @@ class Export extends BaseController
                     'getEmplacementClient'
                 );
             case 4:
+                $model->historique(42);
                 return $this->exportExcel(
                     'Palette',
                     'Palette.xlsx',
@@ -77,6 +83,7 @@ class Export extends BaseController
                     'getPalette'
                 );
             case 5:
+                $model->historique(43);
                 return $this->exportExcel(
                     'Entrepot',
                     'Entrepôt.xlsx',
@@ -84,6 +91,7 @@ class Export extends BaseController
                     'getEntrepot'
                 );
             case 6:
+                $model->historique(44);
                 return $this->exportExcel(
                     'Article',
                     'Article.xlsx',
