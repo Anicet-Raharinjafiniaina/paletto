@@ -172,23 +172,27 @@ function getUnitePCBValue() {
 
 function getPalettisation() {
     let url = "";
-    if (typeArticle == "x3") {
-        url = urlProject + "Article/getPalettisation";
-    } else {
-        url = urlProject + "Article/getPalettisationHorsX3";
-    }
-    $.ajax({
-        url: url,
-        type: "POST",
-        dataType: "json",
-        data: {
-            code: $('#code').val()
-        },
-        success: function (res) {
-            var unitePcb = $('#unite_pcb').val()
-            $('#palettisation').val(res[unitePcb]);
+    if ($('#code').val() != "" && $('#code').val() != null) {
+        if (typeArticle == "x3") {
+            url = urlProject + "Article/getPalettisation";
+        } else {
+            url = urlProject + "Article/getPalettisationHorsX3";
         }
-    });
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: "json",
+            data: {
+                code: $('#code').val()
+            },
+            success: function (res) {
+                var unitePcb = $('#unite_pcb').val()
+                $('#palettisation').val(res[unitePcb]);
+            }
+        });
+    } else {
+        $('#palettisation').val("");
+    }
 }
 
 function insert() {
