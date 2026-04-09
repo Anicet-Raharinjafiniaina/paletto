@@ -83,12 +83,12 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
             <div class="modal-body">
                 <form class="form-validate-jquery add-palette-content">
                     <div class="form-group">
-                        <label>CODE <span class="text-bold text-danger-600">*</span></label>
+                        <label>CODE <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Code" name="code" id="code" required="required">
                         <label id="code-error" class="validation-error-label" for="code"></label>
                     </div>
                     <div class="form-group">
-                        <label>ETAT <span class="text-bold text-danger-600">*</span></label>
+                        <label>ETAT <span class="fw-bold text-danger">*</span></label>
                         <select class="select select-search obligatoire" data-placeholder="Choisir un statut..." name="palette_statut_id" id="palette_statut_id" style="width: 100%;">
                             <option value=""></option>
                             <?php if (!empty($arr_palette_statut)): ?>

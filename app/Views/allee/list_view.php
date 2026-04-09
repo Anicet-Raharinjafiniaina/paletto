@@ -72,7 +72,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                 <form class="form-validate-jquery add-allee-content">
 
                     <div class="form-group">
-                        <label>ENTREPÔT <span class="text-bold text-danger-600">*</span></label>
+                        <label>ENTREPÔT <span class="fw-bold text-danger">*</span></label>
                         <select class="select select-search obligatoire" data-placeholder="Choisir un entrepôt..." name="entrepot_id" id="entrepot_id" style="width: 100%;">
                             <option value=""></option>
                             <?php if (!empty($arr_data_entrepot)): ?>
@@ -86,7 +86,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <label id="entrepot_id-error" class="validation-error-label" for="entrepot_id"></label>
                     </div>
                     <div class="form-group">
-                        <label>CODE <span class="text-bold text-danger-600">*</span></label>
+                        <label>CODE <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Code" name="code" id="code" required="required">
                         <label id="code-error" class="validation-error-label" for="code"></label>
                     </div>

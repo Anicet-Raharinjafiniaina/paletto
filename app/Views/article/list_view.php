@@ -101,7 +101,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <!-- Ligne 1 -->
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>PALETTE <span class="text-bold text-danger-600">*</span></label>
+                                <label>PALETTE <span class="fw-bold text-danger">*</span></label>
                                 <select class="select select-search obligatoire" data-placeholder="Choisir une palette..." name="palette_id" id="palette_id" onchange="getClientForPalette('palette_id','client','modal_ajout_article')" style="width: 100%;">
                                     <option value=""></option>
                                     <?php /*if (!empty($arr_palette)): ?>
@@ -117,14 +117,14 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>CLIENT <span class="text-bold text-danger-600">*</span></label>
+                                <label>CLIENT <span class="fw-bold text-danger">*</span></label>
                                 <input type="text" class="form-control input-xs obligatoire" placeholder="Code ou/et Nom du client" name="client" id="client" required="required">
                                 <label id="client-error" class="validation-error-label" for="client"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>CODE ARTICLE <span class="text-bold text-danger-600">*</span></label>
+                                <label>CODE ARTICLE <span class="fw-bold text-danger">*</span></label>
                                 <input type="text" class="form-control input-xs obligatoire" placeholder="Code" name="code" id="code" required="required" onchange="getDetailArticle()">
                                 <label id="code-error" class="validation-error-label" for="code"></label>
                             </div>
@@ -133,21 +133,21 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <!-- Ligne 2 -->
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>NOM ARTICLE <span class="text-bold text-danger-600">*</span></label>
+                                <label>NOM ARTICLE <span class="fw-bold text-danger">*</span></label>
                                 <input type="text" class="form-control input-xs obligatoire" placeholder="Nom article" name="nom" id="nom" required="required" disabled>
                                 <label id="nom-error" class="validation-error-label" for="nom"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>DLUO <span class="text-bold text-danger-600">*</span></label>
+                                <label>DLUO <span class="fw-bold text-danger">*</span></label>
                                 <input type="text" id="dluo" name="dluo" class="form-control input-xs text-end obligatoire" value="" placeholder="DD/MM/YYYY" required="required">
                                 <label id="dluo-error" class="validation-error-label" for="dluo"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>UNITÉ PCB <span class="text-bold text-danger-600">*</span></label>
+                                <label>UNITÉ PCB <span class="fw-bold text-danger">*</span></label>
                                 <select class="select select-search obligatoire"
                                     data-placeholder="Choisir une unité PCB..."
                                     name="unite_pcb"
@@ -162,21 +162,21 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <!-- Ligne 3 -->
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>QUANTITTÉ <span class="text-bold text-danger-600">*</span></label>
+                                <label>QUANTITTÉ <span class="fw-bold text-danger">*</span></label>
                                 <input type="text" class="form-control input-xs obligatoire" placeholder="Quantité" name="quantite" id="quantite" required="required" value="0" onkeyup="numberDecimal(this)">
                                 <label id="quantite-error" class="validation-error-label" for="quantite"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>LOT <span class="text-bold text-danger-600">*</span></label>
+                                <label>LOT <span class="fw-bold text-danger">*</span></label>
                                 <input type="text" class="form-control input-xs obligatoire" placeholder="Lot" name="lot" id="lot" required="required">
                                 <label id="lot-error" class="validation-error-label" for="lot"></label>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>PALETTISATION <span class="text-bold text-danger-600">*</span></label>
+                                <label>PALETTISATION <span class="fw-bold text-danger">*</span></label>
                                 <input type="text" class="form-control input-xs obligatoire" placeholder="Palettisation" name="palettisation" id="palettisation" required="required" disabled>
                                 <label id="palettisation-error" class="validation-error-label" for="palettisation"></label>
                             </div>
@@ -186,7 +186,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         <div class="col-12 row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>UNITE DE STOCKAGE <span class="text-bold text-danger-600">*</span></label>
+                                    <label>UNITE DE STOCKAGE <span class="fw-bold text-danger">*</span></label>
                                     <input type="text" class="form-control input-xs obligatoire" placeholder="Unité de stockage" name="unite_stockage" id="unite_stockage" required="required" disabled>
                                     <label id="unite_stockage-error" class="validation-error-label" for="unite_stockage"></label>
                                 </div>
@@ -217,7 +217,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header justify-content-center position-relative">
-                <h5 class="modal-title" id="myModalLabel">Détail de l'article</h5>
+                <h5 class="modal-title" id="myModalLabel">Détail</h5>
                 <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="content-article"></div>

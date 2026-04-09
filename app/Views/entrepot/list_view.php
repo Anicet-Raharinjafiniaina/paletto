@@ -72,19 +72,19 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
             <div class="modal-body">
                 <form class="form-validate-jquery add-entrepot-content">
                     <div class="form-group">
-                        <label>CODE <span class="text-bold text-danger-600">*</span></label>
+                        <label>CODE <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs basicAutoComplete obligatoire" placeholder="Code" name="code" id="code" required="required">
                         <label id="code-error" class="validation-error-label" for="code"></label>
                     </div>
 
                     <div class="form-group">
-                        <label>NOM <span class="text-bold text-danger-600">*</span></label>
+                        <label>NOM <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Nom" name="nom" id="nom" required="required">
                         <label id="nom-error" class="validation-error-label" for="nom"></label>
                     </div>
 
                     <div class="form-group">
-                        <label>LOCALISATION <span class="text-bold text-danger-600">*</span></label>
+                        <label>LOCALISATION <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Localisation" name="localisation" id="localisation">
                         <label id="localisation-error" class="validation-error-label" for="localisation"></label>
                     </div>

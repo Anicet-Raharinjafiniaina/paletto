@@ -71,31 +71,31 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
             <div class="modal-body">
                 <form class="form-validate-jquery add-user-content">
                     <div class="form-group">
-                        <label>Nom et prénom <span class="text-bold text-danger-600">*</span></label>
+                        <label>Nom et prénom <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs basicAutoComplete obligatoire" placeholder="Nom" name="nom" id="nom" required="required">
                         <label id="nom-error" class="validation-error-label" for="nom"></label>
                     </div>
 
                     <div class="form-group">
-                        <label>Login <span class="text-bold text-danger-600">*</span></label>
+                        <label>Login <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Login" name="login" id="login" required="required" disabled>
                         <label id="login-error" class="validation-error-label" for="login"></label>
                     </div>
 
                     <div class="form-group">
-                        <label>Fonction <span class="text-bold text-danger-600">*</span></label>
+                        <label>Fonction <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Fonction" name="fonction" id="fonction" disabled>
                         <label id="fonction-error" class="validation-error-label" for="fonction"></label>
                     </div>
 
                     <div class="form-group">
-                        <label>Email <span class="text-bold text-danger-600">*</span></label>
+                        <label>Email </label>
                         <input type="text" class="form-control input-xs" placeholder="Email" name="mail" id="mail" disabled>
                         <label id="mail-error" class="validation-error-label" for="mail"></label>
                     </div>
 
                     <div class="form-group">
-                        <label>Profil <span class="text-bold text-danger-600">*</span></label>
+                        <label>Profil <span class="fw-bold text-danger">*</span></label>
                         <select class="select select-search obligatoire" data-placeholder="Choisir un profil..." name="profil" id="profil" style="width: 100%;">
                             <?php if (!empty($arr_profil)): ?>
                                 <?php foreach ($arr_profil as $row_profil): ?>

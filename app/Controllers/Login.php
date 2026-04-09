@@ -29,12 +29,12 @@ class Login extends BaseController
         $crudModel = new CrudModel(TBL_UTILISATEUR);
         $arrUser = $crudModel->getDataByIdArray(['login' => $login, 'actif' => 1, 'flag_suppression' => 0]);
 
-        if (empty($arrUser)) {
-            return json_encode(0); //l'utilisateurn'est pas autorisé à accéder à cette application
-        }
-
         $crudProfil = new CrudModel(TBL_PROFIL);
         $arrProfil = $crudProfil->getDataByIdArray(['id' => $arrUser['profil_id'], 'actif' => 1, 'flag_suppression' => 0]);
+
+        if (empty($arrUser) || empty($arrProfil)) {
+            return json_encode(0); //l'utilisateurn'est pas autorisé à accéder à cette application
+        }
 
         // Authentification via LDAP
         $ldap = new LibLdap($login, $password, $login);

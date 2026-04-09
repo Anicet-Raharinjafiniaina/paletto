@@ -15,7 +15,7 @@
 
         <div class="panel panel-flat">
             <div class="panel-heading">
-                <h6 class="panel-title">Liste des pages &agrave; associer au profil <span class="text-bold text-danger-600">*</span></h6>
+                <h6 class="panel-title">Liste des pages &agrave; associer au profil <span class="fw-bold text-danger">*</span></h6>
             </div>
             <br><br>
             <div class="panel-body">

@@ -23,7 +23,7 @@
     </div>
 
     <div class="form-group">
-        <label>Email <span class="text-bold text-danger-600" <?= $display; ?>>*</span></label>
+        <label>Email </label>
         <input type="text" class="form-control input-xs" placeholder="Email" name="mail_upd"
             id="mail_upd" required="required" value="<?= $data->mail ?>" disabled>
         <label id="mail_upd-error" class="validation-error-label" for="mail_upd"></label>

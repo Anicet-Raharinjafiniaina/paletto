@@ -10,11 +10,11 @@
 
     <div class="d-flex align-items-center gap-2 dynamic-row mb-2">
         <label class="flex-fill">
-            UNITÉ PCB <span class="text-bold text-danger-600">*</span>
+            UNITÉ PCB <span class="fw-bold text-danger">*</span>
         </label>
 
         <label class="flex-fill">
-            PALETTISATION <span class="text-bold text-danger-600">*</span>
+            PALETTISATION <span class="fw-bold text-danger">*</span>
         </label>
     </div>
 

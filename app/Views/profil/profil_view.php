@@ -73,14 +73,14 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
             <div class="modal-body">
                 <form class="form-validate-jquery add-profil-content">
                     <div class="form-group">
-                        <label>Profil <span class="text-bold text-danger-600">*</span></label>
+                        <label>Profil <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Libellé du profil" name="profil" id="profil" required="required">
                         <label id="profil-error" class="validation-error-label" for="profil"></label>
                     </div>
 
                     <div class="panel panel-flat">
                         <div class="panel-heading">
-                            <h6 class="panel-title">Liste des pages &agrave; associer au profil <span class="text-bold text-danger-600">*</span></h6>
+                            <h6 class="panel-title">Liste des pages &agrave; associer au profil <span class="fw-bold text-danger">*</span></h6>
                         </div>
                         <br><br>
                         <div class="panel-body">

@@ -72,24 +72,24 @@
             <div class="modal-body">
                 <form class="form-validate-jquery add-article_hors_x3-content">
                     <div class="form-group">
-                        <label>CODE <span class="text-bold text-danger-600">*</span></label>
+                        <label>CODE <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs basicAutoComplete obligatoire" placeholder="Code" name="code" id="code" required="required">
                         <label id="code-error" class="validation-error-label" for="code"></label>
                     </div>
 
                     <div class="form-group">
-                        <label>NOM <span class="text-bold text-danger-600">*</span></label>
+                        <label>NOM <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Nom" name="nom" id="nom" required="required">
                         <label id="nom-error" class="validation-error-label" for="nom"></label>
                     </div>
 
                     <div class="d-flex align-items-center gap-2 dynamic-row mb-2">
                         <label class="flex-fill">
-                            UNITÉ PCB <span class="text-bold text-danger-600">*</span>
+                            UNITÉ PCB <span class="fw-bold text-danger">*</span>
                         </label>
 
                         <label class="flex-fill">
-                            PALETTISATION <span class="text-bold text-danger-600">*</span>
+                            PALETTISATION <span class="fw-bold text-danger">*</span>
                         </label>
                     </div>
 
@@ -119,13 +119,13 @@
                     </div>
 
                     <!-- <div class="form-group">
-                        <label>PALETTISATION <span class="text-bold text-danger-600">*</span></label>
+                        <label>PALETTISATION <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Palettisation" name="palettisation" id="palettisation" required="required">
                         <label id="palettisation-error" class="validation-error-label" for="palettisation"></label>
                     </div> -->
 
                     <div class="form-group">
-                        <label>UNITÉ DE STOCKAGE <span class="text-bold text-danger-600">*</span></label>
+                        <label>UNITÉ DE STOCKAGE <span class="fw-bold text-danger">*</span></label>
                         <input type="text" class="form-control input-xs obligatoire" placeholder="Unité de stockage" name="unite_stockage" id="unite_stockage" required="required">
                         <label id="unite_stockage-error" class="validation-error-label" for="unite_stockage"></label>
                     </div>
