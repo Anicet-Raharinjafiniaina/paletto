@@ -363,40 +363,89 @@ function loadDataTypeAhead(inputId, controllerUrl, statut1 = null, statut2 = nul
 }
 
 /*** Scan QR code */
+// let html5QrCode;
+// let currentInputId = null;
+
+// function openScanner(inputId) {
+//     currentInputId = inputId;
+//     const modal = new bootstrap.Modal(document.getElementById('qrModal'));
+//     modal.show();
+
+//     html5QrCode = new Html5Qrcode("qr-reader");
+
+//     html5QrCode.start({
+//         facingMode: "environment"
+//     }, // caméra arrière
+//         {
+//             fps: 10,
+//             qrbox: 250
+//         },
+//         (decodedText) => {
+//             document.getElementById(currentInputId).value = decodedText;
+
+//             html5QrCode.stop().then(() => {
+//                 modal.hide();
+//             });
+//         },
+//         (errorMessage) => {
+//             // erreurs ignorées (scan continue)
+//         }
+//     );
+// }
+
+// $('#qrModal').on('hidden.bs.modal', function () {
+//     if (html5QrCode) {
+//         html5QrCode.stop().catch(() => { });
+//     }
+// });
+
 let html5QrCode;
 let currentInputId = null;
+let isScanning = false;
 
 function openScanner(inputId) {
     currentInputId = inputId;
-    const modal = new bootstrap.Modal(document.getElementById('qrModal'));
+
+    const modalElement = document.getElementById('qrModal');
+    const modal = new bootstrap.Modal(modalElement);
     modal.show();
 
     html5QrCode = new Html5Qrcode("qr-reader");
 
-    html5QrCode.start({
-        facingMode: "environment"
-    }, // caméra arrière
-        {
-            fps: 10,
-            qrbox: 250
-        },
+    html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
         (decodedText) => {
             document.getElementById(currentInputId).value = decodedText;
 
-            html5QrCode.stop().then(() => {
+            stopScanner().then(() => {
                 modal.hide();
             });
-        },
-        (errorMessage) => {
-            // erreurs ignorées (scan continue)
         }
-    );
+    ).then(() => {
+        isScanning = true;
+    }).catch(err => {
+        console.error("Erreur start caméra :", err);
+    });
+}
+
+function stopScanner() {
+    if (html5QrCode && isScanning) {
+        return html5QrCode.stop()
+            .then(() => {
+                html5QrCode.clear(); // 🔥 très important
+                html5QrCode = null;
+                isScanning = false;
+            })
+            .catch(err => {
+                console.warn("Stop erreur :", err);
+            });
+    }
+    return Promise.resolve();
 }
 
 $('#qrModal').on('hidden.bs.modal', function () {
-    if (html5QrCode) {
-        html5QrCode.stop().catch(() => { });
-    }
+    stopScanner();
 });
 
 /** pour impression A4 */
