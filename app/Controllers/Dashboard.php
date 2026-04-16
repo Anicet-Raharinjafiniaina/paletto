@@ -59,26 +59,26 @@ class Dashboard extends BaseController
     public function getEmplacement($periode)
     {
         $whereDate = '';
-        switch ($periode) {
-            case 'quotidien':
-                $whereDate = "DATE(date_action) = CURRENT_DATE";
-                break;
+        // switch ($periode) {
+        //     case 'quotidien':
+        //         $whereDate = "DATE(date_action) = CURRENT_DATE";
+        //         break;
 
-            case 'hebdomadaire':
-                $whereDate = "date_trunc('week', date_action) = date_trunc('week', CURRENT_DATE)";
-                break;
+        //     case 'hebdomadaire':
+        //         $whereDate = "date_trunc('week', date_action) = date_trunc('week', CURRENT_DATE)";
+        //         break;
 
-            case 'mensuel':
-                $whereDate = "date_trunc('month', date_action) = date_trunc('month', CURRENT_DATE)";
-                break;
+        //     case 'mensuel':
+        //         $whereDate = "date_trunc('month', date_action) = date_trunc('month', CURRENT_DATE)";
+        //         break;
 
-            case 'annuel':
-                $whereDate = "date_trunc('year', date_action) = date_trunc('year', CURRENT_DATE)";
-                break;
+        //     case 'annuel':
+        //         $whereDate = "date_trunc('year', date_action) = date_trunc('year', CURRENT_DATE)";
+        //         break;
 
-            default:
-                return $this->response->setJSON([]);
-        }
+        //     default:
+        //         return $this->response->setJSON([]);
+        // }
 
         $sql = "SELECT 
                     COALESCE(SUM(CASE WHEN emplacement_statut_id = 2 THEN 1 ELSE 0 END),0) AS nb_occupe,
@@ -90,7 +90,7 @@ class Dashboard extends BaseController
                     FROM emplacement_adresse
                     WHERE flag_suppression = 0
                 ) t
-                WHERE $whereDate";
+                /*WHERE $whereDate*/";
 
         $query = $this->db->query($sql);
         return $query->getRowArray();
@@ -98,18 +98,19 @@ class Dashboard extends BaseController
 
     public function getPalette($periode)
     {
-        $periodes = [
-            'quotidien'    => "DATE(date_action) = CURRENT_DATE",
-            'hebdomadaire' => "date_trunc('week', date_action) = date_trunc('week', CURRENT_DATE)",
-            'mensuel'      => "date_trunc('month', date_action) = date_trunc('month', CURRENT_DATE)",
-            'annuel'       => "date_trunc('year', date_action) = date_trunc('year', CURRENT_DATE)"
-        ];
+        // $periodes = [
+        //     'quotidien'    => "DATE(date_action) = CURRENT_DATE",
+        //     'hebdomadaire' => "date_trunc('week', date_action) = date_trunc('week', CURRENT_DATE)",
+        //     'mensuel'      => "date_trunc('month', date_action) = date_trunc('month', CURRENT_DATE)",
+        //     'annuel'       => "date_trunc('year', date_action) = date_trunc('year', CURRENT_DATE)"
+        // ];
 
-        if (!isset($periodes[$periode])) {
-            return $this->response->setJSON([]);
-        }
+        // if (!isset($periodes[$periode])) {
+        //     return $this->response->setJSON([]);
+        // }
 
-        $whereDate = $periodes[$periode];
+        // $whereDate = $periodes[$periode];
+        $whereDate = "";
 
         $sql = "SELECT 
                     COALESCE(SUM(CASE WHEN palette_statut_id = 1 THEN 1 ELSE 0 END),0) AS nb_libre,
@@ -122,7 +123,7 @@ class Dashboard extends BaseController
                     FROM palette
                     WHERE flag_suppression = 0
                 ) t
-                WHERE $whereDate";
+               /* WHERE $whereDate*/";
 
         $query = $this->db->query($sql);
         return $query->getRowArray();
@@ -164,18 +165,19 @@ class Dashboard extends BaseController
     /** Pourcentage pour chaque entrepôt */
     public function getEntrepot($periode)
     {
-        $periodes = [
-            'quotidien'    => "DATE(date_action) = CURRENT_DATE",
-            'hebdomadaire' => "date_trunc('week', date_action) = date_trunc('week', CURRENT_DATE)",
-            'mensuel'      => "date_trunc('month', date_action) = date_trunc('month', CURRENT_DATE)",
-            'annuel'       => "date_trunc('year', date_action) = date_trunc('year', CURRENT_DATE)"
-        ];
+        // $periodes = [
+        //     'quotidien'    => "DATE(date_action) = CURRENT_DATE",
+        //     'hebdomadaire' => "date_trunc('week', date_action) = date_trunc('week', CURRENT_DATE)",
+        //     'mensuel'      => "date_trunc('month', date_action) = date_trunc('month', CURRENT_DATE)",
+        //     'annuel'       => "date_trunc('year', date_action) = date_trunc('year', CURRENT_DATE)"
+        // ];
 
-        if (!isset($periodes[$periode])) {
-            return $this->response->setJSON([]);
-        }
+        // if (!isset($periodes[$periode])) {
+        //     return $this->response->setJSON([]);
+        // }
 
-        $whereDate = $periodes[$periode];
+        // $whereDate = $periodes[$periode];
+        $whereDate = "";
 
         $sql = "SELECT 
                     entrepot_code,
@@ -192,7 +194,7 @@ class Dashboard extends BaseController
                         COALESCE(date_modification, date_creation) AS date_action
                     FROM emplacement_adresse_view
                 ) t
-                WHERE $whereDate
+                /*WHERE $whereDate*/
                 GROUP BY entrepot_code
                 ORDER BY entrepot_code";
 

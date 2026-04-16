@@ -6,23 +6,8 @@
     <div id="ajax-title" data-title="<?= esc($titre) ?>"></div>
 <?php endif; ?>
 
-<div class="col-md-12 mb-3">
-    <!-- <label class="form-label fw-semibold">Période</label> -->
-    <div class="input-group shadow-sm">
-        <span class="input-group-text bg-primary text-white">
-            <i data-feather="calendar"></i>
-        </span>
-        <select class="form-select" id="periode" name="periode">
-            <option value="quotidien">Aujourd'hui</option>
-            <option value="hebdomadaire">Cette semaine</option>
-            <option value="mensuel">Ce mois-ci</option>
-            <option value="annuel">Cette année</option>
-        </select>
-    </div>
-</div>
-
 <div class="row">
-    <div class="col-xl-4 col-md-6">
+    <div class="col-xl-6 col-md-6">
         <!-- card -->
         <div class="card card-h-100">
             <div class="card-header">
@@ -47,7 +32,7 @@
         </div><!-- end card -->
     </div><!-- end col -->
 
-    <div class="col-xl-4 col-md-6">
+    <div class="col-xl-6 col-md-6">
         <!-- card -->
         <div class="card card-h-100">
             <div class="card-header">
@@ -74,8 +59,45 @@
             </div><!-- end card body -->
         </div><!-- end card -->
     </div><!-- end col -->
+</div>
 
-    <div class="col-xl-4 col-md-6">
+
+<div class="row">
+    <div class="col-xl-12 col-md-12">
+        <div class="card card-h-100">
+            <div class="card-header">
+                <h5 class="mb-0 text-center">Entrepôt</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div style="width: 600px; margin: auto;">
+                        <canvas id="bar_entrepot"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <!-- <label class="form-label fw-semibold">Période</label> -->
+        <div class="input-group shadow-sm">
+            <span class="input-group-text bg-primary text-white">
+                <i data-feather="calendar"></i>
+            </span>
+            <select class="form-select" id="periode" name="periode">
+                <option value="quotidien">Aujourd'hui</option>
+                <option value="hebdomadaire">Cette semaine</option>
+                <option value="mensuel">Ce mois-ci</option>
+                <option value="annuel">Cette année</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-4 col-md-4">
         <!-- card -->
         <div class="card card-h-100">
             <div class="card-header">
@@ -102,25 +124,8 @@
             </div><!-- end card body -->
         </div><!-- end card -->
     </div><!-- end col -->
-</div>
 
-<div class="row">
-    <div class="col-xl-6 col-md-6">
-        <div class="card card-h-100">
-            <div class="card-header">
-                <h5 class="mb-0 text-center">Entrepôt</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div style="width: 600px; margin: auto;">
-                        <canvas id="bar_entrepot"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xl-6 col-md-6">
+    <div class="col-xl-8 col-md-8">
         <div class="card card-h-100">
             <div class="card-header">
                 <h5 class="mb-0 text-center">Flux mouvement</h5>
