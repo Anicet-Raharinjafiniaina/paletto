@@ -218,4 +218,12 @@ class Palette extends BaseController
         }
         return true;
     }
+
+    function getListPaletteByStatut()
+    {
+        $statutId = $this->request->getVar('statutId');
+        $crud = new CrudModel(TBL_PALETTE);
+        $arr = $crud->getAllData(['flag_suppression' => 0, 'palette_statut_id' => $statutId], [], 'code');
+        return json_encode($arr);
+    }
 }

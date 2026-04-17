@@ -208,4 +208,12 @@ class Emplacement extends BaseController
         $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
         return $crud->getNb($arrFilter);
     }
+
+    function getListEmplacementByStatut()
+    {
+        $statutId = $this->request->getVar('statutId');
+        $crud = new CrudModel(VIEW_EMPLACEMENT_ADRESSE);
+        $arr = $crud->getAllData(['statut_id' => $statutId], [], 'qr_code_texte');
+        return json_encode($arr);
+    }
 }

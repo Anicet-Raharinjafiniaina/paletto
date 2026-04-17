@@ -16,11 +16,11 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <span class="text-muted mb-3 lh-1 d-block">
+                        <span class="text-muted mb-3 lh-1 d-block" style="cursor: pointer;" onclick="emplacementDetail(1)">
                             <span class="text-dark counter-value" data-target="0">0</span> libre(s)
                         </span>
-                        <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="0">0</span> occupé(s)
+                        <span class="text-muted mb-3 lh-1 d-block" style="cursor: pointer;" onclick="emplacementDetail(2)">
+                            <span class="text-dark counter-value" data-target="0" style="cursor: pointer;">0</span> occupé(s)
                         </span>
                     </div>
 
@@ -41,14 +41,14 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <span class="text-muted mb-3 lh-1 d-block">
+                        <span class="text-muted mb-3 lh-1 d-block" style="cursor: pointer;" onclick="paletteDetail(1)">
                             <span class="text-dark counter-value" data-target="0">0</span> libre(s)
                         </span>
-                        <span class="text-muted mb-3 lh-1 d-block">
+                        <span class="text-muted mb-3 lh-1 d-block" style="cursor: pointer;" onclick="paletteDetail(2)">
                             <span class="text-dark counter-value" data-target="0">0</span> attribuée(s)
                         </span>
-                        <span class="text-muted mb-3 lh-1 d-block">
-                            <span class="text-dark counter-value" data-target="0">0</span> occupée(s)
+                        <span class="text-muted mb-3 lh-1 d-block" style="cursor: pointer;" onclick="paletteDetail(3)">
+                            <span class=" text-dark counter-value" data-target="0">0</span> occupée(s)
                         </span>
                     </div>
 
@@ -87,10 +87,10 @@
                 <i data-feather="calendar"></i>
             </span>
             <select class="form-select" id="periode" name="periode">
-                <option value="quotidien">Aujourd'hui</option>
-                <option value="hebdomadaire">Cette semaine</option>
-                <option value="mensuel">Ce mois-ci</option>
-                <option value="annuel">Cette année</option>
+                <option value="quotidien">Afficher les mouvements du jour</option>
+                <option value="hebdomadaire">Afficher les mouvements de la semaine</option>
+                <option value="mensuel">Afficher les mouvements du mois</option>
+                <option value="annuel">Afficher les mouvements de l'année</option>
             </select>
         </div>
     </div>
@@ -140,6 +140,39 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal emplacement -->
+<div id="modal_emplacement" class="modal fade">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center position-relative">
+                <h5 class="modal-title" id="myModalLabel">Emplacement</h5>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="content-emplacement" style="max-height: 60vh; overflow-y: auto;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal emplacement -->
+
+<!-- Modal palette -->
+<div id="modal_palette" class="modal fade">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center position-relative">
+                <h5 class="modal-title" id="myModalLabel">Palette</h5>
+                <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="content-palette" style="max-height: 60vh; overflow-y: auto;">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Modal palette -->
 
 
 

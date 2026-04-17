@@ -8,7 +8,7 @@ function animateCounter($el, value) {
     });
 }
 
-function updateCard(cardSelector, values, chartLabels, chartColors) {
+function updateCard(cardSelector, values, chartLabels, chartColors, onClickCallback = null) {
     const $card = $(cardSelector);
 
     // Mettre à jour les compteurs
@@ -35,6 +35,12 @@ function updateCard(cardSelector, values, chartLabels, chartColors) {
         },
         options: {
             responsive: true,
+            onClick: function (evt, elements) {
+                if (elements.length > 0 && onClickCallback) {
+                    let index = elements[0].index;
+                    onClickCallback(index, chartLabels[index], values[index]);
+                }
+            },
             plugins: {
                 legend: { position: 'bottom' },
                 datalabels: {
@@ -202,12 +208,24 @@ $('#periode').on('change', function () {
             updateCard('.card:has(#pie_emplacement)',
                 [parseInt(data.emplacement.nb_libre), parseInt(data.emplacement.nb_occupe)],
                 ['Libre', 'Occupé'],
-                ['#10B981', '#EF4444']);
+                ['#10B981', '#EF4444'],
+                function (index, label, value) {
+                    let statutId = index === 0 ? 1 : 2;
+                    emplacementDetail(statutId);
+                });
 
             updateCard('.card:has(#pie_palette)',
                 [parseInt(data.palette.nb_libre), parseInt(data.palette.nb_attribue), parseInt(data.palette.nb_occupe)],
                 ['Libre', 'Attribuée', 'Occupée'],
-                ['#10B981', '#2563EB', '#EF4444']);
+                ['#10B981', '#2563EB', '#EF4444'],
+                function (index, label, value) {
+                    let map = {
+                        'Libre': 1,
+                        'Attribuée': 2,
+                        'Occupée': 3
+                    };
+                    paletteDetail(map[label])
+                });
 
             updateCard('.card:has(#pie_mouvement)',
                 [parseInt(data.mouvement.nb_entree), parseInt(data.mouvement.nb_transfert), parseInt(data.mouvement.nb_sortie)],
@@ -220,3 +238,93 @@ $('#periode').on('change', function () {
         }
     });
 });
+
+function emplacementDetail(statutId) {
+    $("#content-emplacement").html("");
+    loaderContent('main')
+    $.ajax({
+        url: urlProject + "Emplacement/getListEmplacementByStatut",
+        type: "POST",
+        data: {
+            statutId: statutId,
+        },
+        dataType: "json", // ✅ IMPORTANT
+        success: function (res) {
+            stopLoaderContent('main')
+            let statut = statutId == 1 ? 'Libre' : (statutId == 2 ? 'Occupé' : '');
+            let html = `<table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Liste des emplacements ${statut}</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            if (!res || res.length === 0) {
+                html += `
+                        <tr>
+                            <td class="text-center">Aucun emplacement ${statut} </td>
+                        </tr>`;
+            } else {
+                res.forEach(function (emp) {
+                    html += `
+                <tr>
+                    <td>${emp.qr_code_texte}</td>
+                </tr>`;
+                });
+            }
+
+            html += `</tbody></table>`;
+
+            $("#content-emplacement").html(html);
+            $("#modal_emplacement").modal("show");
+            $("#div-upd-footer").css("display", "block");
+            $("#title").text("Liste des emplacements " + statut);
+        }
+    });
+}
+
+function paletteDetail(statutId) {
+    $("#content-palette").html("");
+    loaderContent('main')
+    $.ajax({
+        url: urlProject + "Palette/getListPaletteByStatut",
+        type: "POST",
+        data: {
+            statutId: statutId,
+        },
+        dataType: "json", // ✅ IMPORTANT
+        success: function (res) {
+            stopLoaderContent('main')
+            let statut = statutId == 1 ? 'Libre' : (statutId == 2 ? 'Attribuée' : (statutId == 3 ? 'Occupée' : ''));
+            let html = `<table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Liste des palettes ${statut}</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            if (!res || res.length === 0) {
+                html += `
+                        <tr>
+                            <td class="text-center">Aucune palette ${statut} </td>
+                        </tr>`;
+            } else {
+                res.forEach(function (pal) {
+                    html += `
+                <tr>
+                    <td>${pal.code}</td>
+                </tr>`;
+                });
+            }
+
+            html += `</tbody></table>`;
+
+            $("#content-palette").html(html);
+            $("#modal_palette").modal("show");
+            $("#div-upd-footer").css("display", "block");
+            $("#title").text("Liste des palettes " + statut);
+        }
+    });
+}
