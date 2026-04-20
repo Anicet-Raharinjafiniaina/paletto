@@ -252,7 +252,7 @@ function emplacementDetail(statutId) {
         success: function (res) {
             stopLoaderContent('main')
             let statut = statutId == 1 ? 'Libre' : (statutId == 2 ? 'Occupé' : '');
-            let html = `<table class="table table-bordered table-hover">
+            let html = `<table class="table table-bordered table-hover text-center">
                 <thead class="table-dark">
                     <tr>
                         <th>Liste des emplacements ${statut}</th>
@@ -297,7 +297,7 @@ function paletteDetail(statutId) {
         success: function (res) {
             stopLoaderContent('main')
             let statut = statutId == 1 ? 'Libre' : (statutId == 2 ? 'Attribuée' : (statutId == 3 ? 'Occupée' : ''));
-            let html = `<table class="table table-bordered table-hover">
+            let html = `<table class="table table-bordered table-hover text-center">
                 <thead class="table-dark">
                     <tr>
                         <th>Liste des palettes ${statut}</th>

@@ -6,6 +6,7 @@ use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Color\Color;
 
 class QrCodeController extends BaseController
 {
@@ -22,7 +23,8 @@ class QrCodeController extends BaseController
             encoding: new Encoding('UTF-8'),
             errorCorrectionLevel: ErrorCorrectionLevel::High,
             size: 200,
-            margin: 10
+            margin: 10,
+            backgroundColor: new Color(255, 255, 255, 127)
         );
 
         $result = $builder->build();
