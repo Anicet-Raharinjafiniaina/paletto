@@ -39,12 +39,12 @@
         <div class="card nb-emplacement text-center h-100">
             <div class="card-body py-2 d-flex align-items-center justify-content-center gap-3">
                 <div class="d-flex flex-column align-items-center">
-                    <span class="badge bg-success fw-bold fs-1" id="libre"></span>
-                    <small class="text-success fw-bold mt-1">Libre</small>
+                    <span class="badge fw-bold fs-1" id="libre" style="background-color: #5cb85c;"></span>
+                    <small class="fw-bold mt-1" style="color: #5cb85c;">Libre</small>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <span class="badge bg-danger fw-bold fs-1" id="occupe"></span>
-                    <small class="text-danger fw-bold mt-1">Occupé</small>
+                    <span class="badge fw-bold fs-1" id="occupe" style="background-color: #d9534f;"></span>
+                    <small class="fw-bold mt-1" style="color: #d9534f;">Occupé</small>
                 </div>
             </div>
         </div>
