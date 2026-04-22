@@ -13,11 +13,11 @@
     }
 </style>
 
-<div class="row">
+<div class="row align-items-stretch">
     <div class="col-6">
-        <div class="card text-center">
-            <div class="card-body">
-                <div class="form-group">
+        <div class="card text-center h-100">
+            <div class="card-body py-2">
+                <div class="form-group mb-0">
                     <label>ENTREPÔT <span class="fw-bold text-danger">*</span></label>
                     <select class="select select-search obligatoire" data-placeholder="Choisir un entrepôt..." name="entrepot" id="entrepot" style="width: 100%;" onchange="getdataByEntrepotId()">
                         <option value=""></option>
@@ -34,26 +34,24 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
-        <div class="card nb-emplacement text-center">
-            <div class="card-body" style="margin-bottom : 10px;">
-                <label>
-                    <span class="badge bg-success p-1">Libre</span> :
-                </label>
-                <span id="libre"></span>
-                <br><br>
 
-                <label>
-                    <span class="badge bg-danger p-1">Occupé</span> :
-                </label>
-                <span id="occupe"></span>
+    <div class="col-6">
+        <div class="card nb-emplacement text-center h-100">
+            <div class="card-body py-2 d-flex align-items-center justify-content-center gap-3">
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-success fw-bold fs-1" id="libre"></span>
+                    <small class="text-success fw-bold mt-1">Libre</small>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge bg-danger fw-bold fs-1" id="occupe"></span>
+                    <small class="text-danger fw-bold mt-1">Occupé</small>
+                </div>
             </div>
         </div>
-        <!-- end cardaa -->
-    </div> <!-- end col -->
+    </div>
 </div>
 
-<div class="row">
+<div class="row mt-5">
     <div class="col-12" id="tableau-emplacement"></div>
 </div>
 
