@@ -45,8 +45,8 @@
                                     </td>
                                     <td><?= $value->code ?></td>
                                     <td><?= $value->nom ?></td>
-                                    <td><?= $value->unite_pcb ?></td>
-                                    <td><?= $value->palettisation ?></td>
+                                    <td><?= trim($value->unite_pcb, '{}')  ?></td>
+                                    <td><?= trim($value->palettisation, '{}') ?></td>
                                     <td><?= $value->unite_stockage ?></td>
                                     <td><?= $value->description ?></td>
                                 </tr>
