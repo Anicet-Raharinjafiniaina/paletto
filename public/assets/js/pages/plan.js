@@ -2,6 +2,7 @@ $(function () {
     initializeSelect()
     $('.nb-emplacement').hide()
     $('.plan').hide()
+    $('#entrepot').closest('.col-6').removeClass('col-6').addClass('col-12');
 });
 
 function getdataByEntrepotId() {
@@ -13,6 +14,7 @@ function getdataByEntrepotId() {
             id: $('#entrepot').val()
         },
         success: function (res) {
+            $('#entrepot').closest('.col-12').removeClass('col-12').addClass('col-6');
             $('.nb-emplacement').show()
             $('.plan').show()
             stopLoaderContent('main')
