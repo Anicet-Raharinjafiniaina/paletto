@@ -5,9 +5,6 @@
 <?php if (isset($request_ajax) && $request_ajax): ?>
     <div id="ajax-title" data-title="<?= esc($titre) ?>"></div>
 <?php endif; ?>
-<?php
-$acces_btn = "";
-$style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "display:none;"'; ?>
 
 <style>
     .table-black-border td,
@@ -57,7 +54,7 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
 </div>
 
 <div class="row">
-    <div id="tableau-emplacement"></div>
+    <div class="col-12" id="tableau-emplacement"></div>
 </div>
 
 <?= $this->include('mouvement/entree'); ?>
