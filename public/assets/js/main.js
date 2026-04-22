@@ -58,7 +58,7 @@ function stopLoaderContent(id) {
 
 function initializeSelect() {
     $(".select-search").select2({
-        allowClear: true,
+        allowClear: false,
         width: "100%",
         language: {
             searching: function () {

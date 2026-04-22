@@ -59,7 +59,7 @@ class Cage extends BaseController
         $arr['titre'] = "Gestion des cages";
         $rangee = new Rangee();
         $arr['arr_data_entrepot'] = $rangee->getAllEntrepot();
-        $arr['menu_emplacement'] = 'Cage';
+        $arr['menu_emplacement'] = 'Cage / Alvéole';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;

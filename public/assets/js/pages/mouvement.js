@@ -30,7 +30,7 @@ function validerEntree() {
                     }).then(function (result) {
                         if (result.isConfirmed) {
                             $('#modal_ajout_entree').modal('hide');
-                            loadPage(urlProject + "Mouvement", true)
+                            loadPage(window.location.href, true)
                         }
                     });
                 } else if (res == 2) {
@@ -108,7 +108,7 @@ function validerSortie() {
                     }).then(function (result) {
                         if (result.isConfirmed) {
                             $('#modal_ajout_sortie').modal('hide');
-                            loadPage(urlProject + "Mouvement", true)
+                            loadPage(window.location.href, true)
                         }
                     });
                 } else if (res == 2) {
@@ -193,7 +193,7 @@ function validerTransfert() {
                     }).then(function (result) {
                         if (result.isConfirmed) {
                             $('#modal_ajout_transfert').modal('hide');
-                            loadPage(urlProject + "Mouvement", true)
+                            loadPage(window.location.href, true)
                         }
                     });
                 } else if (res == 2) {

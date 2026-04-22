@@ -43,7 +43,7 @@ class Allee extends BaseController
         $arr['arr_data_allee'] = $crud->getAllData(array(TBL_ALLEE . '.flag_suppression' => 0, TBL_ENTREPOT . '.flag_suppression' => 0), $arrJoin, $select);
         $arr['titre'] = "Gestion des allées";
         $arr['arr_data_entrepot'] = $this->getAllEntrepot();
-        $arr['menu_emplacement'] = 'Allee';
+        $arr['menu_emplacement'] = 'Allée';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;

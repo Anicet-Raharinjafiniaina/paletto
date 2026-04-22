@@ -14,6 +14,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $('#content-page').fadeOut(100, function () { // charger le contenu de la page via la variabmle data
+                    $('.daterangepicker.ltr.show-ranges.opensright').hide(); // masquer le résidu daterange
                     $('#content-page').html(data).fadeIn(100, function () {
                         // Ici le fadeIn est terminé, le DOM est prêt et visible
                         $('#content-page').find('script').each(function () { // exécuter les scripts (code JS dans les autres pages) inclus dans la réponse AJAX

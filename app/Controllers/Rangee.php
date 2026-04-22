@@ -40,7 +40,7 @@ class Rangee extends BaseController
         $arr['titre'] = "Gestion des rangées";
         $arr['arr_data_entrepot'] = $this->getAllEntrepot();
         // $arr['arr_data_allee'] = $this->getAllAllee();
-        $arr['menu_emplacement'] = 'Rangee';
+        $arr['menu_emplacement'] = 'Rangée';
         $arr['request_ajax'] = 0;
         if ($this->request->isAJAX()) {
             $arr['request_ajax'] = 1;
