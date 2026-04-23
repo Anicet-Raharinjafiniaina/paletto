@@ -3,20 +3,23 @@ $(function () {
     $('.nb-emplacement').hide()
     $('.plan').hide()
     $('#entrepot').closest('.col-6').removeClass('col-6').addClass('col-12');
+    $('#refreshData').hide()
 });
-
+var entrepotId = ""
 function getdataByEntrepotId() {
     loaderContent('main')
+    entrepotId = $('#entrepot').val()
     $.ajax({
         url: urlProject + "Plan/getDetail",
         type: "POST",
         data: {
-            id: $('#entrepot').val()
+            id: entrepotId
         },
         success: function (res) {
             $('#entrepot').closest('.col-12').removeClass('col-12').addClass('col-6');
             $('.nb-emplacement').show()
             $('.plan').show()
+            $('#refreshData').show()
             stopLoaderContent('main')
             let data = JSON.parse(res);
             $('#libre').text(data.libre)
@@ -64,8 +67,12 @@ function mouvement(qrCode, statutId) {
         loadDataTypeAhead("qr_emplacement_sortie", "Mouvement/getEmplacementTypeahead", 2)
         loadDataTypeAhead("qr_palette_sortie", "Mouvement/getPaletteTypeahead", 3, 1)
         $(".validation-error-label").html("");
-    } else {
-
     }
+    stopLoaderContent('main')
+}
+
+function refreshData() {
+    loaderContent('main')
+    getdataByEntrepotId()
     stopLoaderContent('main')
 }

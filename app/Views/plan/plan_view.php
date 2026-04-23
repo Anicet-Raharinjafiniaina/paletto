@@ -51,7 +51,10 @@
     </div>
 </div>
 
-<div class="row mt-5">
+<div class="row mt-2">
+    <div class="d-flex justify-content-end mb-2">
+        <button type="button" id="refreshData" onclick="refreshData()" class="btn btn-primary btn-sm"><i data-feather="refresh-cw" style="width:14px;height:14px;"></i> Actualiser</button>
+    </div>
     <div class="col-12" id="tableau-emplacement"></div>
 </div>
 
