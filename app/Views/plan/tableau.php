@@ -18,68 +18,112 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($allee['rangees'] as $rangeeId => $rangee):
+                        <?php foreach ($allee['rangees'] as $rangee): ?>
+                            <?php
                             $totalRangee = 0;
-                            foreach ($rangee['niveaux'] as $n)
-                                foreach ($n['cages'] as $c)
-                                    $totalRangee += count($c['emplacements']);
-                            $firstRangee = true;
-                        ?>
+                            $rangeeOccupe = false;
 
-                            <?php foreach ($rangee['niveaux'] as $niveauId => $niveau):
-                                $totalNiveau = 0;
-                                foreach ($niveau['cages'] as $c)
-                                    $totalNiveau += count($c['emplacements']);
-                                $firstNiveau = true;
+                            foreach ($rangee['niveaux'] as $n) {
+                                foreach ($n['cages'] as $c) {
+                                    foreach ($c['emplacements'] as $e) {
+                                        $totalRangee++;
+                                        if ($e['statut_id'] != 1) $rangeeOccupe = true;
+                                    }
+                                }
+                            }
+
+                            $bgRangee = $rangeeOccupe ? '#d9534f' : '#5cb85c';
+                            $firstRangee = true;
                             ?>
 
-                                <?php foreach ($niveau['cages'] as $cageId => $cage):
-                                    $totalCage = count($cage['emplacements']);
-                                    $firstCage = true;
+                            <?php foreach ($rangee['niveaux'] as $niveau): ?>
+                                <?php
+                                $totalNiveau = 0;
+                                $niveauOccupe = false;
+
+                                foreach ($niveau['cages'] as $c) {
+                                    foreach ($c['emplacements'] as $e) {
+                                        $totalNiveau++;
+                                        if ($e['statut_id'] != 1) $niveauOccupe = true;
+                                    }
+                                }
+
+                                $bgNiveau = $niveauOccupe ? '#d9534f' : '#5cb85c';
+                                $firstNiveau = true;
                                 ?>
 
+                                <?php foreach ($niveau['cages'] as $cage): ?>
+
+                                    <?php
+                                    $totalCage = count($cage['emplacements']);
+                                    $cageOccupe = false;
+
+                                    foreach ($cage['emplacements'] as $e) {
+                                        if ($e['statut_id'] != 1) $cageOccupe = true;
+                                    }
+
+                                    $bgCage = $cageOccupe ? '#d9534f' : '#5cb85c';
+                                    $firstCage = true;
+                                    ?>
+
                                     <?php foreach ($cage['emplacements'] as $emp): ?>
-                                        <tr style="background-color: <?= $emp['statut_id'] == 1 ? '#5cb85c' : '#d9534f' ?>; color: white;  line-height: 40px;">
-                                            <!-- Rangée : rowspan sur toute la rangée -->
+
+                                        <?php
+                                        $bg = ($emp['statut_id'] == 1) ? '#5cb85c' : '#d9534f';
+                                        $border = ($emp['statut_id'] == 1) ? '2px solid #5cb85c' : '2px solid #d9534f';
+                                        ?>
+
+                                        <tr style="color:white; line-height:40px;">
+
+                                            <!-- Rangée -->
                                             <?php if ($firstRangee): $firstRangee = false; ?>
-                                                <td rowspan="<?= $totalRangee ?>" class="align-middle fw-bold">
-                                                    <?= htmlspecialchars($rangee['rangee_code']) ?>
+                                                <td rowspan="<?= $totalRangee ?>"
+                                                    style="background:<?= $bgRangee ?>;"
+                                                    class="align-middle fw-bold">
+                                                    <?= $rangee['rangee_code'] ?>
                                                 </td>
                                             <?php endif; ?>
 
-                                            <!-- Niveau : rowspan sur tout le niveau -->
+                                            <!-- Niveau -->
                                             <?php if ($firstNiveau): $firstNiveau = false; ?>
-                                                <td rowspan="<?= $totalNiveau ?>" class="align-middle">
-                                                    <?= htmlspecialchars($niveau['niveau_code']) ?>
+                                                <td rowspan="<?= $totalNiveau ?>"
+                                                    style="background:<?= $bgNiveau ?>;"
+                                                    class="align-middle">
+                                                    <?= $niveau['niveau_code'] ?>
                                                 </td>
                                             <?php endif; ?>
 
-                                            <!-- Cage : rowspan sur toute la cage -->
+                                            <!-- Cage -->
                                             <?php if ($firstCage): $firstCage = false; ?>
-                                                <td rowspan="<?= $totalCage ?>" class="align-middle">
-                                                    <?= htmlspecialchars($cage['cage_code']) ?>
+                                                <td rowspan="<?= $totalCage ?>"
+                                                    style="background:<?= $bgCage ?>;"
+                                                    class="align-middle">
+                                                    <?= $cage['cage_code'] ?>
                                                 </td>
                                             <?php endif; ?>
 
-                                            <td onclick="mouvement('<?= $emp['qr_code_texte'] ?>', <?= $emp['statut_id'] ?>)" style="cursor:pointer;"><?= htmlspecialchars($emp['emplacement_code']) ?></td>
-                                            <td onclick="mouvement('<?= $emp['qr_code_texte'] ?>', <?= $emp['statut_id'] ?>)" style="cursor:pointer;">
+                                            <!-- Emplacement -->
+                                            <td style="background:<?= $bg ?>; border-top:<?= $border ?>; border-bottom:<?= $border ?>; cursor:pointer;"
+                                                onclick="mouvement('<?= $emp['qr_code_texte'] ?>', <?= $emp['statut_id'] ?>)">
+                                                <?= $emp['emplacement_code'] ?>
+                                            </td>
+
+                                            <!-- Statut -->
+                                            <td style="background:<?= $bg ?>; border-top:<?= $border ?>; border-bottom:<?= $border ?>; cursor:pointer;"
+                                                onclick="mouvement('<?= $emp['qr_code_texte'] ?>', <?= $emp['statut_id'] ?>)">
                                                 <?php if ($emp['statut_id'] == 1): ?>
                                                     <span class="badge bg-success">Libre</span>
                                                 <?php else: ?>
                                                     <span class="badge bg-danger">Occupé</span>
                                                 <?php endif; ?>
                                             </td>
+
                                         </tr>
-                                    <?php endforeach; // emplacements 
-                                    ?>
 
-                                <?php endforeach; // cages 
-                                ?>
-                            <?php endforeach; // niveaux 
-                            ?>
-                        <?php endforeach; // rangees 
-                        ?>
-
+                                    <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
