@@ -8,12 +8,6 @@ use App\Models\DashboardModel;
 class Dashboard extends BaseController
 {
 
-    protected $db;
-
-    public function __construct()
-    {
-        $this->db = db_connect();
-    }
     public function index()
     {
         $acces  = new Acces();
