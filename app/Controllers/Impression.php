@@ -90,7 +90,7 @@ class Impression extends BaseController
 
     public function viewDetail()
     {
-        $data = $this->request->getVar('data');
+        $data = $this->request->getVar('data') ?? [];
         $arr = $this->traiterTableau($data);
 
         $map = [];

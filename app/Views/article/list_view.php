@@ -169,8 +169,8 @@ $style_btn = ($acces_btn == "write" || $acces_btn == "") ? "" : 'style = "displa
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>LOT <span class="fw-bold text-danger">*</span></label>
-                                <input type="text" class="form-control input-xs obligatoire" placeholder="Lot" name="lot" id="lot" required="required">
+                                <label>LOT </label>
+                                <input type="text" class="form-control input-xs" placeholder="Lot" name="lot" id="lot" required="required">
                                 <label id="lot-error" class="validation-error-label" for="lot"></label>
                             </div>
                         </div>
