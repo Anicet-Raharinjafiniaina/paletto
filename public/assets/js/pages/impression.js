@@ -330,13 +330,9 @@ function getData(dataId, qrCode, qrText, statut) {
     $('#' + dataId).append(html);
 }
 
-
-
 function sendData() {
     $(".validation-error-label").html("");
     isValid = checkObligatoire(".parts-container", ".obligatoire")
-    console.log("isvalid : " + isValid);
-
     if (isValid == true) {
         $("#view").prop("disabled", true);
         let arr_data = getFormDataFromParentClass(".parts-container")
@@ -350,19 +346,17 @@ function sendData() {
                 responseType: 'blob'
             },
             success: function (response) {
-
                 stopLoaderContent('main');
-
                 let blob = new Blob([response], { type: 'application/pdf' });
                 let url = window.URL.createObjectURL(blob);
-
                 window.open(url); // ouvre le PDF
-
                 Swal.fire({
                     title: "Impression",
                     html: "PDF généré avec succès",
                     icon: "success",
-                    showConfirmButton: true
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
                 });
             }
         });

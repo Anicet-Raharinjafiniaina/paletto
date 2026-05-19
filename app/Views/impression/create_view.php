@@ -11,15 +11,18 @@
     <?= $this->section('content') ?>
 <?php endif; ?>
 <?php if (isset($request_ajax) && $request_ajax): ?>
-    <div id="ajax-title" data-title="<?= esc($titre) ?>"></div>
+    <div id="ajax-title" data-title="<?= $titre ?>"></div>
 <?php endif; ?>
 
 <div class="row mb-3">
     <div class="col-md-6 d-flex justify-content-start">
     </div>
     <div class="col-md-6 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary btn-sm" id="btn-add-part">
+        <button type="button" class="btn btn-outline-primary btn-sm me-2" id="btn-add-part">
             <i class="fas fa-plus position-left"></i> Ajouter
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-sm me-2" id="btn-view" onclick="sendData()">
+            <i class="fas fa-print me-2 position-left"></i> Aperçu avant impression
         </button>
     </div>
 </div>
@@ -37,16 +40,6 @@
             </div>
 
         </div>
-    </div>
-</div>
-
-<div class="row mb-3">
-    <div class="col-md-6 d-flex justify-content-start">
-    </div>
-    <div class="col-md-6 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary btn-sm" id="btn-view" onclick="sendData()">
-            <i class="fas fa-eye position-left"></i> Visualiser
-        </button>
     </div>
 </div>
 

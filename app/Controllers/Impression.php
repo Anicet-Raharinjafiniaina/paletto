@@ -11,7 +11,7 @@ class Impression extends BaseController
     public function index()
     {
         $acces  = new Acces();
-        $is_ok = $acces->is_ok(11); // à changer
+        $is_ok = $acces->is_ok(12);
         if (!$is_ok) {
             return $this->response->setBody(
                 '<script>window.location.href="' . base_url('/') . '";</script>'
@@ -197,12 +197,14 @@ class Impression extends BaseController
             $this->renderBlock($pdf, $pageItems[3], $halfW + 5, $halfH + 5, $halfW - 10, $halfH - 10);
         }
 
+        $fileName = 'palettes_' . date('Ymd_His') . '.pdf';
         return $this->response
             ->setContentType('application/pdf')
-            ->setBody($pdf->Output('paletto_print.pdf', 'S'));
+            ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
+            ->setBody($pdf->Output($fileName, 'S'));
     }
 
-public function renderBlock(\TCPDF $pdf, ?array $item, float $x, float $y, float $w,float $h): void
+    public function renderBlock(\TCPDF $pdf, ?array $item, float $x, float $y, float $w, float $h): void
     {
         if (!$item) return;
 
@@ -210,18 +212,6 @@ public function renderBlock(\TCPDF $pdf, ?array $item, float $x, float $y, float
             'item' => $item
         ]);
 
-        $pdf->writeHTMLCell(
-            $w,
-            $h,
-            $x,
-            $y,
-            $html,
-            0,
-            0,
-            false,
-            true,
-            'C',
-            true
-        );
+        $pdf->writeHTMLCell($w, $h, $x, $y, $html, 0, 0, false, true, 'C', true);
     }
 }
