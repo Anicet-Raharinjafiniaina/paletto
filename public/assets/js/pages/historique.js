@@ -29,9 +29,10 @@ $(document).ready(function () {
                 render: function (data) {
                     if (!data) return '';
                     const d = new Date(data.replace(' ', 'T'));
-                    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} à ${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}mn${String(d.getSeconds()).padStart(2, '0')}s`;
+                    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
                 }
             },
+            'auteur',
             'emplacement',
             'palette_article',
             'client_code',

@@ -1,9 +1,15 @@
+<?php
+
+/** @var int $request_ajax */
+/** @var string $titre */
+?>
+
 <?php if ($request_ajax == 0) : ?>
     <?= $this->extend('layout/main') ?>
     <?= $this->section('content') ?>
 <?php endif; ?>
 <?php if (isset($request_ajax) && $request_ajax): ?>
-    <div id="ajax-title" data-title="<?= esc($titre) ?>"></div>
+    <div id="ajax-title" data-title="<?= $titre ?>"></div>
 <?php endif; ?>
 
 <div class="card">
@@ -14,6 +20,7 @@
                     <th>ACTION</th>
                     <th>ETAT</th>
                     <th>DATE DU MOUVEMENT</th>
+                    <th>NOM</th>
                     <th>EMPLACEMENT</th>
                     <th>PALETTE</th>
                     <th>CODE DU CLIENT</th>

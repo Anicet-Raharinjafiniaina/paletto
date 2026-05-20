@@ -51,7 +51,8 @@ class HistoriqueMouvement extends BaseController
             TBL_ENTREPOT . ".nom as nom_entrepot",
             TBL_ARTICLE . ".client_code",
             TBL_ARTICLE . ".client_nom",
-            TBL_MOUVEMENT . '.date_mouvement'
+            TBL_MOUVEMENT . '.date_mouvement',
+            TBL_UTILISATEUR . '.nom as auteur'
         ];
         $searchable = [
             VIEW_EMPLACEMENT_ADRESSE . '.qr_code_texte',
@@ -61,7 +62,8 @@ class HistoriqueMouvement extends BaseController
             TBL_ENTREPOT . ".nom",
             TBL_ARTICLE . ".client_code",
             TBL_ARTICLE . ".client_nom",
-            "TO_CHAR(" . TBL_MOUVEMENT . ".date_mouvement, 'DD/MM/YYYY \"à\" HH24\"h\"MI\"mn\"SS\"s\"')"
+            "TO_CHAR(" . TBL_MOUVEMENT . ".date_mouvement, 'DD/MM/YYYY')",
+            TBL_UTILISATEUR . '.nom'
         ];
 
         $arrJoin = [
@@ -89,6 +91,11 @@ class HistoriqueMouvement extends BaseController
                 'table' => TBL_ENTREPOT,
                 'type' => 'left',
                 'condition' => TBL_ENTREPOT . '.id = ' . VIEW_EMPLACEMENT_ADRESSE . '.entrepot_id'
+            ],
+            [
+                'table' => TBL_UTILISATEUR,
+                'condition' => TBL_UTILISATEUR . '.id = ' . TBL_MOUVEMENT . '.cree_par',
+                'type' => 'left'
             ]
         ];
         /* $where = [

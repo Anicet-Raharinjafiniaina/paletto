@@ -1,5 +1,5 @@
 <div id="modal_ajout_entree" class="modal fade">
-    <div class="modal-dialog modal-xl modal-entree-centered modal-entree-scrollable">
+    <div class="modal-dialog modal-fullscreen modal-entree-centered modal-entree-scrollable">
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-between align-items-center">
                 <h5 class="modal-title text-center flex-grow-1" id="myModalLabel">Enregistrement Entrée</h5>
