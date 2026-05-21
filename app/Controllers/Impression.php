@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\CrudModel;
+use App\Models\ExportModel;
 //use TCPDF;
 
 
@@ -196,6 +197,9 @@ class Impression extends BaseController
             // 🔥 BAS DROITE
             $this->renderBlock($pdf, $pageItems[3], $halfW + 5, $halfH + 5, $halfW - 10, $halfH - 10);
         }
+
+        $model = new ExportModel();
+        $model->historique(45);
 
         $fileName = 'palettes_' . date('Ymd_His') . '.pdf';
         return $this->response
