@@ -439,7 +439,6 @@ function imprimer(classContent) {
             ${styles}
 
             <style>
-                /* FORMAT A5 */
                 @page {
                     size: A5 portrait;
                     margin: 10mm;
@@ -452,10 +451,9 @@ function imprimer(classContent) {
                     font-family: Arial, sans-serif;
                 }
 
-                /* Wrapper centré */
                 .print-wrapper {
-                    width: 148mm;      /* largeur A5 */
-                    min-height: 210mm; /* hauteur A5 */
+                    width: 148mm;
+                    min-height: 210mm;
                     margin: 0 auto;
                     display: flex;
                     align-items: center;
@@ -467,31 +465,21 @@ function imprimer(classContent) {
                     text-align: center;
                 }
 
-                /* Neutraliser Bootstrap */
                 .print-content .container,
                 .print-content .container-fluid {
                     max-width: 100% !important;
                     width: 100% !important;
                 }
 
-                /* QR Code */
                 .print-content img {
                     max-width: 40mm !important;
                     margin-bottom: 15mm;
                 }
 
-                /* Titre */
-                .print-content h6 {
-                    font-size: 18pt;
-                    margin-bottom: 10mm;
-                }
-
-                /* Supprimer ombres, borders inutiles */
                 * {
                     box-shadow: none !important;
                 }
             </style>
-
         </head>
         <body>
             <div class="print-wrapper">
@@ -505,10 +493,41 @@ function imprimer(classContent) {
 
     doc.close();
 
-    $iframe[0].contentWindow.focus();
-    $iframe[0].contentWindow.print();
+    const iframeWindow = $iframe[0].contentWindow;
 
-    setTimeout(() => {
-        $iframe.remove();
-    }, 1000);
+    iframeWindow.onload = async function () {
+        try {
+            // Attendre les polices
+            if (iframeWindow.document.fonts) {
+                await iframeWindow.document.fonts.ready;
+            }
+            // Attendre les images
+            const images = iframeWindow.document.images;
+            await Promise.all(
+                Array.from(images).map(img => {
+                    return img.complete
+                        ? Promise.resolve()
+                        : new Promise(resolve => {
+                            img.onload = resolve;
+                            img.onerror = resolve;
+                        });
+                })
+            );
+            // Petit délai supplémentaire pour Bootstrap
+            setTimeout(() => {
+
+                iframeWindow.focus();
+                iframeWindow.print();
+
+                setTimeout(() => {
+                    $iframe.remove();
+                }, 1000);
+
+            }, 300);
+        } catch (e) {
+            console.error(e);
+            iframeWindow.focus();
+            iframeWindow.print();
+        }
+    };
 }
