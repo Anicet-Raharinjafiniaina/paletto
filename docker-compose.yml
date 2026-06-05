@@ -1,0 +1,16 @@
+services:
+
+  app:
+    build: .
+    container_name: ci4_app
+
+    ports:
+      - "9000:80"
+
+    volumes:
+      - ./:/var/www/html
+
+    working_dir: /var/www/html
+
+    environment:
+      CI_ENVIRONMENT: development

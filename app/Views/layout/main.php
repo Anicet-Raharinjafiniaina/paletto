@@ -2,6 +2,8 @@
 
 <?= $this->include('layout/navbar') ?>
 
+<?= $this->include('chatbot/chatbot') ?>
+
 <div class="main-content" id="main">
     <div class="page-content">
         <div class="container-fluid">
